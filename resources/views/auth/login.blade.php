@@ -14,7 +14,7 @@
                 <div class="space-y-2">
                     <x-form.label
                         for="email"
-                        :value="__('Email')"
+                        :value="__('auth.email')"
                     />
 
                     <x-form.input-with-icon-wrapper>
@@ -29,7 +29,7 @@
                             type="email"
                             name="email"
                             :value="old('email')"
-                            placeholder="{{ __('Email') }}"
+                            placeholder="{{ __('auth.email') }}"
                             required
                             autofocus
                         />
@@ -40,7 +40,7 @@
                 <div class="space-y-2">
                     <x-form.label
                         for="password"
-                        :value="__('Password')"
+                        :value="__('auth.password')"
                     />
 
                     <x-form.input-with-icon-wrapper>
@@ -56,7 +56,7 @@
                             name="password"
                             required
                             autocomplete="current-password"
-                            placeholder="{{ __('Password') }}"
+                            placeholder="{{ __('auth.password') }}"
                         />
                     </x-form.input-with-icon-wrapper>
                 </div>
@@ -72,13 +72,13 @@
                         >
 
                         <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                            {{ __('Remember me') }}
+                            {{ __('auth.rememberme') }}
                         </span>
                     </label>
 
                     @if (Route::has('password.request'))
                         <a class="text-sm text-blue-500 hover:underline" href="{{ route('password.request') }}">
-                            {{ __('Forgot your password?') }}
+                            {{ __('auth.forgot_password') }}
                         </a>
                     @endif
                 </div>
@@ -87,7 +87,7 @@
                     <x-button class="justify-center w-full gap-2">
                         <x-heroicon-o-login class="w-6 h-6" aria-hidden="true" />
 
-                        <span>{{ __('Log in') }}</span>
+                        <span>{{ __('auth.login') }}</span>
                     </x-button>
                 </div>
 

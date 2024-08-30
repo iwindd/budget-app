@@ -80,7 +80,7 @@
                 <x-dropdown-link
                     :href="route('profile.edit')"
                 >
-                    {{ __('Profile') }}
+                    {{ __('navbar.profile') }}
                 </x-dropdown-link>
 
                 <!-- Authentication -->
@@ -91,7 +91,7 @@
                         :href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();"
                     >
-                        {{ __('Log Out') }}
+                        {{ __('auth.logout') }}
                     </x-dropdown-link>
                 </form>
             </x-slot>

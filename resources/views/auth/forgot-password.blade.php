@@ -1,8 +1,5 @@
 <x-guest-layout>
     <x-auth-card>
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-        </div>
 
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -18,7 +15,7 @@
                 <div class="space-y-2">
                     <x-form.label
                         for="email"
-                        :value="__('Email')"
+                        :value="__('auth.email')"
                     />
 
                     <x-form.input-with-icon-wrapper>
@@ -35,14 +32,14 @@
                             :value="old('email')"
                             required
                             autofocus
-                            placeholder="{{ __('Email') }}"
+                            placeholder="{{ __('auth.email') }}"
                         />
                     </x-form.input-with-icon-wrapper>
                 </div>
 
                 <div>
                     <x-button class="justify-center w-full">
-                        {{ __('Email Password Reset Link') }}
+                        {{ __('auth.send_forgot') }}
                     </x-button>
                 </div>
             </div>
