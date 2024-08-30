@@ -3,7 +3,6 @@
     aria-label="main"
     class="flex flex-col flex-1 gap-4 px-3"
 >
-
     <x-sidebar.link
         title="Dashboard"
         href="{{ route('dashboard') }}"
@@ -13,6 +12,18 @@
             <x-icons.dashboard class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+
+    @if (Auth::user()->role == "admin")
+        <x-sidebar.link
+            title="{{__('users.nav')}}"
+            href="{{ route('users') }}"
+            :isActive="request()->routeIs('users')"
+        >
+            <x-slot name="icon">
+                <x-heroicon-o-users class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
+        </x-sidebar.link>
+    @endif
 
     <x-sidebar.dropdown
         title="Buttons"
