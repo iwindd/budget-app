@@ -15,6 +15,7 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ['Inter', ...defaultTheme.fontFamily.sans],
+                sarabun: ['Sarabun', ...defaultTheme.fontFamily.sans]
             },
 
             colors: {
