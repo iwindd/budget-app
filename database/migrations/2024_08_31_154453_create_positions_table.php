@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
+            $table->string('label');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->softDeletes();
             $table->timestamps();
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('position_id')->constrained('positions');
         });
     }
 
@@ -23,5 +30,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('positions');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['position_id']);
+            $table->dropColumn('position_id');
+        });
     }
 };
