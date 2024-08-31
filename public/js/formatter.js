@@ -33,6 +33,16 @@ ff.number = (val) => {
     }
 };
 
+ff.id = (val) => {
+    try {
+        val = ff.number(val);
+
+        return `#${val}`
+    } catch (error) {
+        return val
+    }
+};
+
 ff.dateandtime = (val) => {
     try {
         return new Intl.DateTimeFormat("th-TH", {
