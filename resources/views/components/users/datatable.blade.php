@@ -23,7 +23,7 @@
                         { data: 'name' },
                         { data: 'email' },
                         { data: 'role', render: ff.role },
-                        { data: 'id' }, // TODO:: POSITION
+                        { data: 'position' },
                         { data: 'id' }, // TODO:: AFFILIATION
                         { data: 'created_at', render: ff.dateandtime },
                         { data: 'action' },
