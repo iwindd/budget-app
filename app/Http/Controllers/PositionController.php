@@ -13,7 +13,25 @@ class PositionController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->ajax()) {
+            return datatables()->of(
+                Position::withCount('users')
+                    ->with('createdBy:id,name')
+                    ->get()
+            )
+                ->addColumn('users_count', function (Position $position) {
+                    return $position->users_count;
+                })
+                ->addColumn('created_by', function (Position $position) {
+                    return $position->createdBy ? $position->createdBy->name : 'N/A';
+                })
+                ->addColumn("action", "components.positions.action")
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        return view('admin.positions.index');
     }
 
     /**

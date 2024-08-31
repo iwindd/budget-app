@@ -23,6 +23,15 @@
                 <x-heroicon-o-users class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
+        <x-sidebar.link
+            title="{{__('positions.nav')}}"
+            href="{{ route('positions') }}"
+            :isActive="request()->routeIs('positions')"
+        >
+            <x-slot name="icon">
+                <x-heroicon-o-users class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
+        </x-sidebar.link>
     @endif
 
     <x-sidebar.dropdown

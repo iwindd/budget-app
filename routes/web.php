@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -30,6 +31,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get("/users", [UserController::class, 'index'])->name('users');
+Route::get("/positions", [PositionController::class, 'index'])->name('positions');
 
 // useless routes
 // Just to demo sidebar dropdown links active states.
