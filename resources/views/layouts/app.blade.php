@@ -20,6 +20,7 @@
     </style>
 
     <!-- Scripts -->
+    <link rel="stylesheet" href="{{asset('css/datatable.css')}}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -63,6 +64,13 @@
                 <x-footer />
             </div>
         </div>
+
+        <script src="{{asset('js/jquery.min.js')}}"></script>
+        <script src="{{asset('js/datatable.min.js')}}"></script>
+        @isset($scripts)
+            {{$scripts}}
+        @endisset
+
     </div>
 </body>
 </html>
