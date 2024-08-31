@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Position;
 use App\Http\Requests\StorePositionRequest;
 use App\Http\Requests\UpdatePositionRequest;
+use Illuminate\Support\Facades\Redirect;
 
 class PositionController extends Controller
 {
@@ -47,7 +48,12 @@ class PositionController extends Controller
      */
     public function store(StorePositionRequest $request)
     {
-        //
+        $position = $this->auth()->positions()->create($request->validated());
+
+        return Redirect::back()->with('alert', [
+            'text' => "เพิ่มตำแหน่ง {$position->label} สำเร็จแล้ว",
+            'variant' => "success"
+        ]);
     }
 
     /**

@@ -8,6 +8,7 @@
             <x-button
                 variant="primary"
                 class="items-center max-w-xs gap-2"
+                x-on:click.prevent="$dispatch('open-modal', 'position-form')"
             >
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
 
@@ -16,5 +17,10 @@
         </div>
     </x-slot>
 
+    @if (session('alert'))
+        <x-alert :text="session('alert')['text']" :variant="session('alert')['variant']"/>
+    @endif
+
+    <x-positions.dialog />
     <x-positions.datatable />
 </x-app-layout>
