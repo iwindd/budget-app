@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'nav' => "ค่าใช้จ่าย",
+    'heading' => "ค่าใช้จ่าย",
+    'add-btn' => "เพิ่มค่าใช้จ่ายใหม่",
+    'action-edit' => "แก้ไข",
+    'action-delete' => "ลบ",
+    'action-users' => "ผู้ใช้งาน",
+    'action-created_by' => "ผู้สร้าง",
+    'dialog-cancel-btn' => "ยกเลิก",
+    'dialog-save-btn' => "บันทึก",
+    'dialog-create-title' => 'เพิ่มค่าใช้จ่ายใหม่',
+    'dialog-update-title' => 'แก้ไขค่าใช้จ่าย',
+    'dialog-input-expense' => "ค่าใช้จ่าย",
+    'delete-confirmation-header' => "ค่าใช้จ่าย: :expense",
+    'delete-confirmation-text' => "คุณต้องการที่จะลบค่าใช้จ่าย :expense หรือมั้ย? หากลบค่าใช้จ่ายนี้ไปจะไม่สามารถกู้คืนได้และผู้ใช้ที่มีค่าใช้จ่ายนี้จะไม่มีค่าใช้จ่าย",
+    'table-id' => "#",
+    'table-label' => "ค่าใช้จ่าย",
+    'table-created_by' => "เพิ่มโดย",
+    'table-created_at' => "เพิ่มเมื่อ",
+    'table-action' => "เครื่องมือ",
+    'table-action-text' => "เครื่องมือ",
+    'controller-store' => "เพิ่มค่าใช้จ่าย ':label' สำเร็จแล้ว!",
+    'controller-update' => "แก้ไขค่าใช้จ่าย ':label' สำเร็จแล้ว!",
+    'controller-destroy' => "ลบค่าใช้จ่าย ':label' สำเร็จแล้ว!",
+];

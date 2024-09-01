@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Expense;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
+use Illuminate\Support\Facades\Redirect;
 
 class ExpenseController extends Controller
 {
@@ -13,7 +14,21 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->ajax()) {
+            return datatables()->of(
+                Expense::with('createdBy:id,name')
+                    ->get()
+            )
+                ->addColumn('created_by', function (Expense $expense) {
+                    return $expense->createdBy ? $expense->createdBy->name : 'N/A';
+                })
+                ->addColumn("action", "components.expenses.action")
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        return view('admin.expenses.index');
     }
 
     /**
@@ -21,7 +36,12 @@ class ExpenseController extends Controller
      */
     public function store(StoreExpenseRequest $request)
     {
-        //
+        $expense = $this->auth()->expenses()->create($request->validated());
+
+        return Redirect::back()->with('alert', [
+            'text' => trans("expenses.controller-store", ["label" => $expense->label]),
+            'variant' => "success"
+        ]);
     }
 
     /**
@@ -29,7 +49,12 @@ class ExpenseController extends Controller
      */
     public function update(UpdateExpenseRequest $request, Expense $expense)
     {
-        //
+        $expense->update($request->validated());
+
+        return Redirect::back()->with('alert', [
+            'text' => trans("expenses.controller-update", ["label" => $expense->label]),
+            'variant' => "success"
+        ]);
     }
 
     /**
@@ -37,6 +62,11 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
-        //
+        $expense->delete();
+
+        return Redirect::back()->with('alert', [
+            'text' => trans("expenses.controller-destroy", ["label" => $expense->label]),
+            'variant' => "success"
+        ]);
     }
 }

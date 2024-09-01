@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AffiliationController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,11 @@ Route::get("/locations", [LocationController::class, 'index'])->name('locations'
 Route::post("/locations", [LocationController::class, 'store'])->name('locations.store');
 Route::delete("/locations/{location}", [LocationController::class, 'destroy'])->name('locations.destroy');
 Route::patch("/locations/{location}", [LocationController::class, 'update'])->name('locations.update');
+
+Route::get("/expenses", [ExpenseController::class, 'index'])->name('expenses');
+Route::post("/expenses", [ExpenseController::class, 'store'])->name('expenses.store');
+Route::delete("/expenses/{expense}", [ExpenseController::class, 'destroy'])->name('expenses.destroy');
+Route::patch("/expenses/{expense}", [ExpenseController::class, 'update'])->name('expenses.update');
 
 // useless routes
 // Just to demo sidebar dropdown links active states.
