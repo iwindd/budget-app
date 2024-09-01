@@ -43,7 +43,7 @@ class PositionController extends Controller
         $position = $this->auth()->positions()->create($request->validated());
 
         return Redirect::back()->with('alert', [
-            'text' => "เพิ่มตำแหน่ง {$position->label} สำเร็จแล้ว",
+            'text' => "เพิ่มตำแหน่ง '{$position->label}' สำเร็จแล้ว",
             'variant' => "success"
         ]);
     }
