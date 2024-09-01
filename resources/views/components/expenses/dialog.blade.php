@@ -12,7 +12,7 @@ x-on:dialog.window="() => {
     text = method == 'post' ? @js(__('expenses.dialog-create-title')) : @js(__('expenses.dialog-update-title'));
     $dispatch('open-modal', 'expense-form');
 }">
-    <x-modal name="expense-form" focusable maxWidth="md" :show="$errors->storeexpense->isNotEmpty()">
+    <x-modal name="expense-form" focusable maxWidth="md" :show="$errors->storeExpense->isNotEmpty()">
         <form method="post" x-bind:action="route" class="p-6">
             @csrf
             <input type="hidden" :value="method" name="_method">
@@ -25,7 +25,7 @@ x-on:dialog.window="() => {
                 <x-form.input id="label" x-bind:value="value" name="label" type="text" class="block w-full"
                     placeholder="{{__('expenses.dialog-input-expense')}}" />
 
-                <x-form.error :messages="$errors->storeexpense->get('label')" />
+                <x-form.error :messages="$errors->storeExpense->get('label')" />
             </div>
 
             <div class="mt-6 flex justify-end">
