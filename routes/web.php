@@ -3,6 +3,7 @@
 use App\Http\Controllers\AffiliationController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -53,6 +54,11 @@ Route::get("/expenses", [ExpenseController::class, 'index'])->name('expenses');
 Route::post("/expenses", [ExpenseController::class, 'store'])->name('expenses.store');
 Route::delete("/expenses/{expense}", [ExpenseController::class, 'destroy'])->name('expenses.destroy');
 Route::patch("/expenses/{expense}", [ExpenseController::class, 'update'])->name('expenses.update');
+
+Route::get("/offices", [OfficeController::class, 'index'])->name('offices');
+Route::post("/offices", [OfficeController::class, 'store'])->name('offices.store');
+Route::delete("/offices/{office}", [OfficeController::class, 'destroy'])->name('offices.destroy');
+Route::patch("/offices/{office}", [OfficeController::class, 'update'])->name('offices.update');
 
 // useless routes
 // Just to demo sidebar dropdown links active states.

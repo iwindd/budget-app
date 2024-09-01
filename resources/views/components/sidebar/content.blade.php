@@ -59,6 +59,15 @@
                 <x-heroicon-o-banknotes class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
+        <x-sidebar.link
+            title="{{__('offices.nav')}}"
+            href="{{ route('offices') }}"
+            :isActive="request()->routeIs('offices')"
+        >
+            <x-slot name="icon">
+                <x-heroicon-o-building-office-2 class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
+        </x-sidebar.link>
     @endif
 
     <x-sidebar.dropdown
