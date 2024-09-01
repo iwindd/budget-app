@@ -17,7 +17,8 @@ class InvitationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'label' => fake()->word(),
+            'default' => false
         ];
     }
 }

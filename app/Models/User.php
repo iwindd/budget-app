@@ -99,4 +99,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Office::class);
     }
+
+    /**
+     * Get the invitations created
+     */
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
+    }
 }

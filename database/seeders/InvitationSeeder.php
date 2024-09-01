@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Invitation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class InvitationSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Invitation::factory(1)->create([ 'default' => true ]);
     }
 }

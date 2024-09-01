@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             ExpenseSeeder::class,
             OfficeSeeder::class,
+            InvitationSeeder::class,
             UserSeeder::class
         ]);
     }
