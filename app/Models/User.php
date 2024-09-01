@@ -82,4 +82,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Location::class);
     }
+
+
+    /**
+     * Get the expenses created
+     */
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
 }

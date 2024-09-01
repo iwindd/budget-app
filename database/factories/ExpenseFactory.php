@@ -17,7 +17,7 @@ class ExpenseFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'label' => fake()->word()
         ];
     }
 }
