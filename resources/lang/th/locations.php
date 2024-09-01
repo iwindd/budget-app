@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'nav' => "สถานที่",
+    'heading' => "สถานที่",
+    'add-btn' => "เพิ่มสถานที่ใหม่",
+    'action-edit' => "แก้ไข",
+    'action-delete' => "ลบ",
+    'action-users' => "ผู้ใช้งาน",
+    'action-created_by' => "ผู้สร้าง",
+    'dialog-cancel-btn' => "ยกเลิก",
+    'dialog-save-btn' => "บันทึก",
+    'dialog-create-title' => 'เพิ่มสถานที่ใหม่',
+    'dialog-update-title' => 'แก้ไขสถานที่',
+    'dialog-input-location' => "สถานที่",
+    'delete-confirmation-header' => "สถานที่: :location",
+    'delete-confirmation-text' => "คุณต้องการที่จะลบสถานที่ :location หรือมั้ย? หากลบสถานที่นี้ไปจะไม่สามารถกู้คืนได้และผู้ใช้ที่มีสถานที่นี้จะไม่มีสถานที่",
+    'table-id' => "#",
+    'table-label' => "สถานที่",
+    'table-created_by' => "เพิ่มโดย",
+    'table-created_at' => "เพิ่มเมื่อ",
+    'table-action' => "เครื่องมือ",
+    'table-action-text' => "เครื่องมือ",
+    'controller-store' => "เพิ่มสถานที่ ':label' สำเร็จแล้ว!",
+    'controller-update' => "แก้ไขสถานที่ ':label' สำเร็จแล้ว!",
+    'controller-destroy' => "ลบสถานที่ ':label' สำเร็จแล้ว!",
+];

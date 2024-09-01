@@ -6,12 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateLocationRequest extends FormRequest
 {
+    protected $errorBag = 'storeLocation';
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,7 @@ class UpdateLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'label' => ['required', 'string', 'max:255'],
         ];
     }
 }
