@@ -12,7 +12,7 @@ x-on:dialog.window="() => {
     text = method == 'post' ? @js(__('locations.dialog-create-title')) : @js(__('locations.dialog-update-title'));
     $dispatch('open-modal', 'location-form');
 }">
-    <x-modal name="location-form" focusable maxWidth="md" :show="$errors->storelocation->isNotEmpty()">
+    <x-modal name="location-form" focusable maxWidth="md" :show="$errors->storeLocation->isNotEmpty()">
         <form method="post" x-bind:action="route" class="p-6">
             @csrf
             <input type="hidden" :value="method" name="_method">
@@ -25,7 +25,7 @@ x-on:dialog.window="() => {
                 <x-form.input id="label" x-bind:value="value" name="label" type="text" class="block w-full"
                     placeholder="{{__('locations.dialog-input-location')}}" />
 
-                <x-form.error :messages="$errors->storelocation->get('label')" />
+                <x-form.error :messages="$errors->storeLocation->get('label')" />
             </div>
 
             <div class="mt-6 flex justify-end">
