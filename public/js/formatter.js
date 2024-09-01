@@ -81,3 +81,7 @@ ff.role = (role) => {
             return `<span>ผู้ใช้งาน</span>`
     }
 }
+
+ff.boolean = (value, _true, _false) => {
+    return value ? _true : _false
+}
