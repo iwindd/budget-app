@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AffiliationController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PositionController;
@@ -54,6 +55,11 @@ Route::get("/expenses", [ExpenseController::class, 'index'])->name('expenses');
 Route::post("/expenses", [ExpenseController::class, 'store'])->name('expenses.store');
 Route::delete("/expenses/{expense}", [ExpenseController::class, 'destroy'])->name('expenses.destroy');
 Route::patch("/expenses/{expense}", [ExpenseController::class, 'update'])->name('expenses.update');
+
+Route::get("/invitations", [InvitationController::class, 'index'])->name('invitations');
+Route::post("/invitations", [InvitationController::class, 'store'])->name('invitations.store');
+Route::delete("/invitations/{invitation}", [InvitationController::class, 'destroy'])->name('invitations.destroy');
+Route::patch("/invitations/{invitation}", [InvitationController::class, 'update'])->name('invitations.update');
 
 Route::get("/offices", [OfficeController::class, 'index'])->name('offices');
 Route::post("/offices", [OfficeController::class, 'store'])->name('offices.store');

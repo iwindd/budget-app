@@ -6,12 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateInvitationRequest extends FormRequest
 {
+    protected $errorBag = 'storeInvitation';
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,15 @@ class UpdateInvitationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'label' => ['required', 'string', 'max:255'],
+            'default' => ['required', 'boolean']
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'default' => $this->boolean('default'),
+        ]);
     }
 }
