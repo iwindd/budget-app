@@ -18,21 +18,24 @@ class UserSeeder extends Seeder
             'name' => 'Admin User',
             'email' => 'admin@example.com',
             'role' => 'admin',
-            'position_id' => 1
+            'position_id' => 1,
+            'affiliation_id' => 1,
         ]);
         // CREATE USER (user)
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'user@example.com',
             'role' => 'user',
-            'position_id' => 1
+            'position_id' => 1,
+            'affiliation_id' => 1,
         ]);
         // CREATE USER (banned)
         User::factory()->create([
             'name' => 'Banned User',
             'email' => 'banned@example.com',
             'role' => 'banned',
-            'position_id' => 1
+            'position_id' => 1,
+            'affiliation_id' => 1,
         ]);
     }
 }

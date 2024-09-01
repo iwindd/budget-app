@@ -58,4 +58,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Position::class);
     }
+
+        /**
+     * Get the user affiliation
+     */
+    public function affiliation()
+    {
+        return $this->belongsTo(Affiliation::class);
+    }
+
+    /**
+     * Get the affiliations created
+     */
+    public function affiliations()
+    {
+        return $this->hasMany(Affiliation::class);
+    }
 }

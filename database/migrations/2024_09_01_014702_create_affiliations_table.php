@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('affiliations', function (Blueprint $table) {
             $table->id();
+            $table->string('label');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->softDeletes();
             $table->timestamps();
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('affiliation_id')->constrained('affiliations');
         });
     }
 
@@ -23,5 +30,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('affiliations');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['affiliation_id']);
+            $table->dropColumn('affiliation_id');
+        });
     }
 };
