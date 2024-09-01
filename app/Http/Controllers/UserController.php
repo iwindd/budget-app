@@ -11,10 +11,13 @@ class UserController extends Controller
     {
         if (request()->ajax()) {
             return datatables()->of(
-                User::with('position:id,label')->get()
+                User::with('position:id,label')->with('affiliation:id,label')->get()
             )
                 ->addColumn('position', function (User $user) {
                     return $user->position ? $user->position->label : 'N/A';
+                })
+                ->addColumn('affiliation', function (User $user) {
+                    return $user->affiliation ? $user->affiliation->label : 'N/A';
                 })
                 ->addColumn("action", "components.users.action")
                 ->rawColumns(['action'])

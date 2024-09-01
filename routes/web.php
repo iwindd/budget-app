@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AffiliationController;
 use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -35,6 +36,11 @@ Route::get("/positions", [PositionController::class, 'index'])->name('positions'
 Route::post("/positions", [PositionController::class, 'store'])->name('positions.store');
 Route::delete("/positions/{position}", [PositionController::class, 'destroy'])->name('positions.destroy');
 Route::patch("/positions/{position}", [PositionController::class, 'update'])->name('positions.update');
+
+Route::get("/affiliations", [AffiliationController::class, 'index'])->name('affiliations');
+Route::post("/affiliations", [AffiliationController::class, 'store'])->name('affiliations.store');
+Route::delete("/affiliations/{affiliation}", [AffiliationController::class, 'destroy'])->name('affiliations.destroy');
+Route::patch("/affiliations/{affiliation}", [AffiliationController::class, 'update'])->name('affiliations.update');
 
 // useless routes
 // Just to demo sidebar dropdown links active states.

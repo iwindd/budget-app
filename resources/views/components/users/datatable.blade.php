@@ -24,7 +24,7 @@
                         { data: 'email' },
                         { data: 'role', render: ff.role },
                         { data: 'position' },
-                        { data: 'id' }, // TODO:: AFFILIATION
+                        { data: 'affiliation' },
                         { data: 'created_at', render: ff.dateandtime },
                         { data: 'action' },
                     ]

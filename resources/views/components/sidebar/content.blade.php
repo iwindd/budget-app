@@ -32,6 +32,15 @@
                 <x-heroicon-o-puzzle-piece class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
+        <x-sidebar.link
+            title="{{__('affiliations.nav')}}"
+            href="{{ route('affiliations') }}"
+            :isActive="request()->routeIs('affiliations')"
+        >
+            <x-slot name="icon">
+                <x-heroicon-o-tag class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
+        </x-sidebar.link>
     @endif
 
     <x-sidebar.dropdown
