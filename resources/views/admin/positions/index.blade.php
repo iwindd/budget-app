@@ -8,7 +8,11 @@
             <x-button
                 variant="primary"
                 class="items-center max-w-xs gap-2"
-                x-on:click.prevent="$dispatch('open-modal', 'position-form')"
+                x-on:click.prevent="$dispatch('dialog', {
+                    method: 'post',
+                    route: '{{route('positions.store')}}',
+                    value: ''
+                })"
             >
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
 

@@ -77,7 +77,12 @@ class PositionController extends Controller
      */
     public function update(UpdatePositionRequest $request, Position $position)
     {
-        //
+        $position->update($request->validated());
+
+        return Redirect::back()->with('alert', [
+            'text' => "แก้ไขตำแหน่ง '{$position->label}' สำเร็จแล้ว",
+            'variant' => "success"
+        ]);
     }
 
     /**

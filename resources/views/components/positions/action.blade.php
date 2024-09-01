@@ -23,7 +23,12 @@
 
     <x-slot name="content">
         <x-dropdown-link
-            :href="route('positions')"
+            href="#"
+            x-on:click.prevent="$dispatch('dialog', {
+                method: 'patch',
+                route: '{{route('positions.update', ['position' => $id])}}',
+                value: '{{$label}}'
+            })"
         >
             {{ __('positions.action-edit') }}
         </x-dropdown-link>
