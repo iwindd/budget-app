@@ -74,4 +74,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Affiliation::class);
     }
+
+    /**
+     * Get the locations created
+     */
+    public function locations()
+    {
+        return $this->hasMany(Affiliation::class);
+    }
 }
