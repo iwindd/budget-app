@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
 Route::get("/users", [UserController::class, 'index'])->name('users');
 Route::get("/positions", [PositionController::class, 'index'])->name('positions');
 Route::post("/positions", [PositionController::class, 'store'])->name('positions.store');
+Route::delete("/positions/{position}", [PositionController::class, 'destroy'])->name('positions.destroy');
 
 // useless routes
 // Just to demo sidebar dropdown links active states.

@@ -28,7 +28,12 @@
             {{ __('positions.action-edit') }}
         </x-dropdown-link>
         <x-dropdown-link
-            :href="route('positions')"
+            href="#"
+            x-on:click="$dispatch('confirmation', {
+                target: 'delete-{{$id}}',
+                header: '{{ __('positions.delete-confirmation-header', ['position' => $label]) }}',
+                text: '{{ __('positions.delete-confirmation-text', ['position' => $label]) }}',
+            })"
         >
             {{ __('positions.action-delete') }}
         </x-dropdown-link>
@@ -44,3 +49,5 @@
         </x-dropdown-link>
     </x-slot>
 </x-dropdown>
+
+<form action="{{ route('positions.destroy', ['position' => $id]) }}" method="POST" id="delete-{{$id}}"> @csrf @method('delete') </form>

@@ -85,6 +85,11 @@ class PositionController extends Controller
      */
     public function destroy(Position $position)
     {
-        //
+        $position->delete();
+
+        return Redirect::back()->with('alert', [
+            'text' => "ลบตำแหน่ง '{$position->label}' สำเร็จแล้ว",
+            'variant' => "success"
+        ]);
     }
 }

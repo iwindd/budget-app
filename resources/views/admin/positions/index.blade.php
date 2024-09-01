@@ -23,4 +23,5 @@
 
     <x-positions.dialog />
     <x-positions.datatable />
+    <x-confirmation variant="danger" />
 </x-app-layout>
