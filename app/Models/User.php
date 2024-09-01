@@ -91,4 +91,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Expense::class);
     }
+
+    /**
+     * Get the offices created
+     */
+    public function offices()
+    {
+        return $this->hasMany(Office::class);
+    }
 }

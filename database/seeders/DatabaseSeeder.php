@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             AffiliationSeeder::class,
             LocationSeeder::class,
             ExpenseSeeder::class,
+            OfficeSeeder::class,
             UserSeeder::class
         ]);
     }
