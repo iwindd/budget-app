@@ -113,7 +113,7 @@
         variant="secondary"
         sr-text="Search"
     >
-        <x-heroicon-o-search aria-hidden="true" class="w-6 h-6" />
+    {{--     <x-heroicon-o-search aria-hidden="true" class="w-6 h-6" /> --}}
     </x-button>
 
     <a href="{{ route('dashboard') }}">
@@ -129,13 +129,13 @@
         sr-text="Open main menu"
         x-on:click="isSidebarOpen = !isSidebarOpen"
     >
-        <x-heroicon-o-menu
+        <x-heroicon-c-bars-3
             x-show="!isSidebarOpen"
             aria-hidden="true"
             class="w-6 h-6"
         />
 
-        <x-heroicon-o-x
+        <x-heroicon-c-bars-3-center-left
             x-show="isSidebarOpen"
             aria-hidden="true"
             class="w-6 h-6"

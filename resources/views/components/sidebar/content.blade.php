@@ -29,7 +29,7 @@
             :isActive="request()->routeIs('positions')"
         >
             <x-slot name="icon">
-                <x-heroicon-o-users class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+                <x-heroicon-o-puzzle-piece class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
     @endif
@@ -39,7 +39,7 @@
         :active="Str::startsWith(request()->route()->uri(), 'buttons')"
     >
         <x-slot name="icon">
-            <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+       {{--      <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" /> --}}
         </x-slot>
 
         <x-sidebar.sublink
