@@ -43,7 +43,7 @@ class PositionController extends Controller
         $position = $this->auth()->positions()->create($request->validated());
 
         return Redirect::back()->with('alert', [
-            'text' => "เพิ่มตำแหน่ง '{$position->label}' สำเร็จแล้ว",
+            'text' => trans("positions.controller-store", ["label" => $position->label]),
             'variant' => "success"
         ]);
     }
@@ -56,7 +56,7 @@ class PositionController extends Controller
         $position->update($request->validated());
 
         return Redirect::back()->with('alert', [
-            'text' => "แก้ไขตำแหน่ง '{$position->label}' สำเร็จแล้ว",
+            'text' => trans("positions.controller-update", ["label" => $position->label]),
             'variant' => "success"
         ]);
     }
@@ -69,7 +69,7 @@ class PositionController extends Controller
         $position->delete();
 
         return Redirect::back()->with('alert', [
-            'text' => "ลบตำแหน่ง '{$position->label}' สำเร็จแล้ว",
+            'text' => trans("positions.controller-destroy", ["label" => $position->label]),
             'variant' => "success"
         ]);
     }

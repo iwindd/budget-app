@@ -2,12 +2,12 @@
     <table id="positions-datatable" class="display">
         <thead>
             <tr>
-                <th>#</th>
-                <th>ตำแหน่ง</th>
-                <th>ผู้ใช้</th>
-                <th>เพิ่มโดย</th>
-                <th>เพิ่มเมื่อ</th>
-                <th>เครื่องมือ</th>
+                <th>{{__("positions.table-id")}}</th>
+                <th>{{__("positions.table-label")}}</th>
+                <th>{{__("positions.table-users_count")}}</th>
+                <th>{{__("positions.table-created_by")}}</th>
+                <th>{{__("positions.table-created_at")}}</th>
+                <th>{{__("positions.table-action")}}</th>
             </tr>
         </thead>
     </table>

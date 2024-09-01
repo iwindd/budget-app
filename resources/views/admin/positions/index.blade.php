@@ -16,7 +16,7 @@
             >
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
 
-                <span>เพิ่มตำแหน่ง</span>
+                <span>{{__('positions.add-btn')}}</span>
             </x-button>
         </div>
     </x-slot>

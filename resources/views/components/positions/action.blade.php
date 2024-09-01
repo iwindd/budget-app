@@ -3,7 +3,7 @@
         <button
             class="flex items-center p-2 text-sm font-medium rounded-md transition duration-150 text-inherit ease-in-out hover:text-gray-700 dark:focus:ring-offset-dark-eval-1 dark:hover:text-gray-200"
         >
-            <div>เครื่องมือ</div>
+            <div>{{__("positions.table-action-text")}}</div>
 
             <div class="ml-1">
                 <svg
