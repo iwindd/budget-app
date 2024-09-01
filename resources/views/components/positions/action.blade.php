@@ -29,8 +29,9 @@
                 route: '{{route('positions.update', ['position' => $id])}}',
                 value: '{{$label}}'
             })"
+            class="flex items-center gap-2"
         >
-            {{ __('positions.action-edit') }}
+            <x-heroicon-s-pencil class="w-5 h-5"/><span>{{ __('positions.action-edit') }}</span>
         </x-dropdown-link>
         <x-dropdown-link
             href="#"
@@ -39,18 +40,21 @@
                 header: '{{ __('positions.delete-confirmation-header', ['position' => $label]) }}',
                 text: '{{ __('positions.delete-confirmation-text', ['position' => $label]) }}',
             })"
+            class="flex items-center gap-2 "
         >
-            {{ __('positions.action-delete') }}
+        <x-heroicon-s-trash class="w-5 h-5"/><span>{{ __('positions.action-delete') }}</span>
         </x-dropdown-link>
         <x-dropdown-link
             :href="route('positions')"
+            class="flex items-center gap-2"
         >
-            {{ __('positions.action-users') }}
+            <x-heroicon-s-user class="w-5 h-5"/> <span>{{ __('positions.action-users') }}</span>
         </x-dropdown-link>
         <x-dropdown-link
             :href="route('positions')"
+            class="flex items-center gap-2"
         >
-            {{ __('positions.action-created_by') }}
+            <x-heroicon-o-plus  class="w-5 h-5"/>{{ __('positions.action-created_by') }}
         </x-dropdown-link>
     </x-slot>
 </x-dropdown>
