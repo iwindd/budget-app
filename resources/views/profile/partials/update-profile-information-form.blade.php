@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium">
-            {{ __('Profile Information') }}
+            {{ __('profile.information-heading') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("profile.information-description") }}
         </p>
     </header>
 
@@ -24,7 +24,7 @@
         <div class="space-y-2">
             <x-form.label
                 for="name"
-                :value="__('Name')"
+                :value="__('auth.name')"
             />
 
             <x-form.input
@@ -44,7 +44,7 @@
         <div class="space-y-2">
             <x-form.label
                 for="email"
-                :value="__('Email')"
+                :value="__('auth.email')"
             />
 
             <x-form.input
@@ -80,7 +80,7 @@
 
         <div class="flex items-center gap-4">
             <x-button>
-                {{ __('Save') }}
+                {{ __('profile.save-btn') }}
             </x-button>
 
             @if (session('status') === 'profile-updated')
@@ -91,7 +91,7 @@
                     x-init="setTimeout(() => show = false, 2000)"
                     class="text-sm text-gray-600 dark:text-gray-400"
                 >
-                    {{ __('Saved.') }}
+                    {{ __('profile.saved-message') }}
                 </p>
             @endif
         </div>
