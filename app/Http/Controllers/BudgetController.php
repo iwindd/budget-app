@@ -13,7 +13,7 @@ class BudgetController extends Controller
      */
     public function index()
     {
-        //
+        return view('user.budgets.index');
     }
 
     /**
@@ -21,7 +21,7 @@ class BudgetController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.budgets.create');
     }
 
     /**

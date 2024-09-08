@@ -77,5 +77,15 @@
                 <x-heroicon-o-user class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
+    @elseif (Auth::user()->role == "user")
+        <x-sidebar.link
+            title="{{__('budgets.nav')}}"
+            href="{{ route('budgets') }}"
+            :isActive="request()->routeIs('budgets')"
+        >
+            <x-slot name="icon">
+                <x-heroicon-o-document class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
+        </x-sidebar.link>
     @endif
 </x-perfect-scrollbar>
