@@ -32,7 +32,8 @@ class UserController extends Controller
     {
         $search = request()->get('q');
         $query = User::select("id", "name")
-            ->where('role', 'user');
+            ->where('role', 'user')
+            ->where('id', '!=' , $this->auth()->id);
 
         if (!empty($search)) {
             $query->where('name', 'LIKE', "%$search%");
