@@ -32,5 +32,10 @@
 
             <x-form.error :messages="$errors->upsertBudget->get('title')" />
         </section>
+        <section class="space-y-2">
+            <x-form.label for="companions" :value="__('budgets.input-companions')" />
+
+            <x-budgets.create.companion-selector />
+        </section>
     </section>
 </section>
