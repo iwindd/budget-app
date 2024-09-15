@@ -6,6 +6,8 @@ use App\Http\Requests\FindBudgetRequest;
 use App\Models\Budget;
 use App\Http\Requests\StoreBudgetRequest;
 use App\Http\Requests\UpdateBudgetRequest;
+use App\Models\Invitation;
+use App\Models\Office;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
@@ -46,7 +48,24 @@ class BudgetController extends Controller
      */
     public function show($budget)
     {
-        return view('user.budgets.create.index', ['serial' => $budget]);
+        $data = Budget::where("serial", $budget)->first();
+
+
+        // create
+        if (!$data) {
+            $invitation = Invitation::where('default', 1)->first('label');
+            $office = Office::where('default', 1)->first('label');
+
+            return view('user.budgets.create.index', [
+                'serial' => $budget,
+                'invitation' => $invitation->label,
+                'office' => $office->label
+            ]);
+        }
+
+        return view('user.budgets.create.index', [
+            'serial' => $budget
+        ]);
     }
 
     /**
