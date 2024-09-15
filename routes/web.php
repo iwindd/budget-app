@@ -68,8 +68,8 @@ Route::delete("/offices/{office}", [OfficeController::class, 'destroy'])->name('
 Route::patch("/offices/{office}", [OfficeController::class, 'update'])->name('offices.update');
 
 Route::get('/budgets', [BudgetController::class, 'index'])->name('budgets');
-Route::get('/budgets/create', [BudgetController::class, 'create'])->name('budgets.create');
-
+Route::get('/budgets/{budget}', [BudgetController::class, 'show'])->name('budgets.show');
+Route::post('/budgets', [BudgetController::class, 'find'])->name('budgets.find');
 // useless routes
 // Just to demo sidebar dropdown links active states.
 Route::get('/buttons/text', function () {

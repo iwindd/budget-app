@@ -8,7 +8,7 @@
             <x-button
                 variant="primary"
                 class="items-center max-w-xs gap-2"
-                href="{{ route('budgets.create') }}"
+                x-on:click.prevent="$dispatch('open-modal', 'find-budget-form')"
             >
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
 
@@ -20,4 +20,6 @@
     @if (session('alert'))
         <x-alert :text="session('alert')['text']" :variant="session('alert')['variant']"/>
     @endif
+
+    <x-budgets.dialog />
 </x-app-layout>

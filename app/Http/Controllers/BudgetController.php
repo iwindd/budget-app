@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FindBudgetRequest;
 use App\Models\Budget;
 use App\Http\Requests\StoreBudgetRequest;
 use App\Http\Requests\UpdateBudgetRequest;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 class BudgetController extends Controller
 {
@@ -19,25 +22,31 @@ class BudgetController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         return view('user.budgets.create');
     }
 
     /**
+     * Find budget to create or edit
+     */
+    public function find(FindBudgetRequest $request)
+    {
+        return Redirect::route("budgets.show", ['budget' => $request->validated()['serial']]);
+    }
+
+
+    /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBudgetRequest $request)
-    {
-        //
-    }
+    public function store(StoreBudgetRequest $request) {}
 
     /**
      * Display the specified resource.
      */
-    public function show(Budget $budget)
+    public function show($budget)
     {
-        //
+        return view('user.budgets.create.index', ['serial' => $budget]);
     }
 
     /**

@@ -4,9 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBudgetRequest extends FormRequest
+class ShowBudgetRequest extends FormRequest
 {
-    protected $errorBag = 'storeBudget';
+    protected $errorBag = 'showBudget';
     /**
      * Determine if the user is authorized to make this request.
      */
