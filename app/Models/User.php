@@ -107,4 +107,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Invitation::class);
     }
+
+    /**
+     * Get the budgets created
+     */
+    public function budgets()
+    {
+        return $this->hasMany(Budget::class);
+    }
 }
