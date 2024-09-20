@@ -26,6 +26,11 @@
                 @include('user.budgets.create.patials.budget-sub-header')
             </div>
         </div>
+        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
+            <div class="max-w-full flex justify-end">
+                <x-button type="submit" variant="success">บันทึกใบเบิก</x-button>
+            </div>
+        </div>
     </form>
 
 </x-app-layout>
