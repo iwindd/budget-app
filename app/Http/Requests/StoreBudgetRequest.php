@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBudgetRequest extends FormRequest
 {
-    protected $errorBag = 'storeBudget';
+    protected $errorBag = 'upsertBudget';
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -24,6 +24,19 @@ class StoreBudgetRequest extends FormRequest
     {
         return [
             'serial' => ['required', 'string', 'max:255'],
+            'date' => ['required'],
+            'value' => ['required', 'integer'],
+            'order_at' => ['required'],
+            'companions' => ['nullable', 'array'],
+            'companions.*' => ['integer'],
+            'title' => ['required', 'string']
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'serial' => $this->route('budget'),
+        ]);
     }
 }

@@ -14,8 +14,8 @@
         <x-alert :text="session('alert')['text']" :variant="session('alert')['variant']" />
     @endif
 
-    <form action="#" class="space-y-2">
-        <input type="hidden" disabled name="serial" value="{{ $serial }}">
+    <form action="{{route('budgets.upsert', ['budget' => $serial])}}" class="space-y-2" method="POST">
+        @csrf
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
             <div class="max-w-full">
                 @include('user.budgets.create.patials.budget-header')

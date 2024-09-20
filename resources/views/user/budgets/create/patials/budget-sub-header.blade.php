@@ -21,9 +21,9 @@
         <section class="space-y-2">
             <x-form.label for="date" :value="__('budgets.input-date')" />
 
-            <x-form.input id="date" name="date" type="date" class="block w-full" autocomplete="new-date" />
+            <x-form.input id="order_at" name="order_at" type="date" :value="old('order_at', date('Y-m-d'))" class="block w-full" autocomplete="new-order_at" />
 
-            <x-form.error :messages="$errors->upsertBudget->get('date')" />
+            <x-form.error :messages="$errors->upsertBudget->get('order_at')" />
         </section>
         <section class="space-y-2">
             <x-form.label for="title" :value="__('budgets.input-title')" />
