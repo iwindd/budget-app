@@ -21,6 +21,15 @@ class Invitation extends Model
     ];
 
     /**
+     * Get the invitation where default is true.
+     *
+     * @return Invitation|null
+     */
+    public static function getInvitation($column = '*') {
+        return self::select($column)->where('default', true)->first();
+    }
+
+    /**
      * Get the user that created
      */
     public function createdBy()
