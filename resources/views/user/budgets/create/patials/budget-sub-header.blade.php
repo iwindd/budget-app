@@ -11,12 +11,12 @@
         <section class="space-y-2">
             <x-form.label for="office" :value="__('budgets.input-office')" />
 
-            <x-form.input id="office" value="-" disabled name="office" type="text" class="block w-full"/>
+            <x-form.input id="office" :value="$office" disabled name="office" type="text" class="block w-full"/>
         </section>
         <section class="space-y-2">
             <x-form.label for="invitation" :value="__('budgets.input-invitation')" />
 
-            <x-form.input id="invitation" value="-" disabled name="invitation" type="text" class="block w-full"/>
+            <x-form.input id="invitation" :value="$invitation" disabled name="invitation" type="text" class="block w-full"/>
         </section>
         <section class="space-y-2">
             <x-form.label for="date" :value="__('budgets.input-date')" />

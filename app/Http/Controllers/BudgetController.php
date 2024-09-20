@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FindBudgetRequest;
 use App\Models\Budget;
+use App\Models\Invitation;
+use App\Models\Office;
 use App\Http\Requests\StoreBudgetRequest;
 use App\Http\Requests\UpdateBudgetRequest;
 use Illuminate\Support\Facades\Redirect;
@@ -46,7 +48,14 @@ class BudgetController extends Controller
      */
     public function show($budget)
     {
-        return view('user.budgets.create.index', ['serial' => $budget]);
+        $office = Office::getOffice('label');
+        $invitation = Invitation::getInvitation('label');
+
+        return view('user.budgets.create.index', [
+            'serial' => $budget,
+            'invitation' => $invitation->label,
+            'office' => $office->label
+        ]);
     }
 
     /**
