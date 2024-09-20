@@ -70,6 +70,8 @@ Route::patch("/offices/{office}", [OfficeController::class, 'update'])->name('of
 Route::get('/budgets', [BudgetController::class, 'index'])->name('budgets');
 Route::get('/budgets/{budget}', [BudgetController::class, 'show'])->name('budgets.show');
 Route::post('/budgets', [BudgetController::class, 'find'])->name('budgets.find');
+
+Route::get('/companions', [UserController::class, 'companion'])->name('users.companions');
 // useless routes
 // Just to demo sidebar dropdown links active states.
 Route::get('/buttons/text', function () {

@@ -15,6 +15,7 @@ return [
     'input-invitation' => "เรียน",
     'input-title' => "เดินทางไปปฎิบัติราชการ",
     'input-title-placeholder' => "ที่ไหน/เรื่องอะไร",
+    'input-companions' => "พร้อมด้วย",
     'dialog-cancel-btn' => "ยกเลิก",
     'dialog-confirm-btn' => "ค้นหา"
 ];

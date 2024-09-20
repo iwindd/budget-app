@@ -1,3 +1,7 @@
+@props([
+    'select2' => false
+])
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -21,6 +25,11 @@
 
     <!-- Scripts -->
     <link rel="stylesheet" href="{{asset('css/datatable.css')}}">
+
+    @if ($select2)
+        <link rel="stylesheet" href="{{asset('css/select2.css')}}">
+    @endif
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -70,6 +79,9 @@
         @isset($scripts)
             {{$scripts}}
         @endisset
+        @if ($select2)
+            <script src="{{asset('js/select2.min.js')}}"></script>
+        @endif
 
     </div>
 </body>
