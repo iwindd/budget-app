@@ -21,6 +21,15 @@ class Office extends Model
     ];
 
     /**
+     * Get the office where default is true.
+     *
+     * @return Office|null
+     */
+    public static function getOffice($column = '*') {
+        return self::select($column)->where('default', true)->first();
+    }
+
+    /**
      * Get the user that created
      */
     public function createdBy()
