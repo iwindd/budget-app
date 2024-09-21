@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('serial')->unique();
             $table->string('title');
-            $table->string('text');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('invitation_id')->constrained('invitations')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('location_id')->constrained('locations')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('office_id')->constrained('offices')->onDelete('cascade')->onUpdate('cascade');
             $table->date('date');
             $table->date('order_at');

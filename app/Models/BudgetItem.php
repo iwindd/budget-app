@@ -8,4 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class BudgetItem extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+    ];
+
+    /**
+     * Get the user that created
+    */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function budget()
+    {
+        return $this->belongsTo(Budget::class);
+    }
 }

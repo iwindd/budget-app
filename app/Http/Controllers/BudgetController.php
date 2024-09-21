@@ -8,6 +8,7 @@ use App\Models\Invitation;
 use App\Models\Office;
 use App\Http\Requests\StoreBudgetRequest;
 use App\Http\Requests\UpdateBudgetRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
@@ -41,7 +42,30 @@ class BudgetController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBudgetRequest $request) {}
+    public function store(StoreBudgetRequest $request) {
+        $payload = $request->validated();
+        $serial = $payload['serial'];
+        $companions = $payload['companions'] ?? [];
+        $budget = Budget::where('serial', $serial)->first();
+
+        if (!$budget) {
+            $payload['office_id'] = Office::getOffice('id')->id;
+            $payload['invitation_id'] = Invitation::getInvitation('id')->id;
+
+            $budget = $this->auth()->budgets()->create($payload);
+            $budgetItem = $budget->budgetItems()->create([
+                'user_id' => $this->auth()->id
+            ]);
+
+            if ($companions) {
+                collect($companions)->map(function($userId) use ($budget) {
+                    User::where('id', $userId)
+                        ->where('role', "USER")
+                        ->first()?->budgetItems()->create(['budget_id' => $budget->id]);
+                });
+            }
+        }
+    }
 
     /**
      * Display the specified resource.

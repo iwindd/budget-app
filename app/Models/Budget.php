@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Budget extends Model
 {
     use HasFactory;
-
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -33,5 +33,10 @@ class Budget extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function budgetItems()
+    {
+        return $this->hasMany(BudgetItem::class);
     }
 }
