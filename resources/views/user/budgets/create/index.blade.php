@@ -27,9 +27,34 @@
             </div>
         </div>
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
+            <div class="max-w-full">
+                @include('user.budgets.create.patials.budget-address')
+            </div>
+        </div>
+        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
             <div class="max-w-full flex justify-end">
                 <x-button type="submit" variant="success">บันทึกใบเบิก</x-button>
             </div>
         </div>
     </form>
+
+    <x-slot name="scripts">
+        <x-selectors.companion />    
+        <x-selectors.location /> 
+        @php
+            $template = view('components.budgets.address-form')->render();
+        @endphp
+        <script>
+            $(document).ready(function(){
+                const content = $('#address-content');
+                const template =  `{!! json_encode($template) !!}`;
+                let count = 0;
+                
+                $('#add-address-btn').on('click', function(e){
+                    e.preventDefault();
+                    content.append(template);
+                })
+            })    
+        </script>   
+    </x-slot>
 </x-app-layout>

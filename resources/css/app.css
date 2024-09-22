@@ -8,13 +8,18 @@
     background-color: transparent !important;
 }
 
-.select2-container--default .select2-selection--multiple {
+.select2-container--default .select2-selection--multiple,
+.select2-container--default .select2-selection {
     background-color: white;
     border: 1px solid;
     cursor: text;
     position: relative;
 
     @apply border-gray-400 rounded-md px-2 py-2 dark:border-gray-600 dark:text-gray-300 dark:bg-dark-eval-1;
+}
+
+.select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection{
+    height: 42px;
 }
 
 .select2-container--default

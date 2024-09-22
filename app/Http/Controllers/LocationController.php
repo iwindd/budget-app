@@ -31,6 +31,20 @@ class LocationController extends Controller
         return view('admin.locations.index');
     }
 
+    public function locations()
+    {
+        $search = request()->get('q');
+        $query = Location::select("id", "label");
+
+        if (!empty($search)) {
+            $query->where('label', 'LIKE', "%$search%");
+        }
+
+        $data = $query->take(5)->get();
+
+        return response()->json($data);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

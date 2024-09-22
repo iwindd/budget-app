@@ -17,5 +17,10 @@ return [
     'input-title-placeholder' => "ที่ไหน/เรื่องอะไร",
     'input-companions' => "พร้อมด้วย",
     'dialog-cancel-btn' => "ยกเลิก",
-    'dialog-confirm-btn' => "ค้นหา"
+    'dialog-confirm-btn' => "ค้นหา",
+    'card-address-header' => "การเดินทาง",
+    'input-address-from' => "ออกเดินทางจาก",
+    'input-address-from-datetime' => "ตั้งแต่วันที่/เวลา",
+    'input-address-back' => "กลับถึง",
+    'input-address-back-datetime' => "วันที่/เวลา",
 ];

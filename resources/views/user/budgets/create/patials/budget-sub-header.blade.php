@@ -35,7 +35,7 @@
         <section class="space-y-2">
             <x-form.label for="companions" :value="__('budgets.input-companions')" />
 
-            <x-budgets.create.companion-selector />
+            <select class="companion-selector w-full outline-none" name="companions[]" multiple="multiple"></select>
         </section>
     </section>
 </section>
