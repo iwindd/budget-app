@@ -8,18 +8,18 @@
                     <select class="location-selector w-full outline-none" wire.model="data.{{ $index }}.from" name="address[{{ $index }}][from]"></select>
                 </section>
                 <section class="space-y-2">
-                    <x-form.label for="data.{{ $index }}.from-date" :value="__('budgets.input-address-from-datetime')" />
+                    <x-form.label for="data.{{ $index }}.from_date" :value="__('budgets.input-address-from-datetime')" />
 
-                    <x-form.input id="data.{{ $index }}.from-date" name="address[{{ $index }}][from-date]" type="datetime-local" class="block w-full" />
+                    <x-form.input id="data.{{ $index }}.from_date" name="address[{{ $index }}][from_date]" type="datetime-local" class="block w-full" />
                 </section>
                 <section class="space-y-2">
                     <x-form.label for="data.{{ $index }}.back" :value="__('budgets.input-address-back')" />
                     <select class="location-selector w-full outline-none" wire.model="data.{{ $index }}.back" name="address[{{ $index }}][back]"></select>
                 </section>
                 <section class="space-y-2">
-                    <x-form.label for="data.{{ $index }}.back-date" :value="__('budgets.input-address-back-datetime') " />
+                    <x-form.label for="data.{{ $index }}.back_date" :value="__('budgets.input-address-back-datetime') " />
                     <div class="flex space-x-2">
-                        <x-form.input id="data.{{ $index }}.back-date" name="address[{{ $index }}][back-date]" type="datetime-local" class="block w-full" />
+                        <x-form.input id="data.{{ $index }}.back_date" name="address[{{ $index }}][back_date]" type="datetime-local" class="block w-full" />
                         @if ($index !== 0)
                             <div>
                                 <x-button type="button" wire:click.prevent="removeAddress({{ $index }})" icon-only variant="danger">

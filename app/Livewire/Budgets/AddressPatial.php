@@ -10,9 +10,9 @@ class AddressPatial extends Component
     private $template = [
         [
             'from' => '', 
-            'from-date' => '',
+            'from_date' => '',
             'back' => '',
-            'back-date' => ''
+            'back_date' => ''
         ]
     ];
 

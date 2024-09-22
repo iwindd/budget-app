@@ -29,6 +29,11 @@ class StoreBudgetRequest extends FormRequest
             'order_at' => ['required'],
             'companions' => ['nullable', 'array'],
             'companions.*' => ['integer'],
+            'address' => ['array'],
+            'address.*.from' => ['integer', 'exists:locations,id'],
+            'address.*.from_date' => ['date', 'date_format:Y-m-d H:i:s'],
+            'address.*.back' => ['integer', 'exists:locations,id'],
+            'address.*.back_date' => ['date', 'date_format:Y-m-d H:i:s'],
             'title' => ['required', 'string']
         ];
     }
