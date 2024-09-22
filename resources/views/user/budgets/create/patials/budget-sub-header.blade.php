@@ -36,6 +36,7 @@
             <x-form.label for="companions" :value="__('budgets.input-companions')" />
 
             <select class="companion-selector w-full outline-none" name="companions[]" multiple="multiple"></select>
+            <x-form.error :messages="$errors->upsertBudget->get('companions')" />
         </section>
     </section>
 </section>

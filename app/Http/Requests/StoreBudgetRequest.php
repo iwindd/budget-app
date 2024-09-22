@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBudgetRequest extends FormRequest
@@ -28,8 +29,8 @@ class StoreBudgetRequest extends FormRequest
             'date' => ['required'],
             'value' => ['required', 'integer'],
             'order_at' => ['required'],
-            'companions' => ['nullable', 'array'],
-            'companions.*' => ['integer'],
+            'companions' => ['array'],
+            'companions.*' => ['integer', new UserRole('USER')],
             'address' => ['array'],
             'address.*.from_location_id' => ['required', 'integer', 'exists:locations,id'],
             'address.*.from_date' => ['required', 'date', 'date_format:Y-m-d\TH:i'],

@@ -38,14 +38,20 @@ class BudgetController extends Controller
         return Redirect::route("budgets.show", ['budget' => $request->validated()['serial']]);
     }
 
-
+    public function parseCompanion(array $items){
+        return collect($items)->map(function($val){
+            return [
+                'user_id' => $val
+            ];
+        });
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreBudgetRequest $request) {
         $payload = $request->validated();
         $serial = $payload['serial'];
-        $companions = $payload['companions'] ?? [];
+        $companions = $this->parseCompanion($payload['companions'] ?? []);
         $budget = Budget::where('serial', $serial)->first();
 
         if (!$budget) {
@@ -56,13 +62,7 @@ class BudgetController extends Controller
             $budgetItem = $budget->budgetItems()->create(['user_id' => $this->auth()->id]);
             $budgetItem->addresses()->createMany($payload['address']);
 
-            if ($companions) {
-                collect($companions)->map(function($userId) use ($budget) {
-                    User::where('id', $userId)
-                        ->where('role', "USER")
-                        ->first()?->budgetItems()->create(['budget_id' => $budget->id]);
-                });
-            }
+            if ($companions->count() > 1) $budget->budgetItems()->createMany($companions);
         }
     }
 
