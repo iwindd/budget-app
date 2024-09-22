@@ -7,8 +7,8 @@ use App\Models\Budget;
 use App\Models\Invitation;
 use App\Models\Office;
 use App\Http\Requests\StoreBudgetRequest;
-use App\Http\Requests\UpdateBudgetRequest;
-use App\Models\User;
+use App\Models\BudgetItem;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
@@ -54,16 +54,16 @@ class BudgetController extends Controller
         $companions = $this->parseCompanion($payload['companions'] ?? []);
         $budget = Budget::where('serial', $serial)->first();
 
-        if (!$budget) {
-            $payload['office_id'] = Office::getOffice('id')->id;
-            $payload['invitation_id'] = Invitation::getInvitation('id')->id;
+        if ($budget) return $this->update($request, $budget);
 
-            $budget = $this->auth()->budgets()->create($payload);
-            $budgetItem = $budget->budgetItems()->create(['user_id' => $this->auth()->id]);
-            $budgetItem->addresses()->createMany($payload['address']);
+        $payload['office_id'] = Office::getOffice('id')->id;
+        $payload['invitation_id'] = Invitation::getInvitation('id')->id;
 
-            if ($companions->count() > 1) $budget->budgetItems()->createMany($companions);
-        }
+        $budget = $this->auth()->budgets()->create($payload);
+        $budgetItem = $budget->budgetItems()->create(['user_id' => $this->auth()->id]);
+        $budgetItem->addresses()->createMany($payload['address']);
+
+        if ($companions->count() > 1) $budget->budgetItems()->createMany($companions);
     }
 
     /**
@@ -81,20 +81,31 @@ class BudgetController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Budget $budget)
-    {
-        //
+    public function isOwnerBudget(Budget $budget) : Bool {
+        $owner = $budget->user()->get('id')->first();
+
+        return $owner && $owner->id == $this->auth()->id;
+    }
+
+    public function getBudgetItem(Budget $budget) : BudgetItem {
+        return $budget->budgetItems()->where('user_id', $this->auth()->id)->first();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBudgetRequest $request, Budget $budget)
+    public function update(StoreBudgetRequest $request, Budget $budget)
     {
-        //
+        $item = $this->getBudgetItem($budget);
+
+        if ($this->isOwnerBudget($budget)) {
+            $budget->update($request->safe(['title', 'date', 'order_at', 'value']));
+        };
+
+        DB::transaction(function () use ($item, $request) {
+            $item->addresses()->delete();
+            $item->addresses()->createMany($request->safe(['address'])['address']);
+        });
     }
 
     /**
