@@ -64,6 +64,11 @@ class BudgetController extends Controller
         $budgetItem->addresses()->createMany($payload['address']);
 
         if ($companions->count() > 1) $budget->budgetItems()->createMany($companions);
+
+        return Redirect::back()->with('alert', [
+            'text' => trans("budget.controller-create", ["label" => $budget->serial]),
+            'variant' => "success"
+        ]);
     }
 
     /**
@@ -106,6 +111,11 @@ class BudgetController extends Controller
             $item->addresses()->delete();
             $item->addresses()->createMany($request->safe(['address'])['address']);
         });
+
+        return Redirect::back()->with('alert', [
+            'text' => trans("budget.controller-update", ["label" => $budget->serial]),
+            'variant' => "success"
+        ]);
     }
 
     /**
