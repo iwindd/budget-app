@@ -11,9 +11,9 @@ class AddressPatial extends Component
     public $old;
     private $template = [
         [
-            'from' => '',
+            'from_location_id' => '',
             'from_date' => '',
-            'back' => '',
+            'back_location_id' => '',
             'back_date' => ''
         ]
     ];

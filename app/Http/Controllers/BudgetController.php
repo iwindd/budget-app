@@ -53,9 +53,8 @@ class BudgetController extends Controller
             $payload['invitation_id'] = Invitation::getInvitation('id')->id;
 
             $budget = $this->auth()->budgets()->create($payload);
-            $budgetItem = $budget->budgetItems()->create([
-                'user_id' => $this->auth()->id
-            ]);
+            $budgetItem = $budget->budgetItems()->create(['user_id' => $this->auth()->id]);
+            $budgetItem->addresses()->createMany($payload['address']);
 
             if ($companions) {
                 collect($companions)->map(function($userId) use ($budget) {

@@ -31,9 +31,9 @@ class StoreBudgetRequest extends FormRequest
             'companions' => ['nullable', 'array'],
             'companions.*' => ['integer'],
             'address' => ['array'],
-            'address.*.from' => ['required', 'integer', 'exists:locations,id'],
+            'address.*.from_location_id' => ['required', 'integer', 'exists:locations,id'],
             'address.*.from_date' => ['required', 'date', 'date_format:Y-m-d\TH:i'],
-            'address.*.back' => ['required', 'integer', 'exists:locations,id'],
+            'address.*.back_location_id' => ['required', 'integer', 'exists:locations,id'],
             'address.*.back_date' => ['required', 'date', 'date_format:Y-m-d\TH:i'],
         ];
     }
@@ -46,9 +46,9 @@ class StoreBudgetRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'address.*.from' => 'เดินทางจาก',
+            'address.*.from_location_id' => 'เดินทางจาก',
             'address.*.from_date' => 'ตั้งแต่วันที่/เวลา',
-            'address.*.back' => 'กลับถึง',
+            'address.*.back_location_id' => 'กลับถึง',
             'address.*.back_date' => 'วันที่/เวลา',
         ];
     }

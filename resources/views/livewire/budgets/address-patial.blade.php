@@ -3,10 +3,10 @@
         @foreach ($data as $index => $item)
             <section wire:key="address-{{ $index }}" class="grid grid-cols-4 gap-2 mt-2">
                 <section class="space-y-2"> {{-- FROM --}}
-                    <x-form.label for="data.{{ $index }}.from" :value="__('budgets.input-address-from')" />
-                    <select class="location-selector w-full outline-none" wire.model="data.{{ $index }}.from"
-                        name="address[{{ $index }}][from]"></select>
-                    <x-form.error :messages="$errors['address.'.$index.'.from'][0] ?? ''" />
+                    <x-form.label for="data.{{ $index }}.from_location_id" :value="__('budgets.input-address-from')" />
+                    <select class="location-selector w-full outline-none" wire.model="data.{{ $index }}.from_location_id"
+                        name="address[{{ $index }}][from_location_id]"></select>
+                    <x-form.error :messages="$errors['address.'.$index.'.from_location_id'][0] ?? ''" />
                 </section>
                 <section class="space-y-2"> {{-- FROM_DATE --}}
                     <x-form.label for="data.{{ $index }}.from_date" :value="__('budgets.input-address-from-datetime')" />
@@ -15,10 +15,10 @@
                     <x-form.error :messages="$errors['address.'.$index.'.from_date'][0] ?? ''" />
                 </section>
                 <section class="space-y-2"> {{-- BACK --}}
-                    <x-form.label for="data.{{ $index }}.back" :value="__('budgets.input-address-back')" />
-                    <select class="location-selector w-full outline-none" wire.model="data.{{ $index }}.back"
-                        name="address[{{ $index }}][back]"></select>
-                    <x-form.error :messages="$errors['address.'.$index.'.back'][0] ?? ''" />
+                    <x-form.label for="data.{{ $index }}.back_location_id" :value="__('budgets.input-address-back')" />
+                    <select class="location-selector w-full outline-none" wire.model="data.{{ $index }}.back_location_id"
+                        name="address[{{ $index }}][back_location_id]"></select>
+                    <x-form.error :messages="$errors['address.'.$index.'.back_location_id'][0] ?? ''" />
                 </section>
                 <section class="space-y-2"> {{-- BACK_DATE --}}
                     <x-form.label for="data.{{ $index }}.back_date" :value="__('budgets.input-address-back-datetime')" />

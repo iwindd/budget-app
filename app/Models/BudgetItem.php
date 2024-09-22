@@ -30,4 +30,12 @@ class BudgetItem extends Model
     {
         return $this->belongsTo(Budget::class);
     }
+
+    /**
+     * Get the address
+    */
+    public function addresses()
+    {
+        return $this->hasMany(BudgetItemAddress::class, 'budget_item_id');
+    }
 }
