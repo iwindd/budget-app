@@ -38,7 +38,7 @@ class CompanionPatial extends Component
     {
         $budget = $this->getBudget();
 
-        if ($budget) $this->companions = $budget->budgetItems()->whereNot('user_id', Auth::user()->id)->with("user")->get()->toArray();
+        if ($budget) $this->companions = $budget->budgetItems()->whereNot('user_id', Auth::user()->id)->with(["user", "addresses", "expenses"])->get()->toArray();
     }
 
     private function getBudget(): Budget | null

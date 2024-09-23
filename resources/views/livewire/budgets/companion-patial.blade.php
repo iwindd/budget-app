@@ -40,8 +40,8 @@
                 @forelse ($companions as $user)
                     <tr wire:key="{{ $user['id'] }}">
                         <td class="px-6 py-1">{{ $user['user']['name'] }}</td>
-                        <td class="px-6 py-1">TODO::</td>
-                        <td class="px-6 py-1 text-end">TODO::</td>
+                        <td class="px-6 py-1">{{ count($user['expenses']) }} รายการ</td>
+                        <td class="px-6 py-1 text-end">{{ count($user['addresses']) }} รายการ</td>
                         @if ($isOwner)
                             <td class="px-6 py-1 text-end">
                                 <x-button type="button" wire:click.prevent="removeCompanion({{ $user['id'] }})" icon-only
