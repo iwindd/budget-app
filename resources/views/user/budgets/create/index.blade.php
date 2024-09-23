@@ -43,4 +43,9 @@
             </div>
         </div>
     @endif
+
+    <x-slot name="scripts">
+        <script src="{{ asset('js/formatter.js') }}"></script>
+        <script src="{{ asset('js/auto-formatter.js') }}"></script>
+    </x-slot>
 </x-app-layout>
