@@ -4,9 +4,10 @@ namespace App\Livewire\Budgets;
 
 use App\Models\Budget;
 use App\Models\BudgetItem;
+use App\Rules\AddressBack;
+use App\Rules\AddressFrom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class AddressPatial extends Component
@@ -16,19 +17,10 @@ class AddressPatial extends Component
     public $addresses = [];
 
     /* FORM */
-    #[Validate(['nullable', 'integer'])]
     public $address_id = '';
-
-    #[Validate(['required', 'integer', 'exists:locations,id'])]
     public $from_location_id = '';
-
-    #[Validate(['required', 'date', 'date_format:Y-m-d\TH:i'])]
     public $from_date        = '';
-
-    #[Validate(['required', 'integer', 'exists:locations,id'])]
     public $back_location_id = '';
-
-    #[Validate(['required', 'date', 'date_format:Y-m-d\TH:i'])]
     public $back_date        = '';
 
     /* ETC */
@@ -120,6 +112,17 @@ class AddressPatial extends Component
     public function render()
     {
         return view('livewire.budgets.address-patial');
+    }
+
+    public function rules()
+    {
+        return [
+            'address_id' => ['nullable', 'integer'],
+            'from_location_id' => ['required', 'integer', 'exists:locations,id'],
+            'from_date' => ['required', 'date', 'date_format:Y-m-d\TH:i', new AddressFrom($this->budget, Auth::user()->id, empty($this->address_id) ? -1 : $this->address_id)],
+            'back_location_id' => ['required', 'integer', 'exists:locations,id'],
+            'back_date' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:from_date', new AddressBack($this->budget, Auth::user()->id, empty($this->address_id) ? -1 : $this->address_id)]
+        ];
     }
 
     /* Listeners */
