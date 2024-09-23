@@ -56,5 +56,6 @@ return [
     'table-address-back-label' => "กลับถึง",
     'table-address-back_date' => "วันที่/เวลา",
     'table-address-action' => "เครื่องมือ",
+    'table-addresses-not-found' => "ไม่พบการเดินทาง",
     'add-address-btn' => "บันทึกการเดินทาง",
 ];
