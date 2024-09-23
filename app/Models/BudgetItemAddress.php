@@ -29,11 +29,11 @@ class BudgetItemAddress extends Model
 
     public function from()
     {
-        return $this->belongsTo(Location::class, "id", "from_location_id");
+        return $this->belongsTo(Location::class, "from_location_id");
     }
 
     public function back()
     {
-        return $this->belongsTo(Location::class, "id", "back_location_id");
+        return $this->belongsTo(Location::class, "back_location_id");
     }
 }

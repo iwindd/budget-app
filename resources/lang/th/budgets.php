@@ -21,11 +21,6 @@ return [
     'input-place-placeholder' => "สถานที่ไป",
     'dialog-cancel-btn' => "ยกเลิก",
     'dialog-confirm-btn' => "ค้นหา",
-    'card-address-header' => "การเดินทาง",
-    'input-address-from' => "ออกเดินทางจาก",
-    'input-address-from-datetime' => "ตั้งแต่วันที่/เวลา",
-    'input-address-back' => "กลับถึง",
-    'input-address-back-datetime' => "วันที่/เวลา",
     /* EXPENSE */
     'input-expense' => "ประเภทค่าใช้จ่าย",
     'input-expense-placeholder' => "หากมีข้อมูลที่เลือกอยู่แล้วจะเป็นการแทนที่ข้อมูลเก่า",
@@ -48,5 +43,18 @@ return [
     'table-companion-action' => "เครื่องมือ",
     'table-companion-not-found' => "ไม่พบผู้ร่วมเดินทาง",
     'table-companion-caption' => "คณะเดินทาง",
-    'add-companion-btn' => "เพิ่มคณะเดินทาง"
+    'add-companion-btn' => "เพิ่มคณะเดินทาง",
+    /* ADDRESS */
+    'address-header' => "รายละเอียดการเดินทาง",
+    'input-address-from' => "ออกเดินทางจาก",
+    'input-address-from-datetime' => "ตั้งแต่วันที่/เวลา",
+    'input-address-back' => "กลับถึง",
+    'input-address-back-datetime' => "วันที่/เวลา",
+    'input-location-placeholder' => "เลือกสถานที่",
+    'table-address-from-label' => "เดินทางจาก",
+    'table-address-from_date' => "ตั้งแต่วันที่/เวลา",
+    'table-address-back-label' => "กลับถึง",
+    'table-address-back_date' => "วันที่/เวลา",
+    'table-address-action' => "เครื่องมือ",
+    'add-address-btn' => "บันทึกการเดินทาง",
 ];

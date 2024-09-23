@@ -26,4 +26,14 @@ class Location extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function getFromAddresses()
+    {
+        return $this->hasMany(BudgetItemAddress::class, 'from_location_id');
+    }
+
+    public function getBackAddresses()
+    {
+        return $this->hasMany(BudgetItemAddress::class, 'back_location_id');
+    }
 }
