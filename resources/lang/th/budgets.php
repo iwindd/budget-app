@@ -23,4 +23,16 @@ return [
     'input-address-from-datetime' => "ตั้งแต่วันที่/เวลา",
     'input-address-back' => "กลับถึง",
     'input-address-back-datetime' => "วันที่/เวลา",
+    /* EXPENSE */
+    'input-expense' => "ประเภทค่าใช้จ่าย",
+    'input-expense-placeholder' => "หากมีข้อมูลที่เลือกอยู่แล้วจะเป็นการแทนที่ข้อมูลเก่า",
+    'input-total' => "รวม/ต่อวัน",
+    'input-days' => "จำนวนวัน",
+    'input-days-placeholder' => "หากไม่ป้อนจะเป็นประเภทรวม",
+    'table-expense-name' => "ชื่อรายการ",
+    'table-expense-days' => "วัน",
+    'table-expense-total' => "จำนวนเงิน",
+    'table-expense-action' => "เครื่องมือ",
+    'table-expenses-not-found' => "ไม่พบค่าใช้จ่าย",
+    'add-expense-btn' => "บันทึกค่าใช้จ่าย"
 ];

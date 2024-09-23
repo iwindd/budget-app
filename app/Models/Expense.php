@@ -26,4 +26,12 @@ class Expense extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Get the budget item expenses
+    */
+    public function budgetItemExpenses()
+    {
+        return $this->hasMany(BudgetItemExpense::class);
+    }
 }

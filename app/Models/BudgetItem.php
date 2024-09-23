@@ -38,4 +38,12 @@ class BudgetItem extends Model
     {
         return $this->hasMany(BudgetItemAddress::class, 'budget_item_id');
     }
+
+    /**
+     * Get the expenses
+    */
+    public function expenses()
+    {
+        return $this->hasMany(BudgetItemExpense::class, 'budget_item_id', 'id');
+    }
 }

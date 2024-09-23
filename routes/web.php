@@ -75,8 +75,13 @@ Route::post('/budgets', [BudgetController::class, 'find'])->name('budgets.find')
 // selectize
 Route::get('/selectize/companions', [UserController::class, 'companion'])->name('users.companions');
 Route::get('/selectize/locations', [LocationController::class, 'locations'])->name('locations.selectize');
+Route::get('/selectize/expenses', [ExpenseController::class, 'expenses'])->name('expenses.selectize');
 // useless routes
 // Just to demo sidebar dropdown links active states.
+Route::get('/test', function () {
+    return view('useless.test');
+});
+
 Route::get('/buttons/text', function () {
     return view('buttons-showcase.text');
 })->middleware(['auth'])->name('buttons.text');

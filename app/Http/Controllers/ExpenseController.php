@@ -31,6 +31,20 @@ class ExpenseController extends Controller
         return view('admin.expenses.index');
     }
 
+    public function expenses()
+    {
+        $search = request()->get('q');
+        $query = Expense::select("id", "label");
+
+        if (!empty($search)) {
+            $query->where('label', 'LIKE', "%$search%");
+        }
+
+        $data = $query->take(5)->get();
+
+        return response()->json($data);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

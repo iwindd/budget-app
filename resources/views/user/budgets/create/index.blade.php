@@ -14,7 +14,7 @@
         <x-alert :text="session('alert')['text']" :variant="session('alert')['variant']" />
     @endif
 
-    <form action="{{route('budgets.upsert', ['budget' => $serial])}}" class="space-y-2" method="POST">
+    <form action="{{ route('budgets.upsert', ['budget' => $serial]) }}" class="space-y-2" method="POST">
         @csrf
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
             <div class="max-w-full">
@@ -38,23 +38,29 @@
         </div>
     </form>
 
+    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800 my-2">
+        <div class="max-w-full">
+            @include('user.budgets.create.patials.budget-expense')
+        </div>
+    </div>
+
     <x-slot name="scripts">
-        <x-selectors.companion />    
-        <x-selectors.location /> 
+        <x-selectors.companion />
+        <x-selectors.location />
         @php
             $template = view('components.budgets.address-form')->render();
         @endphp
         <script>
-            $(document).ready(function(){
+            $(document).ready(function() {
                 const content = $('#address-content');
-                const template =  `{!! json_encode($template) !!}`;
+                const template = `{!! json_encode($template) !!}`;
                 let count = 0;
-                
-                $('#add-address-btn').on('click', function(e){
+
+                $('#add-address-btn').on('click', function(e) {
                     e.preventDefault();
                     content.append(template);
                 })
-            })    
-        </script>   
+            })
+        </script>
     </x-slot>
 </x-app-layout>
