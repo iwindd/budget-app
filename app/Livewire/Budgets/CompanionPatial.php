@@ -6,6 +6,7 @@ use App\Models\Budget;
 use App\Rules\AlreadyCompanion;
 use App\Rules\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class CompanionPatial extends Component
@@ -13,6 +14,7 @@ class CompanionPatial extends Component
     /* DATA */
     public $budget;
     public $companions = [];
+    public $isOwner = false;
 
     /* FORM */
     public $user_id = '';
@@ -25,9 +27,10 @@ class CompanionPatial extends Component
     /* CACHE */
     public $user_label = '';
 
-    public function mount(Request $request)
+    public function mount(Request $request, $isOwner)
     {
         $this->budget = $request->route('budget');
+        $this->isOwner = $isOwner;
         $this->fetch();
     }
 
@@ -45,10 +48,10 @@ class CompanionPatial extends Component
 
     public function save()
     {
-        $this->resetValidation();
         $validated = $this->validate();
         $budget = $this->getBudget();
         if (!$budget) return $this->redirect('/');
+        if ($budget->user_id != Auth::user()->id) return $this->redirect('/');
 
         $budget->budgetItems()->create($validated);
         $this->reset(['user_id', 'user_label']);
@@ -61,6 +64,7 @@ class CompanionPatial extends Component
     {
         $budget = $this->getBudget();
         if (!$budget) return $this->redirect('/');
+        if ($budget->user_id != Auth::user()->id) return $this->redirect('/');
 
         $budget->budgetItems()->where('id', $id)->delete();
         $this->fetch();

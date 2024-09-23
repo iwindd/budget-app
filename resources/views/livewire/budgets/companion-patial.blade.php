@@ -1,28 +1,29 @@
 <section class="grid grid-cols-1 gap-2">
-
-    <section class="grid grid-cols-9 gap-2">
-        <section class="space-y-2 lg:col-span-8 md:col-span-6 col-span-9">
-            <x-form.label for="user_id" :value="__('budgets.input-companion')" />
-            <form wire:submit="save" id="companion-add-form">
-                <select name="user_id" id="companions-selector" class="w-full">
-                    @isset($user_id)
-                        @isset($user_label)
-                            <option value="{{ $user_id }}" selected>{{ $user_label }}</option>
+    @if ($isOwner)
+        <section class="grid grid-cols-9 gap-2">
+            <section class="space-y-2 lg:col-span-8 md:col-span-6 col-span-9">
+                <x-form.label for="user_id" :value="__('budgets.input-companion')" />
+                <form wire:submit="save" id="companion-add-form">
+                    <select name="user_id" id="companions-selector" class="w-full">
+                        @isset($user_id)
+                            @isset($user_label)
+                                <option value="{{ $user_id }}" selected>{{ $user_label }}</option>
+                            @endisset
                         @endisset
-                    @endisset
-                </select>
-            </form>
-            <div>
-                <x-form.error :messages="$errors->get('user_id')" />
-            </div>
+                    </select>
+                </form>
+                <div>
+                    <x-form.error :messages="$errors->get('user_id')" />
+                </div>
+            </section>
+            <section class="space-y-2 lg:col-span-1 md:col-span-3 col-span-9">
+                <x-form.label for="submit" :value="__('budgets.table-companion-action')" />
+                <x-button type="submit" name="submit" form="companion-add-form"
+                    class="w-full text-end truncate"><i>{{ __('budgets.add-companion-btn') }}</i></x-button>
+            </section>
         </section>
-        <section class="space-y-2 lg:col-span-1 md:col-span-3 col-span-9">
-            <x-form.label for="submit" :value="__('budgets.table-companion-action')" />
-            <x-button type="submit" name="submit" form="companion-add-form"
-                class="w-full text-end truncate"><i>{{ __('budgets.add-companion-btn') }}</i></x-button>
-        </section>
-    </section>
-    <hr>
+        <hr>
+    @endif
     <section class="relative overflow-x-auto border">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-inherit dark:text-inherit">
@@ -30,7 +31,9 @@
                     <th class="px-6 py-3 w-[50%]">{{ __('budgets.table-companion-name') }}</th>
                     <th class="px-6 py-3">{{ __('budgets.table-companion-expense') }}</th>
                     <th class="px-6 py-3 text-end">{{ __('budgets.table-companion-address') }}</th>
-                    <th class="px-6 py-3 text-end">{{ __('budgets.table-companion-action') }}</th>
+                    @if ($isOwner)
+                        <th class="px-6 py-3 text-end">{{ __('budgets.table-companion-action') }}</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -39,12 +42,14 @@
                         <td class="px-6 py-1">{{ $user['user']['name'] }}</td>
                         <td class="px-6 py-1">TODO::</td>
                         <td class="px-6 py-1 text-end">TODO::</td>
-                        <td class="px-6 py-1 text-end">
-                            <x-button type="button" wire:click.prevent="removeCompanion({{ $user['id'] }})" icon-only
-                                variant="danger">
-                                <x-heroicon-o-trash class="w-6 h-6" />
-                            </x-button>
-                        </td>
+                        @if ($isOwner)
+                            <td class="px-6 py-1 text-end">
+                                <x-button type="button" wire:click.prevent="removeCompanion({{ $user['id'] }})" icon-only
+                                    variant="danger">
+                                    <x-heroicon-o-trash class="w-6 h-6" />
+                                </x-button>
+                            </td>
+                        @endif
                     </tr>
                 @empty
                     <tr>
