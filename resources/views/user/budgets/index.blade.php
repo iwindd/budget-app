@@ -22,4 +22,5 @@
     @endif
 
     <x-budgets.dialog />
+    <x-budgets.datatable />
 </x-app-layout>
