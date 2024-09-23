@@ -19,7 +19,6 @@ return [
     'input-title-placeholder' => "เรื่อง",
     'input-place' => "สถานที่",
     'input-place-placeholder' => "สถานที่ไป",
-    'input-companions' => "พร้อมด้วย",
     'dialog-cancel-btn' => "ยกเลิก",
     'dialog-confirm-btn' => "ค้นหา",
     'card-address-header' => "การเดินทาง",
@@ -38,5 +37,16 @@ return [
     'table-expense-total' => "จำนวนเงิน",
     'table-expense-action' => "เครื่องมือ",
     'table-expenses-not-found' => "ไม่พบค่าใช้จ่าย",
-    'add-expense-btn' => "บันทึกค่าใช้จ่าย"
+    'add-expense-btn' => "บันทึกค่าใช้จ่าย",
+    /* COMPANION */
+    'companion-header' => "คณะเดินทาง",
+    'input-companion' => "รายชื่อ",
+    'input-companion-placeholder' => "เลือกรายชื่อเพื่อเพิ่มคณะเดินทาง",
+    'table-companion-name' => "ชื่อผู้ร่วมเดินทาง",
+    'table-companion-expense' => "ค่าใช้จ่าย",
+    'table-companion-address' => "การเดินทาง",
+    'table-companion-action' => "เครื่องมือ",
+    'table-companion-not-found' => "ไม่พบผู้ร่วมเดินทาง",
+    'table-companion-caption' => "คณะเดินทาง",
+    'add-companion-btn' => "เพิ่มคณะเดินทาง"
 ];
