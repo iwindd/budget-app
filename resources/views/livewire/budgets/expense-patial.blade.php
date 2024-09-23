@@ -29,11 +29,7 @@
             <x-button type="submit" class="w-full truncate" form="expense-add-form"><i>{{ __('budgets.add-expense-btn') }}</i></x-button>
         </section>
     </form>
-    <section class="text-end text-sm text-inherit flex justify-between items-end">
-        <header>
-            <h3>รายการทั้งหมด</h3>
-        </header>
-    </section>
+    <hr>
     <section class="relative overflow-x-auto border">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-inherit dark:text-inherit">
