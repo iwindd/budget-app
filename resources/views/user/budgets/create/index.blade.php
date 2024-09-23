@@ -43,24 +43,4 @@
             </div>
         </div>
     @endif
-
-    <x-slot name="scripts">
-        <x-selectors.companion />
-        <x-selectors.location />
-        @php
-            $template = view('components.budgets.address-form')->render();
-        @endphp
-        <script>
-            $(document).ready(function() {
-                const content = $('#address-content');
-                const template = `{!! json_encode($template) !!}`;
-                let count = 0;
-
-                $('#add-address-btn').on('click', function(e) {
-                    e.preventDefault();
-                    content.append(template);
-                })
-            })
-        </script>
-    </x-slot>
 </x-app-layout>
