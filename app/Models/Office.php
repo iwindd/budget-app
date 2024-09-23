@@ -36,4 +36,9 @@ class Office extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function budgets()
+    {
+        return $this->hasMany(Budget::class);
+    }
 }

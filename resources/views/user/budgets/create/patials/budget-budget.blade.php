@@ -24,7 +24,7 @@
             <section class="space-y-2">
                 <x-form.label :value="__('budgets.input-name')" />
 
-                <x-form.input id="name" value="{{ Auth::user()->name }}" disabled type="text"
+                <x-form.input id="name" value="{{ $data->user->name ?? Auth::user()->name }}" disabled type="text"
                     class="block w-full" />
             </section>
             <section class="space-y-2">

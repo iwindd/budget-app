@@ -21,7 +21,6 @@ class Budget extends Model
         'text',
         'user_id',
         'invitation_id',
-        'location_id',
         'office_id',
         'date',
         'order_at',
@@ -34,6 +33,14 @@ class Budget extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function invitation() {
+        return $this->belongsTo(Invitation::class);
+    }
+
+    public function office() {
+        return $this->belongsTo(Office::class);
     }
 
     public function budgetItems()

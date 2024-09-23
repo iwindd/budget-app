@@ -82,9 +82,9 @@ class BudgetController extends Controller
      */
     public function show($budget)
     {
-        $office = Office::getOffice('label');
-        $invitation = Invitation::getInvitation('label');
-        $data = Budget::where('serial', $budget)->first();
+        $data = Budget::where('serial', $budget)->with(['user', 'office', 'invitation'])->first();
+        $office = $data->office ?? Office::getOffice('label');
+        $invitation = $data->invitation ?? Invitation::getInvitation('label');
         $isOwner = $data && $this->isOwnerBudget($data);
 
         return view('user.budgets.create.index', [
