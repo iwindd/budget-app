@@ -51,7 +51,6 @@ class BudgetController extends Controller
     public function store(StoreBudgetRequest $request) {
         $payload = $request->validated();
         $serial = $payload['serial'];
-        $companions = $this->parseCompanion($payload['companions'] ?? []);
         $budget = Budget::where('serial', $serial)->first();
 
         if ($budget) return $this->update($request, $budget);
@@ -60,10 +59,7 @@ class BudgetController extends Controller
         $payload['invitation_id'] = Invitation::getInvitation('id')->id;
 
         $budget = $this->auth()->budgets()->create($payload);
-        $budgetItem = $budget->budgetItems()->create(['user_id' => $this->auth()->id]);
-        $budgetItem->addresses()->createMany($payload['address']);
-
-        if ($companions->count() > 1) $budget->budgetItems()->createMany($companions);
+        $budget->budgetItems()->create(['user_id' => $this->auth()->id]);
 
         return Redirect::back()->with('alert', [
             'text' => trans("budget.controller-create", ["label" => $budget->serial]),
@@ -78,11 +74,13 @@ class BudgetController extends Controller
     {
         $office = Office::getOffice('label');
         $invitation = Invitation::getInvitation('label');
+        $data = Budget::where('serial', $budget)->first();
 
         return view('user.budgets.create.index', [
             'serial' => $budget,
             'invitation' => $invitation->label,
-            'office' => $office->label
+            'office' => $office->label,
+            'data' => $data
         ]);
     }
 
@@ -101,16 +99,9 @@ class BudgetController extends Controller
      */
     public function update(StoreBudgetRequest $request, Budget $budget)
     {
-        $item = $this->getBudgetItem($budget);
-
         if ($this->isOwnerBudget($budget)) {
-            $budget->update($request->safe(['title', 'date', 'order_at', 'value']));
+            $budget->update($request->safe(['title', 'place', 'date', 'order_at', 'value']));
         };
-
-        DB::transaction(function () use ($item, $request) {
-            $item->addresses()->delete();
-            $item->addresses()->createMany($request->safe(['address'])['address']);
-        });
 
         return Redirect::back()->with('alert', [
             'text' => trans("budget.controller-update", ["label" => $budget->serial]),

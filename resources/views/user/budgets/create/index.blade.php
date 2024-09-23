@@ -14,35 +14,21 @@
         <x-alert :text="session('alert')['text']" :variant="session('alert')['variant']" />
     @endif
 
-    <form action="{{ route('budgets.upsert', ['budget' => $serial]) }}" class="space-y-2" method="POST">
-        @csrf
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
-            <div class="max-w-full">
-                @include('user.budgets.create.patials.budget-header')
-            </div>
-        </div>
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
-            <div class="max-w-full">
-                @include('user.budgets.create.patials.budget-sub-header')
-            </div>
-        </div>
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
-            <div class="max-w-full">
-                @include('user.budgets.create.patials.budget-address')
-            </div>
-        </div>
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
-            <div class="max-w-full flex justify-end">
-                <x-button type="submit" variant="success">บันทึกใบเบิก</x-button>
-            </div>
-        </div>
-    </form>
-
-    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800 my-2">
+    {{-- BUDGET --}}
+    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
         <div class="max-w-full">
-            @include('user.budgets.create.patials.budget-expense')
+            @include('user.budgets.create.patials.budget-budget')
         </div>
     </div>
+
+    @if ($data)
+        {{-- EXPENSE --}}
+        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800 my-2">
+            <div class="max-w-full">
+                @include('user.budgets.create.patials.budget-expense')
+            </div>
+        </div>
+    @endif
 
     <x-slot name="scripts">
         <x-selectors.companion />

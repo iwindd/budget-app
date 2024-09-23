@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Budget extends Model
 {
     use HasFactory;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -17,6 +17,7 @@ class Budget extends Model
     protected $fillable = [
         'serial',
         'title',
+        'place',
         'text',
         'user_id',
         'invitation_id',
