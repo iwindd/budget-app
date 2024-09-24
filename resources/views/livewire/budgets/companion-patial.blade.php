@@ -28,10 +28,10 @@
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-inherit dark:text-inherit">
                 <tr>
-                    <th class="px-6 py-3 w-[30%]">{{ __('budgets.table-companion-name') }}</th>
+                    <th class="px-6 py-3 w-[25%]">{{ __('budgets.table-companion-name') }}</th>
                     <th class="px-6 py-3 ">{{ __('budgets.table-companion-type') }}</th>
-                    <th class="px-6 py-3 w-[25%]">{{ __('budgets.table-companion-expense') }}</th>
-                    <th class="px-6 py-3 w-[25%] ">{{ __('budgets.table-companion-address') }}</th>
+                    <th class="px-6 py-3 w-[20%]">{{ __('budgets.table-companion-expense') }}</th>
+                    <th class="px-6 py-3 w-[20%] ">{{ __('budgets.table-companion-address') }}</th>
                     <th class="px-6 py-3 text-end">{{ __('budgetitems.table-hasData') }}</th>
                     @if ($isOwner)
                         <th class="px-6 py-3 text-end">{{ __('budgets.table-companion-action') }}</th>
