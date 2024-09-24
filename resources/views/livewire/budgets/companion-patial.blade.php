@@ -41,8 +41,18 @@
                 @forelse ($companions as $user)
                     <tr wire:key="{{ $user['id'] }}">
                         <td class="px-6 py-1">{{ $user['user']['name'] }}</td>
-                        <td class="px-6 py-1">{{ count($user['expenses']) }} รายการ</td>
-                        <td class="px-6 py-1 text-end">{{ count($user['addresses']) }} รายการ</td>
+                        <td class="px-6 py-1">
+                            {{ __('budgets.table-value-companion-expense', [
+                                'count' => count($user['expenses']),
+                                'sum' => $user['expense_sum']
+                            ])}}
+                        </td>
+                        <td class="px-6 py-1 text-end">
+                            {{ __('budgets.table-value-companion-address', [
+                                'count' => count($user['addresses']),
+                                'diff' => $user['date_diff'] ?? 0
+                            ])}}
+                        </td>
                         <td class="px-6 py-1 text-end">
                             @if (count($user['expenses']) > 0 && count($user['addresses']) > 0)
                                 {!!__('budgetitems.table-hasData-true')!!}

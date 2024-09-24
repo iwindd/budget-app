@@ -42,6 +42,8 @@ return [
     'input-companion-placeholder' => "เลือกรายชื่อเพื่อเพิ่มคณะเดินทาง",
     'table-companion-name' => "ชื่อผู้ร่วมเดินทาง",
     'table-companion-expense' => "ค่าใช้จ่าย",
+    'table-value-companion-expense' => ":count รายการ | รวมทั้งสิ้น :sum บาท",
+    'table-value-companion-address' => ":count รายการ | :diff วัน",
     'table-companion-address' => "การเดินทาง",
     'table-companion-action' => "เครื่องมือ",
     'table-companion-not-found' => "ไม่พบผู้ร่วมเดินทาง",

@@ -5,6 +5,7 @@ namespace App\Livewire\Budgets;
 use App\Models\Budget;
 use App\Rules\AlreadyCompanion;
 use App\Rules\UserRole;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -38,7 +39,29 @@ class CompanionPatial extends Component
     {
         $budget = $this->getBudget();
 
-        if ($budget) $this->companions = $budget->budgetItems()->whereNot('user_id', Auth::user()->id)->with(["user", "addresses", "expenses"])->get()->toArray();
+        if ($budget) {
+            $this->companions = $budget->budgetItems()
+                ->whereNot('user_id', Auth::user()->id)
+                ->with(["user:id,name", "addresses:budget_item_id,from_date,back_date", "expenses:budget_item_id,total,days"])
+                ->get(['id', 'budget_id', 'user_id'])
+                ->toArray();
+
+            foreach ($this->companions as $index => $companion) {
+                $totalExpenseSum = 0;
+                foreach ($companion['expenses'] as $expense) $totalExpenseSum += ($expense['total'] * ($expense['days'] ?? 1));
+                $this->companions[$index]['expense_sum'] = $totalExpenseSum;
+
+                if (count($companion['addresses']) > 0){
+                    $start = $companion['addresses'][0]['from_date'];
+                    $end = $companion['addresses'][count($companion['addresses'])-1]['back_date'];
+
+                    $startDate = Carbon::parse($start);
+                    $endDate = Carbon::parse($end);
+
+                    $this->companions[$index]['date_diff'] = $endDate->diffInDays($startDate);
+                }
+            }
+        }
     }
 
     private function getBudget(): Budget | null
