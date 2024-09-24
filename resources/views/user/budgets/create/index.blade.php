@@ -42,6 +42,8 @@
                 @include('user.budgets.create.patials.budget-expense')
             </div>
         </div>
+    @else
+        <x-alert :text="__('budgets.none-create-message')" class="mt-2 shadow sm:rounded-lg" variant="danger"/>
     @endif
 
     <x-slot name="scripts">

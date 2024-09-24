@@ -21,6 +21,7 @@ return [
     'input-place-placeholder' => "สถานที่ไป",
     'dialog-cancel-btn' => "ยกเลิก",
     'dialog-confirm-btn' => "ค้นหา",
+    'none-create-message' => "จำเป็นต้องป้อนข้อมูลใบเบิกให้ครบถ้วนเพื่อจัดการใบเบิกเงิน",
     /* EXPENSE */
     'input-expense' => "ประเภทค่าใช้จ่าย",
     'input-expense-placeholder' => "หากมีข้อมูลที่เลือกอยู่แล้วจะเป็นการแทนที่ข้อมูลเก่า",
