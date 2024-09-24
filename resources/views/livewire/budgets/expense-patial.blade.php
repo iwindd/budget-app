@@ -44,7 +44,7 @@
                 @forelse ($expenses as $expense)
                     <tr wire:key="{{ $expense['id'] }}">
                         <td class="px-6 py-1">{{ $expense['expense']['label'] }}</td>
-                        <td class="px-6 py-1">{{ $expense['days'] ?? 'ประเภทรวม' }}</td>
+                        <td class="px-6 py-1">{{ $expense['days'] ? __('budgets.table-value-expense-days', ['day' => $expense['days']]) : __('budgets.table-value-expense-all') }}</td>
                         <td class="px-6 py-1 text-end">{{ $expense['total'] }}</td>
                         <td class="px-6 py-1 text-end">
                             <x-button type="button" wire:click.prevent="removeExpense({{ $expense['id'] }})" icon-only

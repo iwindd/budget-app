@@ -32,6 +32,8 @@ return [
     'input-days-placeholder' => "หากไม่ป้อนจะเป็นประเภทรวม",
     'table-expense-name' => "ชื่อรายการ",
     'table-expense-days' => "วัน",
+    'table-value-expense-days' => ":day วัน",
+    'table-value-expense-all' => "ประเภทรวม",
     'table-expense-total' => "จำนวนเงิน",
     'table-expense-action' => "เครื่องมือ",
     'table-expenses-not-found' => "ไม่พบค่าใช้จ่าย",
