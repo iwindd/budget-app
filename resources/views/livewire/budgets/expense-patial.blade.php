@@ -73,6 +73,7 @@
                     $('#expense-selector').select2({
                         width: '100%',
                         placeholder: @js(__('budgets.input-expense-placeholder')),
+                        tags: true,
                         ajax: {
                             url: @js(route('expenses.selectize')),
                             dataType: 'json',

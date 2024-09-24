@@ -4,11 +4,13 @@ namespace App\Livewire\Budgets;
 
 use App\Models\Budget;
 use App\Models\BudgetItem;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Ramsey\Uuid\Type\Integer;
 
 class ExpensePatial extends Component
 {
@@ -58,8 +60,24 @@ class ExpensePatial extends Component
         return $budgetInstance->budgetItems()->where('user_id', Auth::user()->id)->first();
     }
 
+    public function addExpense(String $label) : int  {
+        $sameExpense = Expense::where('label', $label)->first(['id', 'label']);
+        if ($sameExpense) return $sameExpense->id;
+
+        /** @var User $user */
+        $user = Auth::user();
+        $newExpense = $user->expenses()->create([
+            'label' => $label
+        ]);
+
+        return $newExpense->id;
+    }
+
     public function save()
     {
+        //create expense before validation
+        if (gettype($this->expense_id) == "string") $this->expense_id = $this->addExpense($this->expense_id);
+
         $validated = $this->validate();
         $validated['days'] = empty($validated['days']) ? null : $validated['days'];
         $item = $this->getBudgetItem();
