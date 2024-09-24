@@ -60,6 +60,8 @@ class CompanionPatial extends Component
 
                     $this->companions[$index]['date_diff'] = $endDate->diffInDays($startDate);
                 }
+
+                $this->companions[$index]['isCreator'] = $budget->user_id == $companion['user_id'];
             }
         }
     }

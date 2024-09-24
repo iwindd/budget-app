@@ -28,9 +28,10 @@
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-inherit dark:text-inherit">
                 <tr>
-                    <th class="px-6 py-3 w-[50%]">{{ __('budgets.table-companion-name') }}</th>
-                    <th class="px-6 py-3">{{ __('budgets.table-companion-expense') }}</th>
-                    <th class="px-6 py-3 text-end">{{ __('budgets.table-companion-address') }}</th>
+                    <th class="px-6 py-3 w-[30%]">{{ __('budgets.table-companion-name') }}</th>
+                    <th class="px-6 py-3 ">{{ __('budgets.table-companion-type') }}</th>
+                    <th class="px-6 py-3 w-[25%]">{{ __('budgets.table-companion-expense') }}</th>
+                    <th class="px-6 py-3 w-[25%] ">{{ __('budgets.table-companion-address') }}</th>
                     <th class="px-6 py-3 text-end">{{ __('budgetitems.table-hasData') }}</th>
                     @if ($isOwner)
                         <th class="px-6 py-3 text-end">{{ __('budgets.table-companion-action') }}</th>
@@ -42,12 +43,19 @@
                     <tr wire:key="{{ $user['id'] }}">
                         <td class="px-6 py-1">{{ $user['user']['name'] }}</td>
                         <td class="px-6 py-1">
+                            @if ($user['isCreator'])
+                                {!!__('budgets.table-value-companion-type-owner')!!}
+                            @else
+                                {{__('budgets.table-value-companion-type-companion')}}
+                            @endif
+                        </td>
+                        <td class="px-6 py-1">
                             {{ __('budgets.table-value-companion-expense', [
                                 'count' => count($user['expenses']),
                                 'sum' => $user['expense_sum']
                             ])}}
                         </td>
-                        <td class="px-6 py-1 text-end">
+                        <td class="px-6 py-1">
                             {{ __('budgets.table-value-companion-address', [
                                 'count' => count($user['addresses']),
                                 'diff' => $user['date_diff'] ?? 0
