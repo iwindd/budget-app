@@ -13,6 +13,15 @@ class ExpenseSeeder extends Seeder
      */
     public function run(): void
     {
-        Expense::factory(3)->create();
+        $data = [
+            ['label' => 'ค่าเบี้ยเลี้ยงเดินทาง'],
+            ['label' => 'ค่าเช่าที่พัก'],
+            ['label' => 'ค่าพาหนะ'],
+            ['label' => 'ค่าใช้จ่ายอื่นๆ'],
+        ];
+
+        foreach ($data as $item) {
+            Expense::factory()->create($item);
+        }
     }
 }

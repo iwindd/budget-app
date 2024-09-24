@@ -13,6 +13,9 @@ class InvitationSeeder extends Seeder
      */
     public function run(): void
     {
-        Invitation::factory(1)->create([ 'default' => true ]);
+        Invitation::factory()->create([
+            'label' => "คณบดีคณะพยาบาลศาสตร์",
+            'default' => true
+        ]);
     }
 }

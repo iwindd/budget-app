@@ -13,6 +13,14 @@ class LocationSeeder extends Seeder
      */
     public function run(): void
     {
-        Location::factory(3)->create();
+        $data = [
+            ['label' => 'บ้านพัก'],
+            ['label' => 'สำนักงาน'],
+            ['label' => 'ประเทศไทย']
+        ];
+
+        foreach ($data as $item) {
+            Location::factory()->create($item);
+        }
     }
 }
