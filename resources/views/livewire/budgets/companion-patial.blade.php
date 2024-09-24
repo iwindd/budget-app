@@ -31,6 +31,7 @@
                     <th class="px-6 py-3 w-[50%]">{{ __('budgets.table-companion-name') }}</th>
                     <th class="px-6 py-3">{{ __('budgets.table-companion-expense') }}</th>
                     <th class="px-6 py-3 text-end">{{ __('budgets.table-companion-address') }}</th>
+                    <th class="px-6 py-3 text-end">{{ __('budgetitems.table-hasData') }}</th>
                     @if ($isOwner)
                         <th class="px-6 py-3 text-end">{{ __('budgets.table-companion-action') }}</th>
                     @endif
@@ -42,6 +43,13 @@
                         <td class="px-6 py-1">{{ $user['user']['name'] }}</td>
                         <td class="px-6 py-1">{{ count($user['expenses']) }} รายการ</td>
                         <td class="px-6 py-1 text-end">{{ count($user['addresses']) }} รายการ</td>
+                        <td class="px-6 py-1 text-end">
+                            @if (count($user['expenses']) > 0 && count($user['addresses']) > 0)
+                                {!!__('budgetitems.table-hasData-true')!!}
+                            @else
+                                {!!__('budgetitems.table-hasData-false')!!}
+                            @endif
+                        </td>
                         @if ($isOwner)
                             <td class="px-6 py-1 text-end">
                                 <x-button type="button" wire:click.prevent="removeCompanion({{ $user['id'] }})" icon-only
