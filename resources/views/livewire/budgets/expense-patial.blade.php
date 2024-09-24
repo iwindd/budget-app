@@ -63,6 +63,9 @@
         </table>
     </section>
 
+    @if (count($expenses) <= 0)
+        <x-form.error :messages="__('budgets.none-expense-create-message')" />
+    @endif
     @script
         <script>
             $(document).ready(function(e) {

@@ -4,7 +4,7 @@
 ])
 
 @php
-    $baseClasses = 'flex items-center justify-between p-4 mb-4 rounded-lg bg-inherit';
+    $baseClasses = 'flex items-center justify-between p-4 rounded-lg bg-inherit';
 
     switch ($variant) {
         case 'primary':

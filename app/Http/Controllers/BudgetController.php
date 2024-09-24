@@ -8,7 +8,6 @@ use App\Models\Invitation;
 use App\Models\Office;
 use App\Http\Requests\StoreBudgetRequest;
 use App\Models\BudgetItem;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
@@ -24,6 +23,9 @@ class BudgetController extends Controller
                 $this->auth()->budgetItems()->with('budget')->with('budget.user')
             )
                 ->addColumn("action", "components.budgets.action")
+                ->addColumn('hasData', function (BudgetItem $item) {
+                    return BudgetItem::isHasData($item);
+                })
                 ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->make(true);

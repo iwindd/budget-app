@@ -8,6 +8,7 @@
                 <th>{{__("budgetitems.table-value")}}</th>
                 <th>{{__("budgetitems.table-created_by")}}</th>
                 <th>{{__("budgetitems.table-created_at")}}</th>
+                <th>{{__("budgetitems.table-hasData")}}</th>
                 <th>{{__("budgetitems.table-action")}}</th>
             </tr>
         </thead>
@@ -21,11 +22,15 @@
                     ajax: `{{route('budgets')}}`,
                     columns: [
                         { data: 'budget.serial', width: '5%', render: ff.text},
-                        { data: 'budget.title', width: '15%'},
-                        { data: 'budget.place', width: '15%'},
+                        { data: 'budget.title', width: '10%'},
+                        { data: 'budget.place', width: '10%'},
                         { data: 'budget.value', width: '15%', render: ff.money},
                         { data: 'budget.user.name', width: '20%'},
                         { data: 'created_at', width: '20%', render: ff.dateandtime },
+                        { data: 'hasData', width: '10%', render: (val) => ff.boolean(val,
+                            @js(__('budgetitems.table-hasData-true')),
+                            @js(__('budgetitems.table-hasData-false')))
+                        },
                         { data: 'action', width: '10%' },
                     ]
                 });

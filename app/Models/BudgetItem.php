@@ -19,6 +19,36 @@ class BudgetItem extends Model
     ];
 
     /**
+     * Check if budget item has address.
+     *
+     * @return Boolean
+     */
+    public static function isHasAddresses(BudgetItem $budget) {
+        return $budget->addresses()->count() > 0;
+    }
+
+    /**
+     * Check if budget item has expense.
+     *
+     * @return Boolean
+     */
+    public static function isHasExpenses(BudgetItem $budget) {
+        return $budget->expenses()->count() > 0;
+    }
+
+    /**
+     * Check if budget item has data.
+     *
+     * @return Boolean
+     */
+    public static function isHasData(BudgetItem $budget) {
+        if (!self::isHasAddresses($budget)) return false;
+        if (!self::isHasExpenses($budget)) return false;
+
+        return true;
+    }
+
+    /**
      * Get the user that created
     */
     public function user()

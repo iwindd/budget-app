@@ -97,6 +97,9 @@
         </table>
     </section>
 
+    @if (count($addresses) <= 0)
+        <x-form.error :messages="__('budgets.none-address-create-message')" />
+    @endif
     @script
         <script>
             $(document).ready(function(e) {

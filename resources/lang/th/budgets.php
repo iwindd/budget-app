@@ -22,6 +22,8 @@ return [
     'dialog-cancel-btn' => "ยกเลิก",
     'dialog-confirm-btn' => "ค้นหา",
     'none-create-message' => "จำเป็นต้องป้อนข้อมูลใบเบิกให้ครบถ้วนเพื่อจัดการใบเบิกเงิน",
+    'none-address-create-message' => "กรุณาเพิ่มรายละเอียดการเดินทางให้ครบถ้วน!",
+    'none-expense-create-message' => "กรุณาเพิ่มรายการค่าใช้จ่ายให้ครบถ้วน!",
     /* EXPENSE */
     'input-expense' => "ประเภทค่าใช้จ่าย",
     'input-expense-placeholder' => "หากมีข้อมูลที่เลือกอยู่แล้วจะเป็นการแทนที่ข้อมูลเก่า",
