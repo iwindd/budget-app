@@ -3,7 +3,7 @@
 return [
     'nav' => "ใบเบิกเงิน",
     'heading' => "ใบเบิกเงิน",
-    'create-heading' => "ใบเบิกเงินใหม่",
+    'create-heading' => "ใบเบิกเงิน #:serial",
     'add-btn' => "เพิ่มใบเบิกเงิน",
     'budgets-header' => "ใบเบิกเงิน",
     'input-serial' => "สัญญายืมเงินเลขที่",
