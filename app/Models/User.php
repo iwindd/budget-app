@@ -42,6 +42,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Check user is role
+     *
+     * @return Boolean
+     */
+    public static function isRole(User $user, $role) {
+        return $user->role == $role;
+    }
 
     /**
      * Get the user position
