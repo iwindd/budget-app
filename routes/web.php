@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AffiliationController;
+use App\Http\Controllers\BudgetAdminController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\InvitationController;
@@ -36,11 +37,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/budgets', [BudgetController::class, 'index'])->name('budgets');
-    Route::get('/budgets/{budget}', [BudgetController::class, 'show'])->name('budgets.show');
-    Route::post('/budgets/{budget}', [BudgetController::class, 'store'])->name('budgets.upsert');
-    Route::post('/budgets', [BudgetController::class, 'find'])->name('budgets.find');
 });
 
 /* USER ROUTES */
@@ -58,6 +54,8 @@ Route::middleware('role:user')->group(function () {
 /* ADMIN ROUTES */
 Route::middleware('role:admin')->prefix('admin')->group(function () {
     Route::get("/users", [UserController::class, 'index'])->name('users');
+
+    Route::get('/budgets', [BudgetAdminController::class, 'index'])->name('budgets.admin');
 
     Route::get("/positions", [PositionController::class, 'index'])->name('positions');
     Route::post("/positions", [PositionController::class, 'store'])->name('positions.store');

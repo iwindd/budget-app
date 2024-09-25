@@ -15,6 +15,15 @@
 
     @if (Auth::user()->role == "admin")
         <x-sidebar.link
+            title="{{__('budgets.nav')}}"
+            href="{{ route('budgets.admin') }}"
+            :isActive="request()->routeIs('budgets.admin')"
+        >
+            <x-slot name="icon">
+                <x-heroicon-o-document class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
+        </x-sidebar.link>
+        <x-sidebar.link
             title="{{__('users.nav')}}"
             href="{{ route('users') }}"
             :isActive="request()->routeIs('users')"
