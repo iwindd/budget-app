@@ -12,11 +12,14 @@ class BudgetAdminController extends Controller
     {
         if (request()->ajax()) {
             return datatables()->of(
-                Budget::with('user')->withCount('budgetItems')->get()
+                BudgetItem::with('budget')->with('user')
             )
                 ->addColumn("action", "components.budgets_admin.action")
-                ->addColumn('hasData', function () {
-                    return '-';
+                ->addColumn('owner', function (BudgetItem $item) {
+                    return $item->budget->user_id == $item->user_id;
+                })
+                ->addColumn('hasData', function (BudgetItem $item) {
+                    return BudgetItem::isHasData($item);
                 })
                 ->rawColumns(['action'])
                 ->addIndexColumn()
