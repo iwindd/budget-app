@@ -37,6 +37,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/selectize/companions', [UserController::class, 'companion'])->name('users.companions');
+    Route::get('/selectize/locations', [LocationController::class, 'locations'])->name('locations.selectize');
+    Route::get('/selectize/expenses', [ExpenseController::class, 'expenses'])->name('expenses.selectize');
 });
 
 /* USER ROUTES */
@@ -45,10 +49,6 @@ Route::middleware('role:user')->group(function () {
     Route::get('/budgets/{budget}', [BudgetController::class, 'show'])->name('budgets.show');
     Route::post('/budgets/{budget}', [BudgetController::class, 'store'])->name('budgets.upsert');
     Route::post('/budgets', [BudgetController::class, 'find'])->name('budgets.find');
-
-    Route::get('/selectize/companions', [UserController::class, 'companion'])->name('users.companions');
-    Route::get('/selectize/locations', [LocationController::class, 'locations'])->name('locations.selectize');
-    Route::get('/selectize/expenses', [ExpenseController::class, 'expenses'])->name('expenses.selectize');
 });
 
 /* ADMIN ROUTES */
@@ -56,6 +56,7 @@ Route::middleware('role:admin')->prefix('admin')->group(function () {
     Route::get("/users", [UserController::class, 'index'])->name('users');
 
     Route::get('/budgets', [BudgetAdminController::class, 'index'])->name('budgets.admin');
+    Route::get('/budgets/{budget}', [BudgetAdminController::class, 'show'])->name('budgets.show.admin');
 
     Route::get("/positions", [PositionController::class, 'index'])->name('positions');
     Route::post("/positions", [PositionController::class, 'store'])->name('positions.store');
