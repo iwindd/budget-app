@@ -21,7 +21,7 @@ class ExportBudgetController extends Controller
             'position' => $budget->user->position->label,
             'affiliation' => $budget->user->affiliation->label,
             'companions' => '',
-            'subject' => $budget->user->subject,
+            'subject' => $budget->budget->place, /* TODO:: place will change to subject later */
         ]);
 
         return $pdf->stream();
