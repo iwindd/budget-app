@@ -28,18 +28,56 @@ class Budget extends Model
     ];
 
     /**
+     * Get user's budget item by serial number with optional customizations.
+     *
+     * @param string $serial
+     * @param int $user_id
+     * @param array|null $budgetColumns Optional columns for the Budget model (select all if null)
+     * @param array|null $budgetItemColumns Optional columns for the BudgetItem model (select all if null)
+     * @param array|null $withRelations Optional relationships to eager load with specific columns (e.g. ['user:id,name', 'budget:title'])
+     * @return BudgetItem|null
+     */
+    public static function getUserBudgetBySerial($serial, $user_id, $budgetColumns = null, $budgetItemColumns = null, $withRelations = ['user:id,name'])
+    {
+        // If no specific columns are provided, select all for Budget
+        $budgetQuery = self::where('serial', $serial);
+
+        if ($budgetColumns) {
+            $budgetQuery->select($budgetColumns);
+        }
+
+        // Add dynamic relationships with specified columns
+        $budgetQuery->with([
+            'budgetItems' => function ($query) use ($user_id, $budgetItemColumns) {
+                $query->where('user_id', $user_id);
+                if ($budgetItemColumns) {
+                    $query->select($budgetItemColumns);
+                }
+            },
+            ...$withRelations // Load additional relationships with specific columns
+        ]);
+
+        $budget = $budgetQuery->first();
+
+        // Return the first matching budget item or null
+        return $budget ? $budget->budgetItems->first() : null;
+    }
+
+    /**
      * Get the user that created
-    */
+     */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function invitation() {
+    public function invitation()
+    {
         return $this->belongsTo(Invitation::class);
     }
 
-    public function office() {
+    public function office()
+    {
         return $this->belongsTo(Office::class);
     }
 

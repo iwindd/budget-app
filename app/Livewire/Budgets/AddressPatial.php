@@ -14,6 +14,7 @@ class AddressPatial extends Component
 {
     /* DATA */
     public $budget;
+    public $user;
     public $addresses = [];
 
     /* FORM */
@@ -35,42 +36,16 @@ class AddressPatial extends Component
 
     public function mount(Request $request)
     {
-        $this->budget = $request->route('budget');
+        $isAdminBudget = request()->routeIs('budgets.show.admin');
+        $key = $request->route('budget');
+        $this->user = !$isAdminBudget ? Auth::user() : $key->user;
+        $this->budget = !$isAdminBudget ? Budget::getUserBudgetBySerial($key, $this->user->id) : $key;
         $this->fetch();
     }
 
     private function fetch()
     {
-        $item = $this->getBudgetItem();
-
-        if ($item) $this->addresses = $item->addresses()->with("from")->with("back")->get()->toArray();
-    }
-
-    private function getBudgetItem(): BudgetItem | null
-    {
-        $budgetInstance = Budget::where('serial', $this->budget)->first();
-
-        if (!$budgetInstance) {
-            return null;
-        };
-
-        return $budgetInstance->budgetItems()->where('user_id', Auth::user()->id)->first();
-    }
-
-    public function save()
-    {
-        $this->resetValidation();
-        $validated = $this->validate();
-        $item = $this->getBudgetItem();
-        $addressId = $validated['address_id'];
-        unset($validated['address_id']);
-        if (!$item) return $this->redirect('/');
-
-        $item->addresses()->updateOrCreate(['id' => $addressId], $validated);
-        $this->clear();
-        $this->fetch();
-
-        return redirect()->back();
+        $this->addresses = $this->budget->addresses()->with("from")->with("back")->get()->toArray();
     }
 
     public function clear()
@@ -78,20 +53,27 @@ class AddressPatial extends Component
         $this->reset(['from_location_id', 'from_location_label', 'from_date', 'back_location_id', 'back_location_label', 'back_date', 'address_id']);
     }
 
+    public function save()
+    {
+        $validated = $this->validate();
+        $this->budget->addresses()->updateOrCreate(['id' => $validated['address_id']], $validated);
+        $this->clear();
+        $this->fetch();
+    }
+
     public function editAddress($index)
     {
-        $item = $this->getBudgetItem();
-        if (!$item) return $this->redirect('/');
-
         $data = $this->addresses[$index];
         $this->addresses[$index]['editing'] = true;
-        $this->address_id = $data['id'];
-        $this->from_location_id = $data['from_location_id'];
-        $this->from_location_label = $data['from']['label'];
-        $this->from_date = $data['from_date'];
-        $this->back_location_id = $data['back_location_id'];
-        $this->back_location_label = $data['back']['label'];
-        $this->back_date = $data['back_date'];
+        $this->fill([
+            'address_id' => $data['id'],
+            'from_location_id' => $data['from_location_id'],
+            'from_location_label' => $data['from']['label'],
+            'from_date' => $data['from_date'],
+            'back_location_id' => $data['back_location_id'],
+            'back_location_label' => $data['back']['label'],
+            'back_date' => $data['back_date'],
+        ]);
     }
 
     public function cancelEditAddress($index)
@@ -102,10 +84,7 @@ class AddressPatial extends Component
 
     public function removeAddress($id)
     {
-        $item = $this->getBudgetItem();
-        if (!$item) return $this->redirect('/');
-
-        $item->addresses()->where('id', $id)->delete();
+        $this->budget->addresses()->where('id', $id)->delete();
         $this->fetch();
     }
 
@@ -114,14 +93,22 @@ class AddressPatial extends Component
         return view('livewire.budgets.address-patial');
     }
 
+    private function formatAddressValidation() {
+        return empty($this->address_id) ? -1 : $this->address_id;
+    }
+
     public function rules()
     {
+        $serial = $this->budget->budget->serial;
+        $user_id = $this->user->id;
+        $address_id = $this->formatAddressValidation();
+
         return [
             'address_id' => ['nullable', 'integer'],
             'from_location_id' => ['required', 'integer', 'exists:locations,id'],
-            'from_date' => ['required', 'date', 'date_format:Y-m-d\TH:i', new AddressFrom($this->budget, Auth::user()->id, empty($this->address_id) ? -1 : $this->address_id)],
+            'from_date' => ['required', 'date', 'date_format:Y-m-d\TH:i', new AddressFrom($serial, $user_id, $address_id)],
             'back_location_id' => ['required', 'integer', 'exists:locations,id'],
-            'back_date' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:from_date', new AddressBack($this->budget, Auth::user()->id, empty($this->address_id) ? -1 : $this->address_id)]
+            'back_date' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:from_date', new AddressBack($serial, $user_id, $address_id)]
         ];
     }
 

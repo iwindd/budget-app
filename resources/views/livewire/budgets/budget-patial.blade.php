@@ -54,8 +54,10 @@
                 type="text" class="block w-full" />
             <x-form.error :messages="$errors->get('place')" />
         </section>
-        <section class="max-w-full col-span-2 flex justify-end">
-            <x-button type="submit" variant="success">บันทึกใบเบิก</x-button>
-        </section>
+        @if ($isOwner)
+            <section class="max-w-full col-span-2 flex justify-end">
+                <x-button type="submit" variant="success">บันทึกใบเบิก</x-button>
+            </section>
+        @endif
     </form>
 </section>

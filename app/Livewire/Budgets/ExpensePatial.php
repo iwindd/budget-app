@@ -16,6 +16,7 @@ class ExpensePatial extends Component
 {
     /* DATA */
     public $budget;
+    public $user;
     public $expenses = [];
 
     /* FORM */
@@ -38,26 +39,20 @@ class ExpensePatial extends Component
 
     public function mount(Request $request)
     {
-        $this->budget = $request->route('budget');
+        $isAdminBudget = request()->routeIs('budgets.show.admin');
+        $key = $request->route('budget');
+        $this->user = !$isAdminBudget ? Auth::user() : $key->user;
+        $this->budget = !$isAdminBudget ? Budget::getUserBudgetBySerial($key, $this->user->id) : $key;
         $this->fetch();
     }
 
     private function fetch()
     {
-        $item = $this->getBudgetItem($this->budget);
-
-        if ($item) $this->expenses = $item->expenses()->with('expense:label,id')->get()->toArray();
+        $this->expenses = $this->budget->expenses()->with('expense:label,id')->get()->toArray();
     }
 
-    private function getBudgetItem(): BudgetItem | null
-    {
-        $budgetInstance = Budget::where('serial', $this->budget)->first();
-
-        if (!$budgetInstance) {
-            return null;
-        };
-
-        return $budgetInstance->budgetItems()->where('user_id', Auth::user()->id)->first();
+    private function clear(){
+        $this->reset(['expense_id', 'days', 'total', 'expense_label']);
     }
 
     public function addExpense(String $label) : int  {
@@ -73,26 +68,22 @@ class ExpensePatial extends Component
         return $newExpense->id;
     }
 
-    public function save()
-    {
-        //create expense before validation
-        if (gettype($this->expense_id) == "string") $this->expense_id = $this->addExpense($this->expense_id);
-
-        $validated = $this->validate();
-        $validated['days'] = empty($validated['days']) ? null : $validated['days'];
-        $item = $this->getBudgetItem();
-        if (!$item) return $this->redirect('/');
-
-        $item->expenses()->updateOrCreate(['expense_id' => $validated['expense_id']], $validated);
-        $this->reset(['expense_id', 'days', 'total', 'expense_label']);
+    public function removeExpense($id) {
+        $this->budget->expenses()->find($id)->delete();
         $this->fetch();
     }
 
-    public function removeExpense($id) {
-        $item = $this->getBudgetItem();
-        if (!$item) return $this->redirect('/');
+    public function save()
+    {
+        if (gettype($this->expense_id) == "string") {
+            $this->expense_id = $this->addExpense($this->expense_id);
+        }
 
-        $item->expenses()->where('id', $id)->delete();
+        $validated = $this->validate();
+        $validated['days'] = empty($validated['days']) ? null : $validated['days'];
+
+        $this->budget->expenses()->updateOrCreate(['expense_id' => $validated['expense_id']], $validated);
+        $this->clear();
         $this->fetch();
     }
 

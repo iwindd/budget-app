@@ -3,6 +3,7 @@
 namespace App\Livewire\Budgets;
 
 use App\Models\Budget;
+use App\Models\BudgetItem;
 use App\Models\Invitation;
 use App\Models\Office;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Livewire\Component;
 class BudgetPatial extends Component
 {
     /* DATA */
+    public $user;
     public $isOwner;
 
     /* FROM DATA */
@@ -29,16 +31,20 @@ class BudgetPatial extends Component
 
     public function mount(Request $request)
     {
-        $auth = Auth::user();
-        $this->serial = $request->route('budget');
-        $data = Budget::where('serial', $this->serial)
-            ->with(['user', 'office', 'invitation'])
-            ->first();
+        $isAdminBudget = request()->routeIs('budgets.show.admin');
+        $key = $request->route('budget');
+        $data = !$isAdminBudget ? (
+            Budget::where('serial', $key)
+                ->with(['user', 'office', 'invitation'])
+                ->first()
+        ) : $key->budget;
 
-        $this->isOwner = !$data || $data->user_id == $auth->id;
+        $this->user = !$isAdminBudget ? Auth::user() : $data->user;
+        $this->serial = $data->serial;
+        $this->isOwner = !$data || $data->user_id == $this->user->id || $isAdminBudget;
         $this->office     = ($data->office ?? Office::getOffice('label'))->label;
         $this->invitation = ($data->invitation ?? Invitation::getInvitation('label'))->label;
-        $this->name       = ($data->user ?? $auth)->name;
+        $this->name       = ($data->user ?? $this->user)->name;
 
         $this->date     = $data->date ?? '';
         $this->value    = $data->value ?? '';
@@ -49,14 +55,12 @@ class BudgetPatial extends Component
 
     public function save()
     {
-        /** @var User $user */
-        $user = Auth::user();
         $validated = $this->validate();
         $validated['office_id']     = Office::getOffice('id')->id;
         $validated['invitation_id'] = Invitation::getInvitation('id')->id;
 
-        $budget = $user->budgets()->updateOrCreate(['serial' => $validated['serial']], $validated);
-        if ($budget->wasRecentlyCreated) $budget->budgetItems()->create(['user_id' => $user->id]);
+        $budget = $this->user->budgets()->updateOrCreate(['serial' => $validated['serial']], $validated);
+        if ($budget->wasRecentlyCreated) $budget->budgetItems()->create(['user_id' => $this->user->id]);
         if ($budget->wasRecentlyCreated) $this->js('window.location.reload()');
     }
 
