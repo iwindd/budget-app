@@ -8,8 +8,10 @@ return [
     'budgets-header' => "ใบเบิกเงิน",
     'input-serial' => "สัญญายืมเงินเลขที่",
     'input-date' => "วันที่",
-    'input-name' => "ชื่อผู้ยืม",
+    'input-name' => "ผู้เบิก",
+    'input-user-placeholder' => "เลือกรายชื่อผู้เบิก",
     'input-value' => "จำนวนเงินที่ต้องการเบิก (รวมทั้งคณะเดินทาง)",
+    'input-value-minimize' => "งบประมาณ",
     'input-value-placeholder' => "จำนวนที่ต้องการเบิก",
     'input-subject' => "ขออนุมัติเบิกค่าใช้จ่ายในการเดินทางไปราชการ",
     'input-header' => "เรื่อง",
@@ -19,6 +21,7 @@ return [
     'input-title-placeholder' => "เรื่อง",
     'input-place' => "สถานที่",
     'input-place-placeholder' => "สถานที่ไป",
+    'dialog-back-btn' => "ย้อนกลับ",
     'dialog-cancel-btn' => "ยกเลิก",
     'dialog-confirm-btn' => "ค้นหา",
     'none-create-message' => "จำเป็นต้องป้อนข้อมูลใบเบิกให้ครบถ้วนเพื่อจัดการใบเบิกเงิน",
@@ -68,4 +71,6 @@ return [
     'table-address-action' => "เครื่องมือ",
     'table-addresses-not-found' => "ไม่พบการเดินทาง",
     'add-address-btn' => "บันทึกการเดินทาง",
+    /* ADMIN DIALOG */
+    'admin-add-dialog-header' => "ใบเบิกเงิน"
 ];

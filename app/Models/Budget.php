@@ -64,6 +64,16 @@ class Budget extends Model
     }
 
     /**
+     * Get owner budget item
+     *
+     * @param Budget $budget
+     * @return BudgetItem|null
+    */
+    public static function getOwnerBudget(Budget $budget) {
+        return $budget->budgetItems()->where('user_id', $budget->user_id)->first();
+    }
+
+    /**
      * Get the user that created
      */
     public function user()

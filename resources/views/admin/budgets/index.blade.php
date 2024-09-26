@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout select2="true">
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight ">
@@ -21,6 +21,6 @@
         <x-alert :text="session('alert')['text']" :variant="session('alert')['variant']"/>
     @endif
 
-    <x-budgets_admin.dialog />
+    <livewire:budgets-admin.dialog />
     <x-budgets_admin.datatable />
 </x-app-layout>
