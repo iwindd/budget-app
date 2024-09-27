@@ -3,8 +3,8 @@
         <thead>
             <tr>
                 <th>{{__("budgetitems.table-serial")}}</th>
-                <th>{{__("budgetitems.table-title")}}</th>
-                <th>{{__("budgetitems.table-place")}}</th>
+                <th>{{__("budgetitems.table-order_id")}}</th>
+                <th>{{__("budgetitems.table-subject")}}</th>
                 <th>{{__("budgetitems.table-value")}}</th>
                 <th>{{__("budgetitems.table-owner")}}</th>
                 <th>{{__("budgetitems.table-type")}}</th>
@@ -23,8 +23,8 @@
                     ajax: `{{route('budgets.admin')}}`,
                     columns: [
                         { data: 'budget.serial', width: '5%', render: ff.text},
-                        { data: 'budget.title', width: '15%'},
-                        { data: 'budget.place', width: '10%'},
+                        { data: 'budget.order_id', width: '15%'},
+                        { data: 'budget.subject', width: '10%'},
                         { data: 'budget.value', width: '10%', render: ff.money},
                         { data: 'user.name', width: '15%'},
                         { data: 'owner', width: '10%', render: (val) => ff.boolean(val, @js(__('budgetitems.table-type-true')), @js(__('budgetitems.table-type-false')))},

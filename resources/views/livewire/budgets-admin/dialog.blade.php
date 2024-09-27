@@ -26,16 +26,16 @@
                 @if ($isNew)
                     <div class="grid grid-cols-2 gap-2">
                         <div class="space-y-2">
-                            <x-form.label for="title" :value="__('budgets.input-title')" />
-                            <x-form.input id="title" wire:model="title" name="title" :placeholder="__('budgets.input-title-placeholder')"
+                            <x-form.label for="order_id" :value="__('budgets.input-order_id')" />
+                            <x-form.input id="order_id" wire:model="order_id" name="order_id"
                                 type="text" class="block w-full" />
-                            <x-form.error :messages="$errors->get('title')" />
+                            <x-form.error :messages="$errors->get('order_id')" />
                         </div>
                         <div class="space-y-2">
-                            <x-form.label for="place" :value="__('budgets.input-place')" />
-                            <x-form.input id="place" wire:model="place" name="place" :placeholder="__('budgets.input-place-placeholder')"
+                            <x-form.label for="subject" :value="__('budgets.input-subject')" />
+                            <x-form.input id="subject" wire:model="subject" name="subject" :placeholder="__('budgets.input-subject-placeholder')"
                                 type="text" class="block w-full" />
-                            <x-form.error :messages="$errors->get('place')" />
+                            <x-form.error :messages="$errors->get('subject')" />
                         </div>
                         <div class="space-y-2 col-span-2">
                             <x-form.input id="value" name="value" type="number" wire:model="value"

@@ -22,12 +22,12 @@ class ExportBudgetController extends Controller
             'value' => $budget->budget->value,
             'office' => $budget->budget->office->label,
             'invitation' => $budget->budget->invitation->label,
-            'order_id' => $budget->budget->title,
+            'order_id' => $budget->budget->order_id,
             'order_at' => $budget->budget->order_at,
             'position' => $budget->user->position->label,
             'affiliation' => $budget->user->affiliation->label,
             'companions' => $budget->budget->budgetItems()->with('user')->where('user_id', '!=', $budget->user_id)->get(),
-            'subject' => $budget->budget->place, /* TODO:: place will change to subject later */
+            'subject' => $budget->budget->subject, /* TODO:: place will change to subject later */
             'addresses' => $budget->addresses()->with(['from', 'back'])->get(),
             'days' => $fromDate->diffInDays($backDate),
             'hours' => $fromDate->diffInHours($backDate),

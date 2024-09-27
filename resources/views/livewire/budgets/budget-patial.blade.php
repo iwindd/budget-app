@@ -37,22 +37,22 @@
             <x-form.input id="invitation" :value="$invitation" disabled name="invitation" type="text" class="block w-full" />
         </section>
         <section class="space-y-2"> {{-- ORDER_AT --}}
-            <x-form.label for="date" :value="__('budgets.input-date')" />
+            <x-form.label for="order_at" :value="__('budgets.input-order_at')" />
             <x-form.input id="order_at" name="order_at" type="date" :disabled="!$isOwner" wire:model="order_at"
                 class="block w-full" />
             <x-form.error :messages="$errors->get('order_at')" />
         </section>
-        <section class="space-y-2"> {{-- TITLE --}}
-            <x-form.label for="title" :value="__('budgets.input-title')" />
-            <x-form.input id="title" wire:model="title" :disabled="!$isOwner" name="title" :placeholder="__('budgets.input-title-placeholder')"
+        <section class="space-y-2"> {{-- ORDER_ID --}}
+            <x-form.label for="order_id" :value="__('budgets.input-order_id')" />
+            <x-form.input id="order_id" wire:model="order_id" :disabled="!$isOwner" name="order_id"
                 type="text" class="block w-full" />
-            <x-form.error :messages="$errors->get('title')" />
+            <x-form.error :messages="$errors->get('order_id')" />
         </section>
-        <section class="space-y-2"> {{-- PLACE --}}
-            <x-form.label for="place" :value="__('budgets.input-place')" />
-            <x-form.input id="place" wire:model="place" :disabled="!$isOwner" name="place" :placeholder="__('budgets.input-place-placeholder')"
+        <section class="space-y-2"> {{-- SUBJECT --}}
+            <x-form.label for="subject" :value="__('budgets.input-subject')" />
+            <x-form.input id="subject" wire:model="subject" :disabled="!$isOwner" name="subject" :placeholder="__('budgets.input-subject-placeholder')"
                 type="text" class="block w-full" />
-            <x-form.error :messages="$errors->get('place')" />
+            <x-form.error :messages="$errors->get('subject')" />
         </section>
         @if ($isOwner)
             <section class="max-w-full col-span-2 flex justify-end">

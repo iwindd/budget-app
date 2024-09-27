@@ -3,8 +3,8 @@
         <thead>
             <tr>
                 <th>{{__("budgetitems.table-serial")}}</th>
-                <th>{{__("budgetitems.table-title")}}</th>
-                <th>{{__("budgetitems.table-place")}}</th>
+                <th>{{__("budgetitems.table-order_id")}}</th>
+                <th>{{__("budgetitems.table-subject")}}</th>
                 <th>{{__("budgetitems.table-value")}}</th>
                 <th>{{__("budgetitems.table-created_by")}}</th>
                 <th>{{__("budgetitems.table-created_at")}}</th>
@@ -22,8 +22,8 @@
                     ajax: `{{route('budgets')}}`,
                     columns: [
                         { data: 'budget.serial', width: '5%', render: ff.text},
-                        { data: 'budget.title', width: '10%'},
-                        { data: 'budget.place', width: '10%'},
+                        { data: 'budget.order_id', width: '10%'},
+                        { data: 'budget.subject', width: '10%'},
                         { data: 'budget.value', width: '15%', render: ff.money},
                         { data: 'budget.user.name', width: '20%'},
                         { data: 'created_at', width: '20%', render: ff.dateandtime },
