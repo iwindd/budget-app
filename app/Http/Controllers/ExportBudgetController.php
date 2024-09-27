@@ -20,7 +20,7 @@ class ExportBudgetController extends Controller
             'order_at' => $budget->budget->order_at,
             'position' => $budget->user->position->label,
             'affiliation' => $budget->user->affiliation->label,
-            'companions' => '',
+            'companions' => $budget->budget->budgetItems()->with('user')->where('user_id', '!=', $budget->user_id)->get(),
             'subject' => $budget->budget->place, /* TODO:: place will change to subject later */
         ]);
 

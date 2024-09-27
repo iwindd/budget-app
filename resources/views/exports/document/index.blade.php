@@ -72,8 +72,8 @@
 
         table { width: 100%; }
         td.fit { width: 1%; white-space: nowrap; }
-        td.under { position: relative; text-align: center }
-        td.under > span{ line-height: 0.6em; }
+        td.under { position: relative; text-align: center },
+        td.under > span{ position: relative; bottom: 0.15em; }
         td.under::after {
             content: "-";
             color: rgba(0, 0, 0, 0);
@@ -158,10 +158,23 @@
                 <td class="fit">{{__('exports.document-affiliation')}}</td>
                 <td class="under"><span>{{$affiliation}}</span></td>
                 <td class="fit">{{__('exports.document-companions')}}</td>
-                <td class="under"><span>{{$companions}}</span></td>
+                <td class="under"><span>{{$companions[0]->user->name}} {{$companions->count() > 1 ? ',': ''}}</span></td>
             </tr>
         </table>
-        <table >
+        @if ($companions->count() > 1)
+            @foreach ($companions->slice(1)->chunk(3) as $companionChunk)
+                <table>
+                    <tr>
+                        <td class="under" style="text-align: left">
+                            <span>
+                                {{ $companionChunk->pluck('user.name')->implode(', ') }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            @endforeach
+        @endif
+        <table>
             <tr>
                 <td class="fit">{{__('exports.document-subject')}}</td>
                 <td class="under"><span>{{$subject}}</span></td>
