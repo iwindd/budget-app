@@ -73,6 +73,10 @@ class Budget extends Model
         return $budget->budgetItems()->where('user_id', $budget->user_id)->first();
     }
 
+    public static function getExpenses(Budget $budget) {
+        return BudgetItemExpense::whereIn('budget_item_id', $budget->budgetItems()->pluck('id'));
+    }
+
     /**
      * Get the user that created
      */
