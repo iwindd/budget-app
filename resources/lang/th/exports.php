@@ -4,6 +4,9 @@ return [
     /* DOCUMENT */
     'document-serial' => 'สัญญายืมเลขที่',
     'document-date' => 'วันที่',
+    'document-date-day' => 'วัน',
+    'document-date-month' => 'เดือน',
+    'document-date-year' => 'พ.ศ.',
     'document-name' => 'ชื่อผู้ยืม',
     'document-name-2' => 'ข้าพเจ้า',
     'document-value' => 'จำนวนเงิน',

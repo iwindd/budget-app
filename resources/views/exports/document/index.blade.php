@@ -1,3 +1,5 @@
+@inject('format', 'App\Services\FormatHelperService')
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -141,7 +143,7 @@
                 <td class="fit">{{ __('exports.document-serial') }}</td>
                 <td class="under"><span>{{ $serial }}</span></td>
                 <td class="fit">{{ __('exports.document-date') }}</td>
-                <td class="under"><span>{{ $date }}</span></td>
+                <td class="under"><span>{{ $format->date($date) }}</span></td>
             </tr>
         </table>
         <table>
@@ -162,11 +164,15 @@
                 <td class="fit">{{ __('exports.document-office') }}</td>
                 <td class="under"><span>{{ $office }}</span></td>
             </tr>
+        </table>
+        <table style="width: 70%; margin: 0 auto;">
             <tr>
-                <td class="fit"></td>
-                <td style="text-align: center">
-                    <p>วัน.เดือน.ปี</p>
-                </td>
+                <td class="fit">{{__('exports.document-date-day')}}</td>
+                <td class="under"><span>{{ $format->date($date, 'd') }}</span></td>
+                <td class="fit">{{__('exports.document-date-month')}}</td>
+                <td class="under"><span>{{ $format->date($date, 'F') }}</span></td>
+                <td class="fit">{{__('exports.document-date-year')}}</td>
+                <td class="under"><span>{{ $format->date($date, 'Y') }}</span></td>
             </tr>
         </table>
     </section>
@@ -188,7 +194,7 @@
                 <td class="fit" style="padding-left: 2em">{{ __('exports.document-order_id') }}</td>
                 <td class="under"><span>{{ $order_id }}</span></td>
                 <td class="fit">{{ __('exports.document-order_at') }}</td>
-                <td class="under"><span>{{ $order_at }}</span></td>
+                <td class="under"><span>{{ $format->date($order_at) }}</span></td>
                 <td class="fit">{{ __('exports.document-allowed') }}</td>
             </tr>
         </table>
@@ -234,12 +240,18 @@
         @foreach ($addresses as $address)
             <table>
                 <tr>
-                    <td class="fit">{{ $address->from->label }} {{ __('exports.document-address-from-label') }}
-                    </td>
-                    <td class="under"><span>{{ $address->from_date }}</span></td>
-                    <td class="fit">{{ __('exports.document-address-back-label') }} {{ $address->back->label }}
-                    </td>
-                    <td class="under"><span>{{ $address->back_date }}</span></td>
+                    <td class="fit">{{ $address->from->label }} {{ __('exports.document-address-from-label') }}</td>
+                    <td class="under"><span>{{ $format->date($address->from_date, 'd') }}</span></td>
+                    <td class="fit">{{ __('exports.document-date-month') }}</td>
+                    <td class="under"><span>{{ $format->date($address->from_date, 'F') }}</span></td>
+                    <td class="fit">{{ __('exports.document-date-year') }}</td>
+                    <td class="under"><span>{{ $format->date($address->from_date, 'Y') }}</span></td>
+                    <td class="fit">{{ __('exports.document-address-back-label') }} {{ $address->back->label }}</td>
+                    <td class="under"><span>{{ $format->date($address->back_date, 'd') }}</span></td>
+                    <td class="fit">{{ __('exports.document-date-month') }}</td>
+                    <td class="under"><span>{{ $format->date($address->back_date, 'F') }}</span></td>
+                    <td class="fit">{{ __('exports.document-date-year') }}</td>
+                    <td class="under"><span>{{ $format->date($address->back_date, 'Y') }}</span></td>
                 </tr>
             </table>
         @endforeach
