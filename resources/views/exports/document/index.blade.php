@@ -211,7 +211,7 @@
                 <td class="fit">{{ __('exports.document-affiliation') }}</td>
                 <td class="under"><span>{{ $affiliation }}</span></td>
                 <td class="fit">{{ __('exports.document-companions') }}</td>
-                <td class="under"><span>{{ $companions[0]->user->name }}
+                <td class="under"><span>{{ $companions[0]->user->name ?? '-' }}
                         {{ $companions->count() > 1 ? ',' : '' }}</span></td>
             </tr>
         </table>
