@@ -349,7 +349,7 @@
             </tr>
             <tr>
                 <td class="fit" style="text-align: right;">{{ __('exports.document-position') }}</td>
-                <td class="under"><span>{{ $position }}</span></td>
+                <td class="under"><span></span></td>
                 <td class="fit"></td>
             </tr>
         </table>
