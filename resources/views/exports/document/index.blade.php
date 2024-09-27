@@ -316,7 +316,7 @@
         <table>
             <tr>
                 <td class="fit">{{ __('exports.document-expense-total-text') }}</td>
-                <td class="under" style="width: 20%;"><span>{{ $total }}</span></td>
+                <td class="under" style="width: 20%;"><span>{{ $format->bahtText($total) }}</span></td>
             </tr>
         </table>
     </section>
