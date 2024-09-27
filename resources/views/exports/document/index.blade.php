@@ -151,7 +151,7 @@
                 <td class="fit">{{ __('exports.document-name') }}</td>
                 <td class="under" style="width: 50%;"><span>{{ $name }}</span></td>
                 <td class="fit">{{ __('exports.document-value') }}</td>
-                <td class="under"><span>{{ $value }}</span></td>
+                <td class="under"><span>{{ $format->number($value) }}</span></td>
                 <td class="fit">{{ __('exports.document-value-suffix') }}</td>
                 <td class="fit" style="width: 10%; text-align: right;">{{ __('exports.document-format') }}</td>
             </tr>
@@ -258,9 +258,9 @@
         <table style="width: 60%;">
             <tr>
                 <td class="fit">{{ __('exports.document-days-total') }}</td>
-                <td class="under"><span>{{ $days }}</span></td>
+                <td class="under"><span>{{ $format->number($days) }}</span></td>
                 <td class="fit">{{ __('exports.document-days-day') }}</td>
-                <td class="under"><span>{{ $hours - $days * 24 }}</span></td>
+                <td class="under"><span>{{ $format->number($hours - $days * 24) }}</span></td>
                 <td class="fit">{{ __('exports.document-days-hour') }}</td>
             </tr>
         </table>
@@ -295,12 +295,12 @@
 
                     @if ($expense->days != null)
                         <td class="fit">{{ __('exports.document-expense-days') }}</td>
-                        <td class="under" style="width: 15%;"><span>{{ $expense->days }}</span></td>
+                        <td class="under" style="width: 15%;"><span>{{ $format->number($expense->days) }}</span></td>
                         <td class="fit">{{ __('exports.document-expense-days-suffix') }}</td>
                     @endif
 
                     <td class="fit">{{ __('exports.document-expense-total') }}</td>
-                    <td class="under" style="width: 20%;"><span>{{ $expense_total }}</span></td>
+                    <td class="under" style="width: 20%;"><span>{{ $format->number($expense_total) }}</span></td>
                     <td class="fit">{{ __('exports.document-expense-total-suffix') }}</td>
                 </tr>
             </table>
@@ -309,7 +309,7 @@
             <tr>
                 <td class="grow"></td>
                 <td class="fit">{{ __('exports.document-expenses-total') }}</td>
-                <td class="under" style="width: 20%;"><span>{{ $total }}</span></td>
+                <td class="under" style="width: 20%;"><span>{{ $format->number($total) }}</span></td>
                 <td class="fit">{{ __('exports.document-expense-total-suffix') }}</td>
             </tr>
         </table>

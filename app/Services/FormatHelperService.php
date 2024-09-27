@@ -13,4 +13,8 @@ class FormatHelperService
 
         return $carbonDate->translatedFormat($customFormat);
     }
+
+    public static function number($val, $decimals = 0) {
+        return number_format($val, $decimals);
+    }
 }
