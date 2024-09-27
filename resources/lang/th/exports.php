@@ -21,5 +21,10 @@ return [
     'document-affiliation' => 'สังกัด',
     'document-companions' => 'พร้อมด้วย',
     'document-subject' => 'เดินทางไปปฎิบัติราชการ (ที่ไหน/เรื่องอะไร)',
-    'document-subject-suffix' => 'โดยออกเดินทางจาก'
+    'document-subject-suffix' => 'โดยออกเดินทางจาก',
+    'document-address-from-label' => 'ตั้งแต่วันที่',
+    'document-address-back-label' => 'และกลับถึง',
+    'document-days-total' => 'รวมเวลาไปราชการครั้งนี้',
+    'document-days-day' => 'วัน',
+    'document-days-hour' => 'ชั่วโมง'
 ];

@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\BudgetItem;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class ExportBudgetController extends Controller
 {
     public function document(BudgetItem $budget)
     {
+        $budgetFromBack = BudgetItem::getFromBack($budget);
+
+        $fromDate = Carbon::parse($budgetFromBack['from']);
+        $backDate = Carbon::parse($budgetFromBack['back']);
+
         $pdf = Pdf::loadView('exports.document.index', [
             'serial' => $budget->budget->serial,
             'date' => $budget->budget->date,
@@ -22,6 +28,9 @@ class ExportBudgetController extends Controller
             'affiliation' => $budget->user->affiliation->label,
             'companions' => $budget->budget->budgetItems()->with('user')->where('user_id', '!=', $budget->user_id)->get(),
             'subject' => $budget->budget->place, /* TODO:: place will change to subject later */
+            'addresses' => $budget->addresses()->with(['from', 'back'])->get(),
+            'days' => $fromDate->diffInDays($backDate),
+            'hours' => $fromDate->diffInHours($backDate)
         ]);
 
         return $pdf->stream();

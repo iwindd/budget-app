@@ -49,6 +49,18 @@ class BudgetItem extends Model
     }
 
     /**
+     * get From back
+     *
+     * @return array
+     */
+    public static function getFromBack(BudgetItem $budget) {
+        return [
+            'from' => $budget->addresses->first()->from_date ?? null,
+            'back' => $budget->addresses->last()->back_date ?? null
+        ];
+    }
+
+    /**
      * Get the user that created
     */
     public function user()
