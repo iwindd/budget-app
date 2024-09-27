@@ -30,7 +30,8 @@ class ExportBudgetController extends Controller
             'subject' => $budget->budget->place, /* TODO:: place will change to subject later */
             'addresses' => $budget->addresses()->with(['from', 'back'])->get(),
             'days' => $fromDate->diffInDays($backDate),
-            'hours' => $fromDate->diffInHours($backDate)
+            'hours' => $fromDate->diffInHours($backDate),
+            'expenses' => $budget->expenses()->with('expense')->orderBy('days', 'desc')->get()
         ]);
 
         return $pdf->stream();

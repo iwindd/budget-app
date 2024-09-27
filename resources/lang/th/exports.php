@@ -26,5 +26,14 @@ return [
     'document-address-back-label' => 'และกลับถึง',
     'document-days-total' => 'รวมเวลาไปราชการครั้งนี้',
     'document-days-day' => 'วัน',
-    'document-days-hour' => 'ชั่วโมง'
+    'document-days-hour' => 'ชั่วโมง',
+    'document-expense-header' => 'ข้าพเจ้าขอเบิกค่าใช้จ่ายในการเดินทางไปราชการ สำหรับ :value ดังนี้',
+    'document-expense-header-user' => 'ข้าพเจ้า',
+    'document-expense-header-companion' => 'คณะเดินทาง',
+    'document-expense-days' => 'จำนวน',
+    'document-expense-days-suffix' => 'วัน',
+    'document-expense-total' => 'รวม',
+    'document-expenses-total' => 'รวมทั้งสิ้น',
+    'document-expense-total-suffix' => 'บาท',
+    'document-expense-total-text' => 'จำนวนเงิน (ตัวอักษร)'
 ];

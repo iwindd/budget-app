@@ -79,7 +79,7 @@
             white-space: nowrap;
         }
 
-        td.under {
+        td.under, td.grow {
             position: relative;
             text-align: center
         }
@@ -189,7 +189,7 @@
                             </span>
                         </td>
                     </tr>
-            </table>
+                </table>
             @endforeach
         @endif
         <table>
@@ -204,20 +204,77 @@
         @foreach ($addresses as $address)
             <table>
                 <tr>
-                    <td class="fit">{{ $address->from->label }} {{__('exports.document-address-from-label')}}</td>
+                    <td class="fit">{{ $address->from->label }} {{ __('exports.document-address-from-label') }}
+                    </td>
                     <td class="under"><span>{{ $address->from_date }}</span></td>
-                    <td class="fit">{{__('exports.document-address-back-label')}} {{ $address->back->label }}</td>
+                    <td class="fit">{{ __('exports.document-address-back-label') }} {{ $address->back->label }}
+                    </td>
                     <td class="under"><span>{{ $address->back_date }}</span></td>
                 </tr>
             </table>
         @endforeach
         <table style="width: 60%;">
             <tr>
-                <td class="fit">{{__('exports.document-days-total')}}</td>
-                <td class="under"><span>{{$days}}</span></td>
-                <td class="fit">{{__('exports.document-days-day')}}</td>
-                <td class="under"><span>{{$hours - ($days*24)}}</span></td>
-                <td class="fit">{{__('exports.document-days-hour')}}</td>
+                <td class="fit">{{ __('exports.document-days-total') }}</td>
+                <td class="under"><span>{{ $days }}</span></td>
+                <td class="fit">{{ __('exports.document-days-day') }}</td>
+                <td class="under"><span>{{ $hours - $days * 24 }}</span></td>
+                <td class="fit">{{ __('exports.document-days-hour') }}</td>
+            </tr>
+        </table>
+    </section>
+    <section>
+        <table>
+            <tr>
+                <td class="fit" style="padding-left: 2em">
+                    {{ __('exports.document-expense-header', [
+                        'value' =>
+                            $companions->count() > 0
+                                ? __('exports.document-expense-header-companion')
+                                : __('exports.document-expense-header-user'),
+                    ]) }}
+                </td>
+            </tr>
+        </table>
+
+        @php
+            $total = 0;
+        @endphp
+
+        @foreach ($expenses as $expense)
+            @php
+                $expense_total = $expense->total * ($expense->days ?? 1);
+                $total += $expense_total;
+            @endphp
+            <table>
+                <tr>
+                    <td class="fit">{{ $expense->expense->label }}</td>
+                    <td class="under"></td>
+
+                    @if ($expense->days != null)
+                        <td class="fit">{{__('exports.document-expense-days')}}</td>
+                        <td class="under" style="width: 15%;"><span>{{ $expense->days }}</span></td>
+                        <td class="fit">{{__('exports.document-expense-days-suffix')}}</td>
+                    @endif
+
+                    <td class="fit">{{__('exports.document-expense-total')}}</td>
+                    <td class="under" style="width: 20%;"><span>{{ $expense_total }}</span></td>
+                    <td class="fit">{{__('exports.document-expense-total-suffix')}}</td>
+                </tr>
+            </table>
+        @endforeach
+        <table>
+            <tr>
+                <td class="grow"></td>
+                <td class="fit">{{__('exports.document-expenses-total')}}</td>
+                <td class="under" style="width: 20%;"><span>{{$total}}</span></td>
+                <td class="fit">{{__('exports.document-expense-total-suffix')}}</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td class="fit">{{__('exports.document-expense-total-text')}}</td>
+                <td class="under" style="width: 20%;"><span>{{$total}}</span></td>
             </tr>
         </table>
     </section>
