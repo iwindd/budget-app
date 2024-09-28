@@ -1,0 +1,163 @@
+
+
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 1in 1in 1in 1in;
+    line-height: 1em;
+}
+
+body,
+.text {
+    font-family: "THSarabun";
+    font-size: 16px;
+}
+
+.title {
+    font-family: "THSarabun";
+    font-size: 16px;
+    text-align: center;
+    margin: 1em 0;
+}
+
+.subtitle {
+    font-family: "THSarabun";
+    font-size: 16px;
+    font-weight: bold;
+}
+
+header {
+    height: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+td.fit {
+    width: 1%;
+    white-space: nowrap;
+}
+
+td.under,
+td.grow {
+    position: relative;
+    text-align: center;
+}
+
+td.under.fix {
+    font-size: 16px;
+    height: 20px;
+    line-height: 1em;
+}
+
+td.fix-under {
+    color: rgba(255, 255, 255, 0);
+    width: 0px;
+    background-color: red;
+}
+
+td.under > span {
+    position: relative;
+    bottom: 0.15em;
+}
+
+td.under::after {
+    content: "-";
+    color: rgba(0, 0, 0, 0);
+    position: absolute;
+    top: -0.3em;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    border-bottom: 1px dotted black;
+}
+
+.clearfix {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+section {
+    page-break-inside: avoid;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.w-1{
+    width: 10%;
+}
+
+.w-2{
+    width: 20%;
+}
+
+.w-3{
+    width: 30%;
+}
+
+.w-4{
+    width: 40%;
+}
+
+.w-5{
+    width: 50%;
+}
+
+.w-6{
+    width: 60%;
+}
+
+.w-7{
+    width: 70%;
+}
+
+.w-8{
+    width: 80%;
+}
+
+.w-9{
+    width: 90%;
+}
+
+.w-full{
+    width: 100%;
+}
+
+.push-left{
+    margin-left: auto;
+}
+
+.push-center{
+    margin: 0 auto;
+}
+
+td.indent-mini{
+    padding-right: 0.5em;
+}
+td.indent{
+    padding-left: 2em;
+}

@@ -9,131 +9,37 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Document 2</title>
+
     <style>
         @font-face {
-            font-family: 'THSarabun';
+            font-family: "THSarabun";
             font-style: normal;
             font-weight: normal;
-            src: url("{{ storage_path('fonts/THSarabun.ttf') }}") format('truetype')
+            src: url("{{ storage_path('fonts/THSarabun.ttf') }}") format("truetype");
         }
 
         @font-face {
-            font-family: 'THSarabun';
+            font-family: "THSarabun";
             font-style: normal;
             font-weight: bold;
-            src: url("{{ storage_path('fonts/THSarabunBold.ttf') }}") format('truetype')
+            src: url("{{ storage_path('fonts/THSarabunBold.ttf') }}") format("truetype");
         }
 
         @font-face {
-            font-family: 'THSarabun';
+            font-family: "THSarabun";
             font-style: italic;
             font-weight: normal;
-            src: url("{{ storage_path('fonts/THSarabunItalic.ttf') }}") format('truetype')
+            src: url("{{ storage_path('fonts/THSarabunItalic.ttf') }}") format("truetype");
         }
 
         @font-face {
-            font-family: 'THSarabun';
+            font-family: "THSarabun";
             font-style: italic;
             font-weight: bold;
-            src: url("{{ storage_path('fonts/THSarabunBoldItalic.ttf') }}") format('truetype')
-        }
-
-        * {
-            padding: 0px;
-            margin: 0px;
-            box-sizing: border-box;
-        }
-
-        body {
-            padding: 1in 1in 1in 1in;
-            line-height: 1em;
-        }
-
-        body,
-        .text {
-            font-family: 'THSarabun';
-            font-size: 16px;
-        }
-
-        .title {
-            font-family: 'THSarabun';
-            font-size: 16px;
-            text-align: center;
-            margin: 1em 0;
-        }
-
-        .subtitle {
-            font-family: 'THSarabun';
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        header {
-            height: 100%;
-        }
-
-        table {
-            width: 100%;
-        }
-
-        td.fit {
-            width: 1%;
-            white-space: nowrap;
-        }
-
-        td.under,
-        td.grow {
-            position: relative;
-            text-align: center
-        }
-
-        td.under.fix {
-            font-size: 16px;
-            height: 20px;
-            line-height: 1em;
-        }
-
-        td.fix-under {
-            color: rgba(255, 255, 255, 0);
-            width: 0px;
-            background-color: red;
-        }
-
-        td.under>span {
-            position: relative;
-            bottom: 0.15em;
-        }
-
-        td.under::after {
-            content: "-";
-            color: rgba(0, 0, 0, 0);
-            position: absolute;
-            top: -0.30em;
-            ;
-            left: 0;
-            width: 100%;
-            z-index: 1;
-            border-bottom: 1px dotted black;
-        }
-
-        .clearfix {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        section {
-            page-break-inside: avoid;
-        }
-
-        .bold {
-            font-weight: bold
-        }
-
-        .underline {
-            text-decoration: underline;
+            src: url("{{ storage_path('fonts/THSarabunBoldItalic.ttf') }}") format("truetype");
         }
     </style>
+    <link rel="stylesheet" href="{{ public_path('css/export.css') }}">
 </head>
 
 <body>
@@ -149,37 +55,37 @@
         <table>
             <tr>
                 <td class="fit">{{ __('exports.document-name') }}</td>
-                <td class="under" style="width: 50%;"><span>{{ $name }}</span></td>
+                <td class="under w-4"><span>{{ $name }}</span></td>
                 <td class="fit">{{ __('exports.document-value') }}</td>
                 <td class="under"><span>{{ $format->number($value) }}</span></td>
                 <td class="fit">{{ __('exports.document-value-suffix') }}</td>
-                <td class="fit" style="width: 10%; text-align: right;">{{ __('exports.document-format') }}</td>
+                <td class="fit text-right w-1">{{ __('exports.document-format') }}</td>
             </tr>
         </table>
     </section>
     <h1 class="title">{{ __('exports.document-title') }}</h1>
-    <section style="width: 40%; margin-left:auto">
+    <section class="w-4 push-left">
         <table>
             <tr>
                 <td class="fit">{{ __('exports.document-office') }}</td>
                 <td class="under"><span>{{ $office }}</span></td>
             </tr>
         </table>
-        <table style="width: 70%; margin: 0 auto;">
+        <table class="w-7 push-center">
             <tr>
-                <td class="fit">{{__('exports.document-date-day')}}</td>
+                <td class="fit">{{ __('exports.document-date-day') }}</td>
                 <td class="under"><span>{{ $format->date($date, 'd') }}</span></td>
-                <td class="fit">{{__('exports.document-date-month')}}</td>
+                <td class="fit">{{ __('exports.document-date-month') }}</td>
                 <td class="under"><span>{{ $format->date($date, 'F') }}</span></td>
-                <td class="fit">{{__('exports.document-date-year')}}</td>
+                <td class="fit">{{ __('exports.document-date-year') }}</td>
                 <td class="under"><span>{{ $format->date($date, 'Y') }}</span></td>
             </tr>
         </table>
     </section>
-    <section style="width: 40%;">
+    <section class="w-4">
         <table>
             <tr>
-                <td class="fit" style="padding-right: 0.5em;">{{ __('exports.ducument-subject-static') }}</td>
+                <td class="fit indent-mini">{{ __('exports.ducument-subject-static') }}</td>
                 <td>{{ __('exports.document-subject-static-text') }}</td>
             </tr>
             <tr>
@@ -191,7 +97,7 @@
     <section>
         <table>
             <tr>
-                <td class="fit" style="padding-left: 2em">{{ __('exports.document-order_id') }}</td>
+                <td class="fit indent">{{ __('exports.document-order_id') }}</td>
                 <td class="under"><span>{{ $order_id }}</span></td>
                 <td class="fit">{{ __('exports.document-order_at') }}</td>
                 <td class="under"><span>{{ $format->date($order_at) }}</span></td>
@@ -219,7 +125,7 @@
             @foreach ($companions->slice(1)->chunk(3) as $companionChunk)
                 <table>
                     <tr>
-                        <td class="under" style="text-align: left">
+                        <td class="under text-left">
                             <span>
                                 {{ $companionChunk->pluck('user.name')->implode(', ') }}
                             </span>
@@ -240,13 +146,15 @@
         @foreach ($addresses as $address)
             <table>
                 <tr>
-                    <td class="fit">{{ $address->from->label }} {{ __('exports.document-address-from-label') }}</td>
+                    <td class="fit">{{ $address->from->label }} {{ __('exports.document-address-from-label') }}
+                    </td>
                     <td class="under"><span>{{ $format->date($address->from_date, 'd') }}</span></td>
                     <td class="fit">{{ __('exports.document-date-month') }}</td>
                     <td class="under"><span>{{ $format->date($address->from_date, 'F') }}</span></td>
                     <td class="fit">{{ __('exports.document-date-year') }}</td>
                     <td class="under"><span>{{ $format->date($address->from_date, 'Y') }}</span></td>
-                    <td class="fit">{{ __('exports.document-address-back-label') }} {{ $address->back->label }}</td>
+                    <td class="fit">{{ __('exports.document-address-back-label') }} {{ $address->back->label }}
+                    </td>
                     <td class="under"><span>{{ $format->date($address->back_date, 'd') }}</span></td>
                     <td class="fit">{{ __('exports.document-date-month') }}</td>
                     <td class="under"><span>{{ $format->date($address->back_date, 'F') }}</span></td>
@@ -255,7 +163,7 @@
                 </tr>
             </table>
         @endforeach
-        <table style="width: 60%;">
+        <table class="w-6">
             <tr>
                 <td class="fit">{{ __('exports.document-days-total') }}</td>
                 <td class="under"><span>{{ $format->number($days) }}</span></td>
@@ -268,7 +176,7 @@
     <section>
         <table>
             <tr>
-                <td class="fit" style="padding-left: 2em">
+                <td class="fit indent">
                     {{ __('exports.document-expense-header', [
                         'value' =>
                             $companions->count() > 0
@@ -295,12 +203,12 @@
 
                     @if ($expense->days != null)
                         <td class="fit">{{ __('exports.document-expense-days') }}</td>
-                        <td class="under" style="width: 15%;"><span>{{ $format->number($expense->days) }}</span></td>
+                        <td class="under w-1"><span>{{ $format->number($expense->days) }}</span></td>
                         <td class="fit">{{ __('exports.document-expense-days-suffix') }}</td>
                     @endif
 
                     <td class="fit">{{ __('exports.document-expense-total') }}</td>
-                    <td class="under" style="width: 20%;"><span>{{ $format->number($expense_total) }}</span></td>
+                    <td class="under w-2"><span>{{ $format->number($expense_total) }}</span></td>
                     <td class="fit">{{ __('exports.document-expense-total-suffix') }}</td>
                 </tr>
             </table>
@@ -309,46 +217,46 @@
             <tr>
                 <td class="grow"></td>
                 <td class="fit">{{ __('exports.document-expenses-total') }}</td>
-                <td class="under" style="width: 20%;"><span>{{ $format->number($total) }}</span></td>
+                <td class="under w-2"><span>{{ $format->number($total) }}</span></td>
                 <td class="fit">{{ __('exports.document-expense-total-suffix') }}</td>
             </tr>
         </table>
         <table>
             <tr>
                 <td class="fit">{{ __('exports.document-expense-total-text') }}</td>
-                <td class="under" style="width: 20%;"><span>{{ $format->bahtText($total) }}</span></td>
+                <td class="under w-2"><span>{{ $format->bahtText($total) }}</span></td>
             </tr>
         </table>
     </section>
     <section>
         <table>
             <tr>
-                <td class="fit" style="padding-left: 2em">{{ __('exports.document-footer-text') }}</td>
+                <td class="fit indent">{{ __('exports.document-footer-text') }}</td>
             </tr>
         </table>
         <table>
             <tr>
                 <td class="fit">{{ __('exports.document-footer-count') }}</td>
-                <td class="under" style="width: 10%;"><span></span></td>
+                <td class="under w-1"><span></span></td>
                 <td class="fit">{{ __('exports.document-footer-count-suffix') }}</td>
-                <td class="grow" style="text-align: left;">{{ __('exports.document-footer-count-text') }}</td>
+                <td class="grow text-left">{{ __('exports.document-footer-count-text') }}</td>
             </tr>
         </table>
     </section>
-    <section style="width: 40%; margin-left:auto">
+    <section class="w-4 push-left">
         <table>
             <tr>
-                <td class="fit" style="text-align: right;">{{ __('exports.document-named') }}</td>
+                <td class="fit text-right">{{ __('exports.document-named') }}</td>
                 <td class="under"><span></span></td>
                 <td class="fit">{{ __('exports.document-recipient') }}</td>
             </tr>
             <tr>
-                <td class="fit" style="text-align: right;">(</td>
+                <td class="fit text-right">(</td>
                 <td class="under"><span></span></td>
                 <td class="fit">)</td>
             </tr>
             <tr>
-                <td class="fit" style="text-align: right;">{{ __('exports.document-position') }}</td>
+                <td class="fit text-right">{{ __('exports.document-position') }}</td>
                 <td class="under"><span></span></td>
                 <td class="fit"></td>
             </tr>
@@ -365,22 +273,22 @@
         <section style="width: 35%; float: left;">
             <table>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-named') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-named') }}</td>
                     <td class="under"><span></span></td>
                     <td class="fit"></td>
                 </tr>
                 <tr>
-                    <td class="fit" style="text-align: right;">(</td>
+                    <td class="fit text-right">(</td>
                     <td class="under"><span></span></td>
                     <td class="fit">)</td>
                 </tr>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-position') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-position') }}</td>
                     <td class="under"><span></span></td>
                     <td class="fit"></td>
                 </tr>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-date') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-date') }}</td>
                     <td class="under"><span></span></td>
                     <td class="fit"></td>
                 </tr>
@@ -389,22 +297,22 @@
         <section style="width: 35%; float: right;">
             <table>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-named') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-named') }}</td>
                     <td class="under"><span></span></td>
                     <td class="fit"></td>
                 </tr>
                 <tr>
-                    <td class="fit" style="text-align: right;">(</td>
+                    <td class="fit text-right">(</td>
                     <td class="under"><span></span></td>
                     <td class="fit">)</td>
                 </tr>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-position') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-position') }}</td>
                     <td class="under"><span></span></td>
                     <td class="fit"></td>
                 </tr>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-date') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-date') }}</td>
                     <td class="under"><span></span></td>
                     <td class="fit"></td>
                 </tr>
@@ -415,13 +323,13 @@
     <section>
         <table>
             <tr>
-                <td class="fit" style="padding-left: 2em">{{ __('exports.document-text-3') }}</td>
+                <td class="fit indent" >{{ __('exports.document-text-3') }}</td>
                 <td class="fit">{{ __('exports.document-count') }}</td>
                 <td class="under"><span></span></td>
                 <td class="fit">{{ __('exports.document-bath') }}</td>
             </tr>
         </table>
-        <table style="width: 60%; margin-bottom: 1em;">
+        <table class="w-6" style="margin-bottom: 1em;">
             <tr>
                 <td class="fit">(</td>
                 <td class="under"></td>
@@ -432,12 +340,12 @@
         <section style="width: 47%; float: left;">
             <table>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-named') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-named') }}</td>
                     <td class="under"><span></span></td>
                     <td class="fit">{{ __('exports.document-payee') }}</td>
                 </tr>
                 <tr>
-                    <td class="fit" style="text-align: right;">(</td>
+                    <td class="fit text-right">(</td>
                     <td class="under"><span></span></td>
                     <td class="fit">)</td>
                 </tr>
@@ -445,13 +353,13 @@
             </table>
             <table>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-position') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-position') }}</td>
                     <td class="under"><span></span></td>
                 </tr>
             </table>
             <table>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-date') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-date') }}</td>
                     <td class="under"><span></span></td>
                 </tr>
             </table>
@@ -459,12 +367,12 @@
         <section style="width: 47%; float: right;">
             <table>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-named') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-named') }}</td>
                     <td class="under"><span></span></td>
                     <td class="fit">{{ __('exports.document-payer') }}</td>
                 </tr>
                 <tr>
-                    <td class="fit" style="text-align: right;">(</td>
+                    <td class="fit text-right">(</td>
                     <td class="under"><span></span></td>
                     <td class="fit">)</td>
                 </tr>
@@ -472,13 +380,13 @@
             </table>
             <table>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-position') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-position') }}</td>
                     <td class="under"><span></span></td>
                 </tr>
             </table>
             <table>
                 <tr>
-                    <td class="fit" style="text-align: right;">{{ __('exports.document-date') }}</td>
+                    <td class="fit text-right">{{ __('exports.document-date') }}</td>
                     <td class="under"><span></span></td>
                 </tr>
             </table>
@@ -486,9 +394,9 @@
         <span class="clearfix"></span>
         <table>
             <tr>
-                <td class="fit" style="text-align: right;">{{ __('exports.document-text-5') }}</td>
+                <td class="fit text-right">{{ __('exports.document-text-5') }}</td>
                 <td class="under"><span></span></td>
-                <td class="fit" style="text-align: right;">{{ __('exports.document-date') }}</td>
+                <td class="fit text-right">{{ __('exports.document-date') }}</td>
                 <td class="under"><span></span></td>
             </tr>
         </table>
