@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/selectize/expenses', [ExpenseController::class, 'expenses'])->name('expenses.selectize');
 
     Route::get('/export/document/{budget}', [ExportBudgetController::class, 'document'])->name('export.document');
+    Route::get('/export/evidence/{budget}', [ExportBudgetController::class, 'evidence'])->name('export.evidence');
 });
 
 /* USER ROUTES */

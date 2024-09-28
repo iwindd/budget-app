@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Budget;
 use App\Models\BudgetItem;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -34,6 +35,14 @@ class ExportBudgetController extends Controller
             'expenses' => $budget->expenses()->with('expense')->orderBy('days', 'desc')->get()
         ]);
 
+        return $pdf->stream();
+    }
+
+    public function evidence(Budget $budget) {
+        $pdf = PDF::loadView('exports.evidence.index', [
+
+        ]);
+        $pdf->set_paper('a4', 'landscape');
         return $pdf->stream();
     }
 }
