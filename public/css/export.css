@@ -161,3 +161,16 @@ td.indent-mini{
 td.indent{
     padding-left: 2em;
 }
+
+table.table{
+    border-collapse: collapse;
+}
+table.table,
+table.table th{
+    border: 1px solid;
+}
+
+table.table th{
+    vertical-align: top;
+}
+
