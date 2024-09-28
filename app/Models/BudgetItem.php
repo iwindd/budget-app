@@ -55,8 +55,8 @@ class BudgetItem extends Model
      */
     public static function getFromBack(BudgetItem $budget) {
         return [
-            'from' => $budget->addresses->first()->from_date ?? null,
-            'back' => $budget->addresses->last()->back_date ?? null
+            'from' => $budget->budgetItemAddresses->first()->from_date ?? null,
+            'back' => $budget->budgetItemAddresses->last()->back_date ?? null
         ];
     }
 
