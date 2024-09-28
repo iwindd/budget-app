@@ -67,6 +67,28 @@
             </tr>
         </table>
     </section>
+
+    <section>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th rowspan="2">{!! __('exports.evidence-table-number') !!}</th>
+                    <th class="w-2" rowspan="2">{{ __('exports.evidence-table-name') }}</th>
+                    <th class="w-1" rowspan="2">{{ __('exports.evidence-table-position') }}</th>
+                    <th colspan="{{$listExpenses->count()}}">{{ __('exports.evidence-table-expenses') }}</th>
+                    <th style="width: 5%;" rowspan="2">{{ __('exports.evidence-table-total') }}</th>
+                    <th class="w-2" rowspan="2">{{ __('exports.evidence-table-signature') }}</th>
+                    <th class="w-1" rowspan="2">{{ __('exports.evidence-table-date') }}</th>
+                    <th rowspan="2">{{ __('exports.evidence-table-note') }}</th>
+                </tr>
+                <tr>
+                    @foreach ($listExpenses as $item)
+                        <th>{{$item->label}}</th>
+                    @endforeach
+                </tr>
+            </thead>
+        </table>
+    </section>
 </body>
 
 </html>

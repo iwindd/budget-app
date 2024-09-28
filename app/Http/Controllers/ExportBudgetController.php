@@ -40,7 +40,7 @@ class ExportBudgetController extends Controller
 
     public function evidence(Budget $budget) {
         $pdf = PDF::loadView('exports.evidence.index', [
-
+            'listExpenses' => Budget::getExpenses($budget)->get('label')
         ]);
         $pdf->set_paper('a4', 'landscape');
         return $pdf->stream();

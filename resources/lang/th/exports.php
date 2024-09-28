@@ -68,5 +68,13 @@ return [
     'evidence-header-owner' => 'ประกอบใบเบิกค่าใช้จ่ายในการเดินทางของ',
     'evidence-order_at' => 'ลงวันที่',
     'evidence-month' => 'เดือน',
-    'evidence-year' => 'พ.ศ.'
+    'evidence-year' => 'พ.ศ.',
+    'evidence-table-number' => 'ลำดับ<br>ที่',
+    'evidence-table-name' => 'ชื่อ',
+    'evidence-table-position' => 'ตำแหน่ง',
+    'evidence-table-expenses' => 'ค่าใช้จ่าย',
+    'evidence-table-total' => 'รวม',
+    'evidence-table-signature' => 'ลายมือชื่อ',
+    'evidence-table-date' => 'วัน/เดือน/ปี',
+    'evidence-table-note' => 'หมายเหตุ'
 ];
