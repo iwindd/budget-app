@@ -166,11 +166,16 @@ table.table{
     border-collapse: collapse;
 }
 table.table,
-table.table th{
+table.table > thead > tr > th,
+table.table > thead > tr > td,
+table.table > tbody > tr > td,
+table.table > tbody > tr > th{
     border: 1px solid;
+    text-align: center;
 }
 
-table.table th{
+table.table > thead > tr > th,
+table.table > tbody > tr > th{
     vertical-align: top;
 }
 
