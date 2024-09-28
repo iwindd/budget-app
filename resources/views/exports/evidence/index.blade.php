@@ -44,6 +44,29 @@
 
 <body>
     <h1 class="title">{{ __('exports.evidence-title') }}</h1>
+
+    <section>
+        <table class="w-5 push-center">
+            <tr>
+                <td class="fit">{{__('exports.evidence-header-office')}}</td>
+                <td class="under"><span></span></td>
+                <td class="fit">{{__('exports.evidence-header-province')}}</td>
+                <td class="under"><span></span></td>
+            </tr>
+        </table>
+        <table class="w-8 push-center">
+            <tr>
+                <td class="fit">{{__('exports.evidence-header-owner')}}</td>
+                <td class="under w-4"><span></span></td>
+                <td class="fit">{{__('exports.evidence-order_at')}}</td>
+                <td class="under"><span></span></td>
+                <td class="fit">{{__('exports.evidence-month')}}</td>
+                <td class="under"><span></span></td>
+                <td class="fit">{{__('exports.evidence-year')}}</td>
+                <td class="under"><span></span></td>
+            </tr>
+        </table>
+    </section>
 </body>
 
 </html>
