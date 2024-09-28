@@ -40,6 +40,11 @@
         }
     </style>
     <link rel="stylesheet" href="{{ public_path('css/export.css') }}">
+    <style>
+        body{
+            padding: 1in 1in 1in 1in;
+        }
+    </style>
 </head>
 
 <body>
