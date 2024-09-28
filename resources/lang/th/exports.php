@@ -76,5 +76,8 @@ return [
     'evidence-table-total' => 'รวม',
     'evidence-table-signature' => 'ลายมือชื่อ',
     'evidence-table-date' => 'วัน/เดือน/ปี',
-    'evidence-table-note' => 'หมายเหตุ'
+    'evidence-table-note' => 'หมายเหตุ',
+    'evidence-table-total-all' => 'รวมเงิน',
+    'evidence-table-serial' => 'ตามสัญญา',
+    'evidence-table-date' => 'วันที่'
 ];

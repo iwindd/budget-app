@@ -87,6 +87,59 @@
                     @endforeach
                 </tr>
             </thead>
+            <tbody>
+                @foreach ($items as $index => $item)
+                    @php
+                        $expense_total = 0;
+                    @endphp
+                    <tr>
+                        <td>{{$index+1}}</td>
+                        <td>{{$item->user->name}}</td>
+                        <td>{{$item->user->position->label}}</td>
+                        @foreach ($listExpenses as $expense)
+                            @php
+                                $expense_item = $item->budgetItemExpenses->firstWhere('expense_id', $expense->id);
+                                $expense_total += $expense_item->total ?? 0;
+                            @endphp
+                            <td>{{$format->number($expense_item->total ?? 0)}}</td>
+                        @endforeach
+                        <td>{{$format->number($expense_total)}}</td>
+                        <td>{{-- MANUAL --}}</td>
+                        <td>{{-- MANUAL --}}</td>
+                        <td>{{-- MANUAL --}}</td>
+                    </tr>
+                @endforeach
+                <tr>
+                    <th colspan="3">{{__('exports.evidence-table-total-all')}}</th>
+                    @php
+                        $expenses_total = 0;
+                    @endphp
+                    @foreach ($listExpenses as $expense)
+                        @php
+                            $expense_total = 0;
+                        @endphp
+                        @foreach ($items as $item)
+                            @php
+                                $expense_item = $item->budgetItemExpenses->firstWhere('expense_id', $expense->id);
+                                $expense_total += $expense_item->total ?? 0;
+                                $expenses_total += $expense_total;
+                            @endphp
+                        @endforeach
+                        <th>{{$format->number($expense_total)}}</th>
+                    @endforeach
+                    <th>{{$format->number($expenses_total)}}</th>
+                    <td colspan="3">
+                        <table class="w-9">
+                            <tr>
+                                <th class="fit">{{__('exports.evidence-table-serial')}}</th>
+                                <td class="under"><span>{{$serial}}</span></td>
+                                <th class="fit">{{__('exports.evidence-table-date')}}</th>
+                                <td class="under"><span>{{$format->date($date)}}</span></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </section>
 </body>
