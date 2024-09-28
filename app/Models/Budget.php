@@ -73,8 +73,14 @@ class Budget extends Model
         return $budget->budgetItems()->where('user_id', $budget->user_id)->first();
     }
 
-    public static function getExpenses(Budget $budget) {
+    public static function getItemExpenses(Budget $budget) {
         return BudgetItemExpense::whereIn('budget_item_id', $budget->budgetItems()->pluck('id'));
+    }
+
+    public static function getExpenses(Budget $budget) {
+        return Expense::whereHas('budgetItemExpenses.budgetItem', function ($query) use ($budget) {
+            $query->where('budget_id', $budget->id); // Correctly filter by budget_id in BudgetItem
+        })->get();
     }
 
     /**

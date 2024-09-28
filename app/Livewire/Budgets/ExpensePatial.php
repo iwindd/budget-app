@@ -48,7 +48,7 @@ class ExpensePatial extends Component
 
     private function fetch()
     {
-        $this->expenses = $this->budget->expenses()->with('expense:label,id')->get()->toArray();
+        $this->expenses = $this->budget->budgetItemExpenses()->with('expense:label,id')->get()->toArray();
     }
 
     private function clear(){
@@ -61,7 +61,7 @@ class ExpensePatial extends Component
 
         /** @var User $user */
         $user = Auth::user();
-        $newExpense = $user->expenses()->create([
+        $newExpense = $user->budgetItemExpenses()->create([
             'label' => $label
         ]);
 
@@ -69,7 +69,7 @@ class ExpensePatial extends Component
     }
 
     public function removeExpense($id) {
-        $this->budget->expenses()->find($id)->delete();
+        $this->budget->budgetItemExpenses()->find($id)->delete();
         $this->fetch();
     }
 
@@ -82,7 +82,7 @@ class ExpensePatial extends Component
         $validated = $this->validate();
         $validated['days'] = empty($validated['days']) ? null : $validated['days'];
 
-        $this->budget->expenses()->updateOrCreate(['expense_id' => $validated['expense_id']], $validated);
+        $this->budget->budgetItemExpenses()->updateOrCreate(['expense_id' => $validated['expense_id']], $validated);
         $this->clear();
         $this->fetch();
     }

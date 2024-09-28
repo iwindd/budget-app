@@ -23,7 +23,7 @@ class BudgetItemAddress extends Model
         'back_date'
     ];
 
-    public function owner()
+    public function budgetItem()
     {
         return $this->belongsTo(BudgetItem::class);
     }

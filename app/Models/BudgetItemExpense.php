@@ -21,7 +21,7 @@ class BudgetItemExpense extends Model
         'total',
     ];
 
-    public function owner()
+    public function budgetItem()
     {
         return $this->belongsTo(BudgetItem::class);
     }

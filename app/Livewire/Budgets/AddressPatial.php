@@ -45,7 +45,7 @@ class AddressPatial extends Component
 
     private function fetch()
     {
-        $this->addresses = $this->budget->addresses()->with("from")->with("back")->get()->toArray();
+        $this->addresses = $this->budget->budgetItemAddresses()->with("from")->with("back")->get()->toArray();
     }
 
     public function clear()
@@ -56,7 +56,7 @@ class AddressPatial extends Component
     public function save()
     {
         $validated = $this->validate();
-        $this->budget->addresses()->updateOrCreate(['id' => $validated['address_id']], $validated);
+        $this->budget->budgetItemAddresses()->updateOrCreate(['id' => $validated['address_id']], $validated);
         $this->clear();
         $this->fetch();
     }
@@ -84,7 +84,7 @@ class AddressPatial extends Component
 
     public function removeAddress($id)
     {
-        $this->budget->addresses()->where('id', $id)->delete();
+        $this->budget->budgetItemAddresses()->where('id', $id)->delete();
         $this->fetch();
     }
 

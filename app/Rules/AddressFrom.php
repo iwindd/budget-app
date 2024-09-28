@@ -33,7 +33,7 @@ class AddressFrom implements ValidationRule
         $item = $budget->budgetItems()->where('user_id', $this->user_id)->first();
         if (!$item) { $fail(__('The specified budget could not be found.')); return; }
 
-        $query = $item->addresses();
+        $query = $item->budgetItemAddresses();
 
         if (($this->max_id) - 1 > 0) {
             $query = $query->where('id', '<=', ($this->max_id) - 1);

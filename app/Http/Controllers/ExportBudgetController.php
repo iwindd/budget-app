@@ -29,10 +29,10 @@ class ExportBudgetController extends Controller
             'affiliation' => $budget->user->affiliation->label,
             'companions' => $budget->budget->budgetItems()->with('user')->where('user_id', '!=', $budget->user_id)->get(),
             'subject' => $budget->budget->subject, /* TODO:: place will change to subject later */
-            'addresses' => $budget->addresses()->with(['from', 'back'])->get(),
+            'addresses' => $budget->budgetItemAddresses()->with(['from', 'back'])->get(),
             'days' => $fromDate->diffInDays($backDate),
             'hours' => $fromDate->diffInHours($backDate),
-            'expenses' => $budget->expenses()->with('expense')->orderBy('days', 'desc')->get()
+            'expenses' => $budget->budgetItemExpenses()->with('expense')->orderBy('days', 'desc')->get()
         ]);
 
         return $pdf->stream();
