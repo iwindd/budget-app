@@ -101,5 +101,28 @@ return [
     'certificate-footer-text-1' => 'กอง',
     'certificate-footer-text-2' => 'ขอรับรองว่ารายจ่ายข้างต้นนี้ไม่อาจเรียกใบเสร็จรับเงินจากผู้รับได้และข้าพเจ้าได้จ่ายไป',
     'certificate-footer-text-3' => 'ในงานของราชการโดยแท้',
-    'certificate-named' => 'ลงชื่อ'
+    'certificate-named' => 'ลงชื่อ',
+
+    'travel-title' => 'รายละเอียดการเดินทางไปราชการ',
+    'travel-office' => 'ชื่อส่วนราชการ',
+    'travel-province' => 'จัดหวัด',
+    'travel-user' => "ประกอบใบเบิกค่าใช้จ่ายในการเดินทางของ",
+    'travel-order_at' => 'ระหว่างวันที่',
+    'travel-at' => 'ณ',
+
+    'travel-table-order' => 'ลำดับที่',
+    'travel-table-plate' => 'ทะเบียน',
+    'travel-table-travel' => 'ออกเดินทาง',
+    'travel-table-vehicle-user' => 'ผู้ใช้รถ',
+    'travel-table-place' => 'สถานที่ไป',
+    'travel-table-back' => 'กลับถึงที่พัก/สนง.',
+    'travel-table-distance' => 'ระยะทาง/<br/>กม.',
+    'travel-table-round' => 'จำนวนเที่ยว',
+    'travel-table-total-distance' => 'รวมระยะทาง',
+    'travel-table-bahtperkm' => 'เป็นเงิน กม.<br/>ละ 4 บาท',
+    'travel-table-date' => 'วันที่',
+    'travel-table-time' => 'เวลา',
+    'travel-footer-text-1' => 'ข้าพเจ้าขอรับรองว่ารายการที่กล่าวมาข้างต้นเป็นความจริงทุกประการ',
+    'travel-named' => 'ลงชื่อ',
+    'travel-position' => 'ตำแหน่ง'
 ];

@@ -60,4 +60,11 @@ class ExportBudgetController extends Controller
 
         return $pdf->stream();
     }
+
+    public function travel(Budget $budget) {
+        $pdf = PDF::loadView('exports.travel.index', []);
+        $pdf->set_paper('a4', 'landscape');
+
+        return $pdf->stream();
+    }
 }
