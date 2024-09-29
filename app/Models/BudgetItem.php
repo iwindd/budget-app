@@ -60,6 +60,12 @@ class BudgetItem extends Model
         ];
     }
 
+    public static function getBudgetExpenseTotal(BudgetItem $budget) {
+        return $budget->budgetItemExpenses->sum(function ($expense) {
+            return $expense->total * ($expense->days ?? 1);
+        });
+    }
+
     /**
      * Get the user that created
     */
