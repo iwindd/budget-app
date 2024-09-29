@@ -17,7 +17,12 @@ class Office extends Model
      */
     protected $fillable = [
         'label',
+        'province',
         'default'
+    ];
+
+    protected $casts = [
+        'default' => 'boolean',
     ];
 
     /**

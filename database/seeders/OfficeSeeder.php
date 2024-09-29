@@ -15,6 +15,7 @@ class OfficeSeeder extends Seeder
     {
         Office::factory()->create([
             'label' => "มหาวิทยาลัยราชภัฏสุราษฎร์ธานี",
+            'province' => 67,
             'default' => true
         ]);
     }

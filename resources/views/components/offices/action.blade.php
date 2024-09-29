@@ -24,12 +24,7 @@
     <x-slot name="content">
         <x-dropdown-link
             href="#"
-            x-on:click.prevent="$dispatch('dialog', {
-                method: 'patch',
-                route: '{{route('offices.update', ['office' => $id])}}',
-                value: '{{$label}}',
-                checked:  {{$default}}
-            })"
+            x-on:click.prevent="$dispatch('OpenOfficeDialog', {target: {{$id}}});"
             class="flex items-center gap-2"
         >
             <x-heroicon-s-pencil class="w-5 h-5"/><span>{{ __('offices.action-edit') }}</span>

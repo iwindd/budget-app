@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout select2="true">
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight ">
@@ -8,12 +8,7 @@
             <x-button
                 variant="primary"
                 class="items-center max-w-xs gap-2"
-                x-on:click.prevent="$dispatch('dialog', {
-                    method: 'post',
-                    route: '{{route('offices.store')}}',
-                    value: '',
-                    checked: false
-                })"
+                x-on:click="$dispatch('CreateOfficeDialog');"
             >
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
 
@@ -26,7 +21,7 @@
         <x-alert :text="session('alert')['text']" :variant="session('alert')['variant']"/>
     @endif
 
-    <x-offices.dialog />
+    <livewire:offices.dialog />
     <x-offices.datatable />
     <x-confirmation variant="danger" />
 </x-app-layout>

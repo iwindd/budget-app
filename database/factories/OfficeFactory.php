@@ -18,6 +18,7 @@ class OfficeFactory extends Factory
     {
         return [
             'label' => fake()->word(),
+            'province' => 1,
             'default' => false
         ];
     }
