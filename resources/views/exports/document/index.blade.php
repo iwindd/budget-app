@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Document 2</title>
+    <title>{{ __('exports.document-title') }}</title>
 
     <style>
         @font-face {
@@ -68,7 +68,7 @@
             </tr>
         </table>
     </section>
-    <h1 class="title">{{ __('exports.document-title') }}</h1>
+    <h1 class="title" style="margin: 1em 0;">{{ __('exports.document-title') }}</h1>
     <section class="w-4 push-left">
         <table>
             <tr>
