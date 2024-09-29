@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/export/document/{budget}', [ExportBudgetController::class, 'document'])->name('export.document');
     Route::get('/export/evidence/{budget}', [ExportBudgetController::class, 'evidence'])->name('export.evidence');
+    Route::get('/export/certificate/{budget}', [ExportBudgetController::class, 'certificate'])->name('export.certificate');
 });
 
 /* USER ROUTES */

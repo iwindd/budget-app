@@ -86,4 +86,20 @@ return [
     'evidence-explanation-1' => 'ค่าเบี้ยเลี้ยงและค่าเช่าที่พักให้ระบุอัตราวันละและจำนวนวันที่ขอเบิกของแต่ละบุคคลในช่องหมายเหตุ',
     'evidence-explanation-2' => 'ให้ผู้มีสิทธิแต่ละคนเป็นผู้ลงลายมือชื่อผู้รับเงินและวันเดือนปีที่รับเงิน กรณีเป็นการรับจากเงินยืม ให้ระบุวันที่ที่ได้รับจากเงินยืม',
     'evidence-explanation-3' => 'ผู้จ่ายเงินหมายถึงผู้ที่ขอยืมเงินจากทางราชการ และจ่ายเงินยืมนั้นให้แก่ผู้เดินทางแต่ละคน เป็นผู้ลงลายมือชื่อผู้จ่ายเงิน',
+
+    'certificate-format' => 'แบบ บก.4231',
+    'certificate-title' => 'ใบรับรองแทนใบเสร็จรับเงิน',
+    'certificate-office' => 'ส่วนราชการ',
+    'certificate-table-date' => 'วัน/เดือน/ปี',
+    'certificate-table-detail' => 'รายละเอียดการจ่าย',
+    'certificate-table-value' => 'จํานวนเงิน',
+    'certificate-table-note' => 'หมายเหตุ',
+    'certificate-table-total' => 'รวมเงินทั้งสิ้น',
+    'certificate-total-text' => 'จำนวนเงิน (ตัวอักษร)',
+    'certificate-name' => 'ข้าพเจ้า',
+    'certificate-position' => 'ตำแหน่ง',
+    'certificate-footer-text-1' => 'กอง',
+    'certificate-footer-text-2' => 'ขอรับรองว่ารายจ่ายข้างต้นนี้ไม่อาจเรียกใบเสร็จรับเงินจากผู้รับได้และข้าพเจ้าได้จ่ายไป',
+    'certificate-footer-text-3' => 'ในงานของราชการโดยแท้',
+    'certificate-named' => 'ลงชื่อ'
 ];

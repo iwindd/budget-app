@@ -48,4 +48,16 @@ class ExportBudgetController extends Controller
         $pdf->set_paper('a4', 'landscape');
         return $pdf->stream();
     }
+
+    public function certificate(BudgetItem $budget) {
+        $pdf = PDF::loadView('exports.certificate.index', [
+            'office' => $budget->budget->office->label,
+            'expenses' => $budget->budgetItemExpenses()->with('expense')->orderBy('days', 'desc')->get(),
+            'total' => BudgetItem::getBudgetExpenseTotal($budget),
+            'name' => $budget->user->name,
+            'position' => $budget->user->position->label,
+        ]);
+
+        return $pdf->stream();
+    }
 }
