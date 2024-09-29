@@ -43,34 +43,41 @@ table {
     width: 100%;
 }
 
+th.fit,
 td.fit {
     width: 1%;
     white-space: nowrap;
 }
 
+th.under,
+th.grow,
 td.under,
 td.grow {
     position: relative;
     text-align: center;
 }
 
+th.under.fix,
 td.under.fix {
     font-size: 18px;
     height: 20px;
     line-height: 1em;
 }
 
+th.fix-under,
 td.fix-under {
     color: rgba(255, 255, 255, 0);
     width: 0px;
     background-color: red;
 }
 
+th.under > span,
 td.under > span {
     position: relative;
     bottom: 0.15em;
 }
 
+th.under::after,
 td.under::after {
     content: "-";
     color: rgba(0, 0, 0, 0);
