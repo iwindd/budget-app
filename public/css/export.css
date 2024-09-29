@@ -173,13 +173,18 @@ table.table{
 table.table,
 table.table > thead > tr > th,
 table.table > thead > tr > td,
+table.table > tfoot > tr > td,
+table.table > tfoot > tr > th,
 table.table > tbody > tr > td,
+table.table > tfoot > tr > td,
+table.table > tfoot > tr > th,
 table.table > tbody > tr > th{
     border: 1px solid;
     text-align: center;
 }
 
 table.table > thead > tr > th,
+table.table > tfoot > tr > th,
 table.table > tbody > tr > th{
     vertical-align: top;
 }
