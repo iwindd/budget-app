@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="{{asset('css/select2.css')}}">
     @endif
 
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -82,7 +83,8 @@
         @if ($select2)
             <script src="{{asset('js/select2.min.js')}}"></script>
         @endif
-
     </div>
+
+    @livewireScripts
 </body>
 </html>
