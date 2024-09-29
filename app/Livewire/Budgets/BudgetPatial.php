@@ -3,7 +3,6 @@
 namespace App\Livewire\Budgets;
 
 use App\Models\Budget;
-use App\Models\BudgetItem;
 use App\Models\Invitation;
 use App\Models\Office;
 use Illuminate\Http\Request;
@@ -26,8 +25,8 @@ class BudgetPatial extends Component
     public $date;
     public $value;
     public $order_at;
-    public $title;
-    public $place;
+    public $order_id;
+    public $subject;
 
     public function mount(Request $request)
     {
@@ -40,7 +39,7 @@ class BudgetPatial extends Component
         ) : $key->budget;
 
         $this->user = !$isAdminBudget ? Auth::user() : $data->user;
-        $this->serial = $data->serial;
+        $this->serial = $data->serial ?? $key;
         $this->isOwner = !$data || $data->user_id == $this->user->id || $isAdminBudget;
         $this->office     = ($data->office ?? Office::getOffice('label'))->label;
         $this->invitation = ($data->invitation ?? Invitation::getInvitation('label'))->label;
@@ -49,8 +48,8 @@ class BudgetPatial extends Component
         $this->date     = $data->date ?? '';
         $this->value    = $data->value ?? '';
         $this->order_at = $data->order_at ?? '';
-        $this->title    = $data->title ?? '';
-        $this->place    = $data->place ?? '';
+        $this->order_id    = $data->order_id ?? '';
+        $this->subject    = $data->subject ?? '';
     }
 
     public function save()
@@ -68,8 +67,8 @@ class BudgetPatial extends Component
     {
         return [
             'serial' => ['required', 'string', 'max:255'],
-            'title' => ['required', 'string'],
-            'place' => ['required', 'string'],
+            'order_id' => ['required', 'string', 'max:255'],
+            'subject' => ['required', 'string', 'max:255'],
             'date' => ['required'],
             'value' => ['required', 'integer'],
             'order_at' => ['required'],

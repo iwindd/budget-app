@@ -24,7 +24,7 @@ class BudgetItem extends Model
      * @return Boolean
      */
     public static function isHasAddresses(BudgetItem $budget) {
-        return $budget->addresses()->count() > 0;
+        return $budget->budgetItemAddresses()->count() > 0;
     }
 
     /**
@@ -33,7 +33,7 @@ class BudgetItem extends Model
      * @return Boolean
      */
     public static function isHasExpenses(BudgetItem $budget) {
-        return $budget->expenses()->count() > 0;
+        return $budget->budgetItemExpenses()->count() > 0;
     }
 
     /**
@@ -46,6 +46,24 @@ class BudgetItem extends Model
         if (!self::isHasExpenses($budget)) return false;
 
         return true;
+    }
+
+    /**
+     * get From back
+     *
+     * @return array
+     */
+    public static function getFromBack(BudgetItem $budget) {
+        return [
+            'from' => $budget->budgetItemAddresses->first()->from_date ?? null,
+            'back' => $budget->budgetItemAddresses->last()->back_date ?? null
+        ];
+    }
+
+    public static function getBudgetExpenseTotal(BudgetItem $budget) {
+        return $budget->budgetItemExpenses->sum(function ($expense) {
+            return $expense->total * ($expense->days ?? 1);
+        });
     }
 
     /**
@@ -64,7 +82,7 @@ class BudgetItem extends Model
     /**
      * Get the address
     */
-    public function addresses()
+    public function budgetItemAddresses()
     {
         return $this->hasMany(BudgetItemAddress::class, 'budget_item_id');
     }
@@ -72,7 +90,7 @@ class BudgetItem extends Model
     /**
      * Get the expenses
     */
-    public function expenses()
+    public function budgetItemExpenses()
     {
         return $this->hasMany(BudgetItemExpense::class, 'budget_item_id', 'id');
     }

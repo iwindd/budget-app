@@ -16,8 +16,8 @@ class Budget extends Model
      */
     protected $fillable = [
         'serial',
-        'title',
-        'place',
+        'order_id',
+        'subject',
         'text',
         'user_id',
         'invitation_id',
@@ -71,6 +71,16 @@ class Budget extends Model
     */
     public static function getOwnerBudget(Budget $budget) {
         return $budget->budgetItems()->where('user_id', $budget->user_id)->first();
+    }
+
+    public static function getItemExpenses(Budget $budget) {
+        return BudgetItemExpense::whereIn('budget_item_id', $budget->budgetItems()->pluck('id'));
+    }
+
+    public static function getExpenses(Budget $budget) {
+        return Expense::whereHas('budgetItemExpenses.budgetItem', function ($query) use ($budget) {
+            $query->where('budget_id', $budget->id); // Correctly filter by budget_id in BudgetItem
+        });
     }
 
     /**

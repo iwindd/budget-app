@@ -45,18 +45,18 @@ class CompanionPatial extends Component
     {
         $this->companions = $this->budget->budgetItems()
             ->whereNot('user_id', $this->user->id)
-            ->with(["user:id,name", "addresses:budget_item_id,from_date,back_date", "expenses:budget_item_id,total,days"])
+            ->with(["user:id,name", "budgetItemAddresses:budget_item_id,from_date,back_date", "budgetItemExpenses:budget_item_id,total,days"])
             ->get(['id', 'budget_id', 'user_id'])
             ->toArray();
 
         foreach ($this->companions as $index => $companion) {
             $totalExpenseSum = 0;
-            foreach ($companion['expenses'] as $expense) $totalExpenseSum += ($expense['total'] * ($expense['days'] ?? 1));
+            foreach ($companion['budget_item_expenses'] as $expense) $totalExpenseSum += ($expense['total'] * ($expense['days'] ?? 1));
             $this->companions[$index]['expense_sum'] = $totalExpenseSum;
 
-            if (count($companion['addresses']) > 0){
-                $start = $companion['addresses'][0]['from_date'];
-                $end = $companion['addresses'][count($companion['addresses'])-1]['back_date'];
+            if (count($companion['budget_item_addresses']) > 0){
+                $start = $companion['budget_item_addresses'][0]['from_date'];
+                $end = $companion['budget_item_addresses'][count($companion['budget_item_addresses'])-1]['back_date'];
 
                 $startDate = Carbon::parse($start);
                 $endDate = Carbon::parse($end);

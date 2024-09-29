@@ -34,7 +34,7 @@ class AddressBack implements ValidationRule
             $item = $budget->budgetItems()->where('user_id', $this->user_id)->first();
             if (!$item) { $fail(__('The specified budget could not be found.')); return; }
 
-            $newAddress = $item->addresses()
+            $newAddress = $item->budgetItemAddresses()
                 ->where('id', '>', $this->start_id)
                 ->orderBy('id', 'desc')
                 ->first(['id', 'from_date']);

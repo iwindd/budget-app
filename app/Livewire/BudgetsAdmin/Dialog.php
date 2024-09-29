@@ -17,8 +17,8 @@ class Dialog extends Component
     public $serial;
     public $user_id;
     public $value;
-    public $title;
-    public $place; #
+    public $order_id;
+    public $subject; #
 
     /* ETC */
     protected $listeners = [
@@ -31,7 +31,7 @@ class Dialog extends Component
     public function clear()
     {
         $this->isNew = false;
-        $this->reset(['serial', 'value', 'title', 'place']);
+        $this->reset(['serial', 'value', 'order_id', 'subject']);
     }
 
     public function search()
@@ -87,8 +87,8 @@ class Dialog extends Component
             'user_id' => ['required', new UserRole("USER")],
             'serial' => ['required', 'string', 'max:255'],
             'value' => ['required', 'integer'],
-            'title' => ['required', 'string'],
-            'place' => ['required', 'string']
+            'order_id' => ['required', 'string', 'max:255'],
+            'subject' => ['required', 'string', 'max:255']
         ];
     }
 

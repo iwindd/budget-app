@@ -51,18 +51,18 @@
                         </td>
                         <td class="px-6 py-1">
                             {{ __('budgets.table-value-companion-expense', [
-                                'count' => count($user['expenses']),
+                                'count' => count($user['budget_item_expenses']),
                                 'sum' => $user['expense_sum']
                             ])}}
                         </td>
                         <td class="px-6 py-1">
                             {{ __('budgets.table-value-companion-address', [
-                                'count' => count($user['addresses']),
+                                'count' => count($user['budget_item_addresses']),
                                 'diff' => $user['date_diff'] ?? 0
                             ])}}
                         </td>
                         <td class="px-6 py-1 text-end">
-                            @if (count($user['expenses']) > 0 && count($user['addresses']) > 0)
+                            @if (count($user['budget_item_expenses']) > 0 && count($user['budget_item_addresses']) > 0)
                                 {!!__('budgetitems.table-hasData-true')!!}
                             @else
                                 {!!__('budgetitems.table-hasData-false')!!}

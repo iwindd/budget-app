@@ -4,6 +4,7 @@ use App\Http\Controllers\AffiliationController;
 use App\Http\Controllers\BudgetAdminController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ExportBudgetController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OfficeController;
@@ -41,6 +42,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/selectize/companions', [UserController::class, 'companion'])->name('users.companions');
     Route::get('/selectize/locations', [LocationController::class, 'locations'])->name('locations.selectize');
     Route::get('/selectize/expenses', [ExpenseController::class, 'expenses'])->name('expenses.selectize');
+
+    Route::get('/export/document/{budget}', [ExportBudgetController::class, 'document'])->name('export.document');
+    Route::get('/export/evidence/{budget}', [ExportBudgetController::class, 'evidence'])->name('export.evidence');
+    Route::get('/export/certificate/{budget}', [ExportBudgetController::class, 'certificate'])->name('export.certificate');
+    Route::get('/export/travel/{budget}', [ExportBudgetController::class, 'travel'])->name('export.travel');
 });
 
 /* USER ROUTES */

@@ -2,8 +2,8 @@
 
 return [
     'table-serial' => "เลขที่",
-    'table-title' => "เรื่อง",
-    'table-place' => "สถานที่",
+    'table-order_id' => "ตามคำสั่ง/บันทึกที่",
+    'table-subject' => "ที่ไหน/เรื่องอะไร",
     'table-value' => "จำนวนเงิน",
     'table-created_by' => "ผู้สร้าง",
     'table-owner' => "ผู้ใช้",
