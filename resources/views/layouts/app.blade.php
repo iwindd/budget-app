@@ -24,7 +24,6 @@
     </style>
 
     <!-- Scripts -->
-    <link rel="stylesheet" href="{{asset('css/datatable.css')}}">
 
     @if ($select2)
         <link rel="stylesheet" href="{{asset('css/select2.css')}}">
@@ -77,7 +76,6 @@
         </div>
 
         <script src="{{asset('js/jquery.min.js')}}"></script>
-        <script src="{{asset('js/datatable.min.js')}}"></script>
         @isset($scripts)
             {{$scripts}}
         @endisset

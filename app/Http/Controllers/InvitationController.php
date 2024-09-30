@@ -23,20 +23,6 @@ class InvitationController extends Controller
      */
     public function index()
     {
-        if (request()->ajax()) {
-            return datatables()->of(
-                Invitation::with('createdBy:id,name')
-                    ->get()
-            )
-                ->addColumn('created_by', function (Invitation $invitation) {
-                    return $invitation->createdBy ? $invitation->createdBy->name : 'N/A';
-                })
-                ->addColumn("action", "components.invitations.action")
-                ->rawColumns(['action'])
-                ->addIndexColumn()
-                ->make(true);
-        }
-
         return view('admin.invitations.index');
     }
 

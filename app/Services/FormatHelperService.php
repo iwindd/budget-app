@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use PA\ProvinceTh\Factory;
 
 class FormatHelperService
 {
@@ -95,5 +96,13 @@ class FormatHelperService
         }
 
         return $text;
+    }
+
+    public static function userName($val) {
+        return $val ?? 'N/A';
+    }
+
+    public static function province($id) {
+        return Factory::province()->find($id)['name_th'];
     }
 }

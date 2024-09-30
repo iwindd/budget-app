@@ -37,7 +37,7 @@ class Office extends Model
     /**
      * Get the user that created
      */
-    public function createdBy()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

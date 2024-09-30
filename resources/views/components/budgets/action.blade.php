@@ -1,4 +1,7 @@
-<x-dropdown align="left" width="48">
+@php
+    extract($row->toArray());
+@endphp
+<x-dropdown teleport="true" align="left" width="48">
     <x-slot name="trigger">
         <button
             class="flex items-center p-2 text-sm font-medium rounded-md transition duration-150 text-inherit ease-in-out hover:text-gray-700 dark:focus:ring-offset-dark-eval-1 dark:hover:text-gray-200"
@@ -22,7 +25,7 @@
     </x-slot>
     <x-slot name="content">
         <x-dropdown-link
-            :href="route('budgets.show', ['budget' => $budget['serial']])"
+            :href="route('budgets.show', ['budget' => $row['budget.serial']])"
             class="flex items-center gap-2"
         >
             <x-heroicon-o-plus  class="w-5 h-5"/>{{ __('budgetitems.table-action-manage') }}

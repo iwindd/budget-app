@@ -14,24 +14,6 @@ class AffiliationController extends Controller
      */
     public function index()
     {
-        if (request()->ajax()) {
-            return datatables()->of(
-                Affiliation::withCount('users')
-                    ->with('createdBy:id,name')
-                    ->get()
-            )
-                ->addColumn('users_count', function (Affiliation $affiliation) {
-                    return $affiliation->users_count;
-                })
-                ->addColumn('created_by', function (Affiliation $affiliation) {
-                    return $affiliation->createdBy ? $affiliation->createdBy->name : 'N/A';
-                })
-                ->addColumn("action", "components.affiliations.action")
-                ->rawColumns(['action'])
-                ->addIndexColumn()
-                ->make(true);
-        }
-
         return view('admin.affiliations.index');
     }
 

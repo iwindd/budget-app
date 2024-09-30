@@ -26,6 +26,6 @@
     @endif
 
     <x-positions.dialog />
-    <x-positions.datatable />
+    <livewire:positions.datatable />
     <x-confirmation variant="danger" />
 </x-app-layout>

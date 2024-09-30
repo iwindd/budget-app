@@ -42,9 +42,4 @@
     @else
         <x-alert :text="__('budgets.none-create-message')" class="mt-2 shadow sm:rounded-lg" variant="danger"/>
     @endif
-
-    <x-slot name="scripts">
-        <script src="{{ asset('js/formatter.js') }}"></script>
-        <script src="{{ asset('js/auto-formatter.js') }}"></script>
-    </x-slot>
 </x-app-layout>

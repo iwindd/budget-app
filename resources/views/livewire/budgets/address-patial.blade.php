@@ -1,3 +1,4 @@
+@inject('format', 'App\Services\FormatHelperService')
 <section class="grid grid-cols-1 gap-2">
     <form wire:submit="save" id="address-add-form">
         <section class="grid grid-cols-9 gap-2">
@@ -65,9 +66,9 @@
                     <tr wire:key="address-{{ $address['id'] }}"
                         class="{{ $address['editing'] ?? false ? 'bg-cyan-100' : '' }}">
                         <td class="px-6 py-1">{{ $address['from']['label'] }}</td>
-                        <td class="px-6 py-1" data-format="dateandtime"data-value="{{$address['from_date']}}">...</td>
+                        <td class="px-6 py-1">{{$format->date($address['from_date'])}}</td>
                         <td class="px-6 py-1 text-end">{{ $address['back']['label'] }}</td>
-                        <td class="px-6 py-1 text-end" data-format="dateandtime" data-value="{{$address['back_date']}}">...</td>
+                        <td class="px-6 py-1 text-end">{{$format->date($address['back_date'])}}</td>
                         <td class="px-6 py-1 space-x-2 flex justify-end">
                             @if (!($address['editing'] ?? false))
                                 <x-button type="button" wire:click.prevent="editAddress({{ $index }})"
@@ -139,7 +140,6 @@
                     text: e.params.data.text
                 }));
                 Livewire.hook('morph.updated', initSelectors);
-                Livewire.hook('morph.updated', __executeAutoFormatter);
             })
         </script>
     @endscript

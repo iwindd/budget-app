@@ -14,20 +14,6 @@ class LocationController extends Controller
      */
     public function index()
     {
-        if (request()->ajax()) {
-            return datatables()->of(
-                Location::with('createdBy:id,name')
-                    ->get()
-            )
-                ->addColumn('created_by', function (Location $location) {
-                    return $location->createdBy ? $location->createdBy->name : 'N/A';
-                })
-                ->addColumn("action", "components.locations.action")
-                ->rawColumns(['action'])
-                ->addIndexColumn()
-                ->make(true);
-        }
-
         return view('admin.locations.index');
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'table-id' => "#",
     'table-serial' => "เลขที่",
     'table-order_id' => "ตามคำสั่ง/บันทึกที่",
     'table-subject' => "ที่ไหน/เรื่องอะไร",

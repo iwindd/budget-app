@@ -23,20 +23,6 @@ class OfficeController extends Controller
      */
     public function index()
     {
-        if (request()->ajax()) {
-            return datatables()->of(
-                Office::with('createdBy:id,name')
-                    ->get()
-            )
-                ->addColumn('created_by', function (Office $office) {
-                    return $office->createdBy ? $office->createdBy->name : 'N/A';
-                })
-                ->addColumn("action", "components.offices.action")
-                ->rawColumns(['action'])
-                ->addIndexColumn()
-                ->make(true);
-        }
-
         return view('admin.offices.index');
     }
 

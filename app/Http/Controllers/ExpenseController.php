@@ -14,20 +14,6 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        if (request()->ajax()) {
-            return datatables()->of(
-                Expense::with('createdBy:id,name')
-                    ->get()
-            )
-                ->addColumn('created_by', function (Expense $expense) {
-                    return $expense->createdBy ? $expense->createdBy->name : 'N/A';
-                })
-                ->addColumn("action", "components.expenses.action")
-                ->rawColumns(['action'])
-                ->addIndexColumn()
-                ->make(true);
-        }
-
         return view('admin.expenses.index');
     }
 

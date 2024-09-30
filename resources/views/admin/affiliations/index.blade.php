@@ -26,6 +26,7 @@
     @endif
 
     <x-affiliations.dialog />
-    <x-affiliations.datatable />
+    <livewire:affiliations.datatable />
+
     <x-confirmation variant="danger" />
 </x-app-layout>

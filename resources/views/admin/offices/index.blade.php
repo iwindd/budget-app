@@ -22,6 +22,6 @@
     @endif
 
     <livewire:offices.dialog />
-    <x-offices.datatable />
+    <livewire:offices.datatable />
     <x-confirmation variant="danger" />
 </x-app-layout>

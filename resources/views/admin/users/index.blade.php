@@ -16,5 +16,5 @@
         </div>
     </x-slot>
 
-    <x-users.datatable />
+    <livewire:users.datatable />
 </x-app-layout>

@@ -26,6 +26,6 @@
     @endif
 
     <x-locations.dialog />
-    <x-locations.datatable />
+    <livewire:locations.datatable />
     <x-confirmation variant="danger" />
 </x-app-layout>

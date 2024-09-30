@@ -26,6 +26,6 @@
     @endif
 
     <x-expenses.dialog />
-    <x-expenses.datatable />
+    <livewire:expenses.datatable />
     <x-confirmation variant="danger" />
 </x-app-layout>

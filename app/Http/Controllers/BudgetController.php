@@ -18,19 +18,6 @@ class BudgetController extends Controller
      */
     public function index()
     {
-        if (request()->ajax()) {
-            return datatables()->of(
-                $this->auth()->budgetItems()->with('budget')->with('budget.user')
-            )
-                ->addColumn("action", "components.budgets.action")
-                ->addColumn('hasData', function (BudgetItem $item) {
-                    return BudgetItem::isHasData($item);
-                })
-                ->rawColumns(['action'])
-                ->addIndexColumn()
-                ->make(true);
-        }
-
         return view('user.budgets.index');
     }
 

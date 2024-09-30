@@ -27,6 +27,6 @@
     @endif
 
     <x-invitations.dialog />
-    <x-invitations.datatable />
+    <livewire:invitations.datatable />
     <x-confirmation variant="danger" />
 </x-app-layout>
