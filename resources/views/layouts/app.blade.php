@@ -73,6 +73,8 @@
                 <!-- Page Footer -->
                 <x-footer />
             </div>
+
+            <div id="teleport-wrapper"></div>
         </div>
 
         <script src="{{asset('js/jquery.min.js')}}"></script>
