@@ -21,7 +21,9 @@ class Datatable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+        $this->addAdditionalSelects(['users.id as users.id']);
         $this->addAdditionalSelects(['affiliations.label as affiliation.label']);
+        $this->setDebugStatus(true);
     }
 
     public function builder(): Builder
@@ -33,11 +35,6 @@ class Datatable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(trans('users.table-id'), "id")
-            ->setSortingPillTitle('Full Name')
-            ->sortable(),
-
-
             Column::make(trans('users.table-name'), "name")
                 ->sortable(),
             Column::make(trans('users.table-email'), "email")
