@@ -30,13 +30,12 @@ class Datatable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+        $this->addAdditionalSelects(['budget_items.id as id']);
     }
 
     public function columns(): array
     {
         return [
-            Column::make(trans('budgetitems.table-id'), "id")
-                ->sortable(),
             Column::make(trans('budgetitems.table-serial'), "budget.serial")
                 ->sortable(),
             Column::make(trans('budgetitems.table-subject'), "budget.subject")
