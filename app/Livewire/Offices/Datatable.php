@@ -22,6 +22,7 @@ class Datatable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+        $this->addAdditionalSelects(['offices.id as id']);
     }
 
     public function activated(int $id)
@@ -35,8 +36,6 @@ class Datatable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(trans('offices.table-id'), "id")
-                ->sortable(),
             Column::make(trans('offices.table-label'), "label")
                 ->sortable(),
             Column::make(trans('offices.table-province'), "province")
