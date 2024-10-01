@@ -30,6 +30,15 @@ class Invitation extends Model
     }
 
     /**
+     * deactivatedInvitation
+     *
+     * @return void
+    */
+    public static function deactivated() {
+        return self::where('default', true)->update(['default' => false]);
+    }
+
+    /**
      * Get the user that created
      */
     public function user()

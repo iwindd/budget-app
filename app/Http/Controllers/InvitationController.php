@@ -10,15 +10,6 @@ use Illuminate\Support\Facades\Redirect;
 class InvitationController extends Controller
 {
     /**
-     * deactiveInvitation
-     *
-     * @return void
-     */
-    private function deactiveInvitation(){
-        Invitation::where('default', true)->update(['default' => false]);
-    }
-
-    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -31,7 +22,7 @@ class InvitationController extends Controller
      */
     public function store(StoreInvitationRequest $request)
     {
-        if ($request->validated()['default']) $this->deactiveInvitation();
+        if ($request->validated()['default']) Invitation::deactivated();
 
         $invitation = $this->auth()->invitations()->create($request->validated());
 
@@ -46,7 +37,7 @@ class InvitationController extends Controller
      */
     public function update(UpdateInvitationRequest $request, Invitation $invitation)
     {
-        if ($request->validated()['default']) $this->deactiveInvitation();
+        if ($request->validated()['default']) Invitation::deactivated();
         $invitation->update($request->validated());
 
         return Redirect::back()->with('alert', [

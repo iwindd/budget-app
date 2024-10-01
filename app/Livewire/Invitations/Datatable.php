@@ -24,6 +24,14 @@ class Datatable extends DataTableComponent
         $this->setPrimaryKey('id');
     }
 
+    public function activated(int $id)
+    {
+        $this->model::deactivated();
+        $item = $this->model::find($id);
+        $item->default = !$item->default;
+        $item->save();
+    }
+
     public function columns(): array
     {
         return [
@@ -32,6 +40,7 @@ class Datatable extends DataTableComponent
             Column::make(trans('invitations.table-label'), "label")
                 ->sortable(),
             BooleanColumn::make(trans('invitations.table-default'), "default")
+                ->toggleable('activated')
                 ->sortable(),
             Column::make(trans('invitations.table-created_by'), "user.name")
                 ->format(fn($value) => $this->formatter->userName($value))
