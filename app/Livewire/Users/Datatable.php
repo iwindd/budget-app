@@ -5,11 +5,18 @@ namespace App\Livewire\Users;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\User;
+use App\Services\FormatHelperService;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 
 class Datatable extends DataTableComponent
 {
     protected $model = User::class;
+    protected $formatter;
+
+    public function __construct()
+    {
+        $this->formatter = app(FormatHelperService::class);
+    }
 
     public function configure(): void
     {
@@ -26,6 +33,8 @@ class Datatable extends DataTableComponent
             Column::make(trans('users.table-email'), "email")
                 ->sortable(),
             Column::make(trans('users.table-role'), "role")
+                ->format(fn ($value) => $this->formatter->role($value))
+                ->html()
                 ->sortable(),
             Column::make(trans('users.table-position'), "position.label")
                 ->sortable(),

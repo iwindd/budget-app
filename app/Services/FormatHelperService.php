@@ -105,4 +105,8 @@ class FormatHelperService
     public static function province($id) {
         return Factory::province()->find($id)['name_th'];
     }
+
+    public static function role($role) {
+        return trans("users.table-role-$role");
+    }
 }
