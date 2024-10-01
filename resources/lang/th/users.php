@@ -11,7 +11,7 @@ return [
     'table-name' => 'ชื่อ',
     'table-email' => 'อีเมล',
     'table-role' => 'สถานะ',
-    'table-position' => 'ตำแหน่ง',
+    'table-position/affiliation' => 'ตำแหน่ง/สังกัด',
     'table-affiliation' => 'สังกัด',
     'table-budget' => 'ใบเบิกทั้งหมด',
     'table-action' => 'เครื่องมือ'
