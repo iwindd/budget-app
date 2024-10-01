@@ -10,15 +10,6 @@ use Illuminate\Support\Facades\Redirect;
 class OfficeController extends Controller
 {
     /**
-     * deactiveOffice
-     *
-     * @return void
-     */
-    private function deactiveOffice(){
-        Office::where('default', true)->update(['default' => false]);
-    }
-
-    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -31,7 +22,7 @@ class OfficeController extends Controller
      */
     public function store(StoreOfficeRequest $request)
     {
-        if ($request->validated()['default']) $this->deactiveOffice();
+        if ($request->validated()['default']) Office::deactivated();
 
         $office = $this->auth()->offices()->create($request->validated());
 
@@ -46,7 +37,7 @@ class OfficeController extends Controller
      */
     public function update(UpdateOfficeRequest $request, Office $office)
     {
-        if ($request->validated()['default']) $this->deactiveOffice();
+        if ($request->validated()['default']) Office::deactivated();
         $office->update($request->validated());
 
         return Redirect::back()->with('alert', [
