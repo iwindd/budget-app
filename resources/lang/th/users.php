@@ -12,7 +12,8 @@ return [
     'table-email' => 'อีเมล',
     'table-role' => 'สถานะ',
     'table-position/affiliation' => 'ตำแหน่ง/สังกัด',
-    'table-affiliation' => 'สังกัด',
+    'table-budgetitems/expenses-total' => 'ใบเบิก/ค่าใช้จ่าย',
+    'table-budgetitems/expenses-format' => ':budget/:expense รายการ',
     'table-budget' => 'ใบเบิกทั้งหมด',
     'table-action' => 'เครื่องมือ'
 ];
