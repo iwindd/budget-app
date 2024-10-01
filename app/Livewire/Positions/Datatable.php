@@ -22,13 +22,12 @@ class Datatable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+        $this->addAdditionalSelects(['positions.id as positions.id']);
     }
 
     public function columns(): array
     {
         return [
-            Column::make(trans('positions.table-id'), "id")
-                ->sortable(),
             Column::make(trans('positions.table-label'), "label")
                 ->sortable(),
             Column::make(trans('positions.table-created_by'), "user.name")
