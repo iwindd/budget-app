@@ -21,6 +21,7 @@ return [
     'table-created_by' => "เพิ่มโดย",
     'table-created_at' => "เพิ่มเมื่อ",
     'table-action' => "เครื่องมือ",
+    'table-users' => 'ผู้ใช้ทั้งหมด',
     'table-action-text' => "เครื่องมือ",
     'controller-store' => "เพิ่มสังกัด ':label' สำเร็จแล้ว!",
     'controller-update' => "แก้ไขสังกัด ':label' สำเร็จแล้ว!",
