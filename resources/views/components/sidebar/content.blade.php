@@ -4,7 +4,7 @@
     class="flex flex-col flex-1 gap-4 px-3"
 >
     <x-sidebar.link
-        title="Dashboard"
+        title="{{__('dashboard.nav')}}"
         href="{{ route('dashboard') }}"
         :isActive="request()->routeIs('dashboard')"
     >
