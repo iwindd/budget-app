@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Services\FormatHelperService;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
-use Rappasoft\LaravelLivewireTables\Views\Columns\CountColumn;
 
 class Datatable extends DataTableComponent
 {
