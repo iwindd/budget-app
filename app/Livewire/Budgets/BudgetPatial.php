@@ -27,6 +27,6 @@ class BudgetPatial extends Component
 
     public function render()
     {
-        return view('livewire.budgets.budget-patial');
+        return view('livewire.budgets.index');
     }
 }
