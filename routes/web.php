@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
 /* USER ROUTES */
 Route::middleware('role:user')->group(function () {
     Route::get('/budgets', [BudgetController::class, 'index'])->name('budgets');
-    Route::get('/budgets/{budget}', [BudgetController::class, 'show'])->name('budgets.show');
+    Route::get('/budgets/{budget:serial}', [BudgetController::class, 'show'])->name('budgets.show');
     Route::post('/budgets/{budget}', [BudgetController::class, 'store'])->name('budgets.upsert');
     Route::post('/budgets', [BudgetController::class, 'find'])->name('budgets.find');
 });

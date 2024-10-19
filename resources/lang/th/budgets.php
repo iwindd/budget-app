@@ -6,6 +6,7 @@ return [
     'create-heading' => "ใบเบิกเงิน #:serial",
     'add-btn' => "เพิ่มใบเบิกเงิน",
     'budgets-header' => "ใบเบิกเงิน",
+    'budgetitem-header' => "รายละเอียดใบเบิกเงิน",
     'input-serial' => "สัญญายืมเงินเลขที่",
     'input-date' => "วันที่",
     'input-name' => "ผู้เบิก",

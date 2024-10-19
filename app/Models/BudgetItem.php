@@ -15,7 +15,12 @@ class BudgetItem extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'order',
+        'date',
+        'header',
+        'subject',
         'user_id',
+        'budget_id'
     ];
 
     /**

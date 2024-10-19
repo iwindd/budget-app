@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Budget extends Model
 {
@@ -16,15 +17,11 @@ class Budget extends Model
      */
     protected $fillable = [
         'serial',
-        'order_id',
-        'subject',
-        'text',
+        'date',
+        'value',
         'user_id',
         'invitation_id',
-        'office_id',
-        'date',
-        'order_at',
-        'value'
+        'office_id'
     ];
 
     /**

@@ -32,15 +32,16 @@ class BudgetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($budget)
+    public function show()
     {
-        $data = Budget::where('serial', $budget)->first('user_id');
+        return view('user.budgets.create.index');
+/*         $data = Budget::where('serial', $budget)->first('user_id');
 
         return view('user.budgets.create.index', [
             'serial' => $budget,
             'isNew' => !$data,
             'isOwner' => !$data || $data->user_id == $this->auth()->id,
-        ]);
+        ]); */
     }
 
     /**

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight ">
-                {{ __('budgets.create-heading', ['serial' => $serial]) }}
+                {{ __('budgets.create-heading', ['serial' => request()->budget]) }}
             </h2>
         </div>
     </x-slot>
@@ -12,31 +12,27 @@
     @endif
 
     {{-- BUDGET --}}
-    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
-        <div class="max-w-full">
-            @include('user.budgets.create.patials.budget-budget')
-        </div>
-    </div>
+    <livewire:budgets.budget-patial />
 
-    @if (!$isNew)
+    @if (true)
         {{-- COMPANION --}}
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800 my-2">
             <div class="max-w-full">
-                @include('user.budgets.create.patials.budget-companion')
+              {{--   @include('user.budgets.create.patials.budget-companion') --}}
             </div>
         </div>
 
         {{-- ADDRESS --}}
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800 my-2">
             <div class="max-w-full">
-                @include('user.budgets.create.patials.budget-address')
+           {{--      @include('user.budgets.create.patials.budget-address') --}}
             </div>
         </div>
 
         {{-- EXPENSE --}}
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800 my-2">
             <div class="max-w-full">
-                @include('user.budgets.create.patials.budget-expense')
+                {{-- @include('user.budgets.create.patials.budget-expense') --}}
             </div>
         </div>
     @else
