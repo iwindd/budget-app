@@ -25,7 +25,10 @@
     </x-slot>
     <x-slot name="content">
         <x-dropdown-link
-            :href="route('budgets.show.admin', ['budget' => $id])"
+            :href="route('budgets.show.admin', [
+                'budget' => $row['budget.serial'],
+                'budgetItem' => $id
+            ])"
             class="flex items-center gap-2"
         >
             <x-heroicon-o-plus  class="w-5 h-5"/>{{ __('budgetitems.table-action-manage') }}

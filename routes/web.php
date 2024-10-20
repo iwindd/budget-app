@@ -60,7 +60,7 @@ Route::middleware('role:user')->group(function () {
 /* ADMIN ROUTES */
 Route::middleware('role:admin')->prefix('admin')->group(function () {
     Route::get('/budgets', [BudgetAdminController::class, 'index'])->name('budgets.admin');
-    Route::get('/budgets/{budget}', [BudgetAdminController::class, 'show'])->name('budgets.show.admin');
+    Route::get('/budgets/{budget:serial}/{budgetItem}', [BudgetAdminController::class, 'show'])->name('budgets.show.admin');
 
     Route::get("/users", [UserController::class, 'index'])->name('users');
 

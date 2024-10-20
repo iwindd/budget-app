@@ -21,18 +21,25 @@ class BudgetItemForm extends Form
     public $position;
     public $affiliation;
 
-    private function parseBudgetItem(Budget $budget): BudgetItem
+    public function parseBudgetItem(Budget $budget): BudgetItem
     {
-        $budgetItem  = $budget->budgetItems->where('user_id', Auth::user()->id)->first() ?? new BudgetItem();;
+        // ** parseBudgetItem เมื่อใช้ตอน save จะไม่มี request เพราะจะยิงมาจาก url ของ livewire
+        // ซึ่งทำให้ return new BudgetItem
+
+        // * parameter budgetItem จาก request จะมีเฉพาะ request ของ admin
+        $budgetItem  = (
+            request()->budgetItem ? BudgetItem::find(request()->budgetItem) : $budget->budgetItems->where('user_id', Auth::user()->id)->first()
+        ) ?? new BudgetItem();
+
         if (!$budgetItem->exists) $budgetItem->user_id = Auth::user()->id;
         if ($budget->exists) $budgetItem->budget_id = $budget->id;
 
         return $budgetItem;
     }
 
-    public function setBudgetItem(Budget $budget)
+    public function setBudgetItem(BudgetItem $budgetItem)
     {
-        $this->budgetItem = $this->parseBudgetItem($budget);
+        $this->budgetItem = $budgetItem;
         /* FORMS */
         $this->order       = $this->budgetItem->order;
         $this->date        = $this->budgetItem->date;
@@ -47,12 +54,16 @@ class BudgetItemForm extends Form
     public function save(Budget $budget)
     {
         $validated = $this->validate();
-        $budgetItem = $this->parseBudgetItem($budget);
+        $budgetItem = $this->budgetItem;
+        if (!$budgetItem->exists) {
+            $budgetItem = $this->parseBudgetItem($budget);
+        }
         $budgetItem->fill($validated);
         $budgetItem->save();
     }
 
-    public function exists() {
+    public function exists()
+    {
         return $this->budgetItem && $this->budgetItem->exists;
     }
 

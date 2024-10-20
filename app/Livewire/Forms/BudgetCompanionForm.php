@@ -15,7 +15,7 @@ class BudgetCompanionForm extends Form
 
     public function hasPermissionToManage(Budget $budget)
     {
-        return $budget->user_id == Auth::user()->id;
+        return Auth::user()->role == "ADMIN" || $budget->user_id == Auth::user()->id;
     }
 
     private function getOriginalBudgetItem(Budget $budget): BudgetItem
