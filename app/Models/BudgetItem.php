@@ -47,6 +47,10 @@ class BudgetItem extends Model
      * @return Boolean
      */
     public static function isHasData(BudgetItem $budget) {
+        if (!$budget->order) return false;
+        if (!$budget->date) return false;
+        if (!$budget->header) return false;
+        if (!$budget->subject) return false;
         if (!self::isHasAddresses($budget)) return false;
         if (!self::isHasExpenses($budget)) return false;
 

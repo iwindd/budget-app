@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('budget_items', function (Blueprint $table) {
             $table->id();
-            $table->string('order');
-            $table->date('date');
-            $table->string('header'); // ที่ไหน
-            $table->string('subject'); // เรื่องอะไร
+            $table->string('order')->nullable();
+            $table->date('date')->nullable();
+            $table->string('header')->nullable(); // ที่ไหน
+            $table->string('subject')->nullable(); // เรื่องอะไร
             $table->foreignId('budget_id')->constrained('budgets')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
+            $table->unique(['budget_id', 'user_id']);
         });
     }
 
