@@ -20,7 +20,7 @@ class BudgetCompanionForm extends Form
 
     private function getOriginalBudgetItem(Budget $budget): BudgetItem
     {
-        return Budget::getOwnerBudget($budget);
+        return Budget::getOwnerBudget($budget)->first();
     }
 
     public function clear()

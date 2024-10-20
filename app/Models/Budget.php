@@ -67,7 +67,7 @@ class Budget extends Model
      * @return BudgetItem|null
     */
     public static function getOwnerBudget(Budget $budget) {
-        return $budget->budgetItems()->where('user_id', $budget->user_id)->first();
+        return $budget->budgetItems()->where('user_id', $budget->user_id);
     }
 
     public static function getItemExpenses(Budget $budget) {
