@@ -6,7 +6,7 @@
     </x-sidebar.link>
 
     @if (Auth::user()->role == 'admin')
-        <x-sidebar.link title="{{ __('budgets.nav') }}" href="{{ route('budgets.admin') }}" :isActive="request()->routeIs('budgets.admin')">
+        <x-sidebar.link title="{{ __('budgets.nav') }}" href="{{ route('budgets.admin') }}" :isActive="Str::startsWith(request()->route()->uri(), 'admin/budgets')">
             <x-slot name="icon">
                 <x-heroicon-o-document class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
@@ -29,7 +29,7 @@
                 :active="request()->routeIs('invitations')" />
         </x-sidebar.dropdown>
     @elseif (Auth::user()->role == 'user')
-        <x-sidebar.link title="{{ __('budgets.nav') }}" href="{{ route('budgets') }}" :isActive="request()->routeIs('budgets')">
+        <x-sidebar.link title="{{ __('budgets.nav') }}" href="{{ route('budgets') }}" :isActive="Str::startsWith(request()->route()->uri(), 'budgets')">
             <x-slot name="icon">
                 <x-heroicon-o-document class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
