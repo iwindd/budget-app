@@ -33,6 +33,7 @@ return [
     'none-address-create-message' => "กรุณาเพิ่มรายละเอียดการเดินทางให้ครบถ้วน!",
     'none-expense-create-message' => "กรุณาเพิ่มรายการค่าใช้จ่ายให้ครบถ้วน!",
     /* EXPENSE */
+    'expense-header' => "รายการค่าใช้จ่าย",
     'input-expense' => "ประเภทค่าใช้จ่าย",
     'input-expense-placeholder' => "หากมีข้อมูลที่เลือกอยู่แล้วจะเป็นการแทนที่ข้อมูลเก่า",
     'input-total' => "รวม/ต่อวัน",
@@ -42,10 +43,11 @@ return [
     'table-expense-days' => "วัน",
     'table-value-expense-days' => ":day วัน",
     'table-value-expense-all' => "ประเภทรวม",
-    'table-expense-total' => "จำนวนเงิน",
+    'table-expense-total' => "รวมทั้งสิ้น",
     'table-expense-action' => "เครื่องมือ",
     'table-expenses-not-found' => "ไม่พบค่าใช้จ่าย",
     'add-expense-btn' => "บันทึกค่าใช้จ่าย",
+    'expense-budget-item-not-found' => "*จำเป็นต้องบันทึกรายละเอียดใบเบิกก่อนเพิ่มรายการค่าใช้จ่าย",
     /* COMPANION */
     'companion-header' => "คณะเดินทาง",
     'input-companion' => "รายชื่อ",

@@ -5,9 +5,11 @@ namespace App\Livewire\Budgets;
 use App\Livewire\Forms\BudgetCompanionForm;
 use App\Livewire\Forms\BudgetForm;
 use App\Livewire\Forms\BudgetItemAddressForm;
+use App\Livewire\Forms\BudgetItemExpenseForm;
 use App\Livewire\Forms\BudgetItemForm;
 use App\Models\BudgetItem;
 use App\Models\BudgetItemAddress;
+use App\Models\BudgetItemExpense;
 use Illuminate\Http\Request;
 use Livewire\Component;
 
@@ -15,8 +17,9 @@ class BudgetPartial extends Component
 {
     public BudgetForm $budgetForm;
     public BudgetItemForm $budgetItemForm;
-    public BudgetItemAddressForm $budgetItemAddressForm;
     public BudgetCompanionForm $budgetItemCompanionFrom;
+    public BudgetItemAddressForm $budgetItemAddressForm;
+    public BudgetItemExpenseForm $budgetItemExpenseForm;
     public $hasPermissionToManage = false;
 
     public function mount(Request $request)
@@ -73,5 +76,14 @@ class BudgetPartial extends Component
 
     public function onRemoveCompanion(BudgetItem $budgetItem) {
         return $this->budgetItemCompanionFrom->delete($budgetItem);
+    }
+
+    /* EXPENSE */
+    public function onAddExpense() {
+        return $this->budgetItemExpenseForm->save($this->budgetItemForm->budgetItem);
+    }
+
+    public function onRemoveExpense(BudgetItemExpense $budgetItemExpense) {
+        return $this->budgetItemExpenseForm->delete($budgetItemExpense);
     }
 }
