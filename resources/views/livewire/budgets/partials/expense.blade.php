@@ -35,9 +35,9 @@
                 </div>
             </form>
 
-            <section class="relative overflow-x-auto border mt-2">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-inherit dark:text-inherit">
+            <section class="relative overflow-x-auto border-none mt-2">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit border-none">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900/10 dark:text-inherit">
                         <tr>
                             <th class="px-6 py-3 w-[50%]">{{ __('budgets.table-expense-name') }}</th>
                             <th class="px-6 py-3 w-[20%]">{{ __('budgets.table-expense-days') }}</th>
