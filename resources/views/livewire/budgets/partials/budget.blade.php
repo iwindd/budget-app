@@ -21,18 +21,18 @@
                     type="text" class="block w-full" />
                 <x-form.error :messages="$errors->get('budgetForm.serial')" />
             </section>
-            <section class="space-y-2"> {{-- DATE --}}
-                <x-form.label for="budgetForm.date" :value="__('budgets.input-date')" />
-                <x-form.input id="budgetForm.date" name="budgetForm.date" type="date" wire:model="budgetForm.date"
-                    class="block w-full" />
-                <x-form.error :messages="$errors->get('budgetForm.date')" />
-            </section>
             <section class="space-y-2"> {{-- NAME --}}
                 <x-form.label for="budgetForm.name" :value="__('budgets.input-name')" />
                 <x-form.input id="budgetForm.name" name="budgetForm.name" disabled type="text"
                     wire:model="budgetForm.name" class="block w-full" />
             </section>
-            <section class="space-y-2"> {{-- VALUE --}}
+            <section class="space-y-2 md:col-span-1 col-span-2"> {{-- DATE --}}
+                <x-form.label for="budgetForm.date" :value="__('budgets.input-date')" />
+                <x-form.input id="budgetForm.date" name="budgetForm.date" type="date" wire:model="budgetForm.date"
+                    class="block w-full" />
+                <x-form.error :messages="$errors->get('budgetForm.date')" />
+            </section>
+            <section class="space-y-2 md:col-span-1 col-span-2"> {{-- VALUE --}}
                 <x-form.label for="budgetForm.value" :value="__('budgets.input-value')" />
                 <x-form.input id="budgetForm.value" name="value" type="number" wire:model="budgetForm.value"
                     class="block w-full" :placeholder="__('budgets.input-value-placeholder')" />
