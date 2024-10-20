@@ -16,7 +16,7 @@
                         class="w-full text-center truncate lg:ms-2 lg:mt-0 md:ms-2 md:mt-0 mt-2"><i>{{ __('budgets.add-companion-btn') }}</i></x-button>
                 </div>
             </form>
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit mt-2">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-inherit dark:text-inherit">
                     <tr>
                         <th class="px-6 py-3 w-[25%]">{{ __('budgets.table-companion-name') }}</th>
