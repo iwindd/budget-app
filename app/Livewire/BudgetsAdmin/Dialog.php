@@ -2,101 +2,84 @@
 
 namespace App\Livewire\BudgetsAdmin;
 
+use App\Livewire\Forms\BudgetForm;
 use App\Models\Budget;
-use App\Models\Invitation;
-use App\Models\Office;
 use App\Rules\UserRole;
 use Livewire\Component;
 
 class Dialog extends Component
 {
-    /* DATA */
-    public $isNew = false;
-
-    /* FROM */
-    public $serial;
+    public BudgetForm $budgetForm;
+    public $serial = null;
+    public $infoStep = false;
     public $user_id;
-    public $value;
-    public $order_id;
-    public $subject; #
 
-    /* ETC */
-    protected $listeners = [
-        'selectedUser',
-    ];
-
-    /* CACHE */
-    public $user_label = '';
+    public function mount()
+    {
+        $this->budgetForm->setBudget(new Budget());
+    }
 
     public function clear()
     {
-        $this->isNew = false;
-        $this->reset(['serial', 'value', 'order_id', 'subject']);
+        $this->dispatch("onUserSelectorClear");
+        $this->reset(['serial', 'user_id']);
+        $this->budgetForm->reset(['serial', 'date', 'value']);
+        $this->infoStep = false;
     }
 
-    public function search()
+    public function view($serial, $budgetItemId)
     {
+        return $this->redirectRoute('budgets.show.admin', [
+            'budget' => $serial,
+            'budgetItem' => $budgetItemId
+        ]);
+    }
+
+    private function search(Budget $budget)
+    {
+        $budgetItemValue = ['budget_id' => $budget->id, 'user_id' => $budget->user_id];
+        $budgetItem = $this->user_id ? (
+            $budget->budgetItems()->where('user_id', $this->user_id)->first('id')
+        ) : (
+            $budget->budgetItems()->updateOrCreate($budgetItemValue, $budgetItemValue)
+        );
+        if ($budgetItem) return $this->view($budget->serial, $budgetItem->id);
+        if (!$budgetItem && $this->user_id) return $this->addError('user_id', "ผู้ใช้งานนี้ไม่เกี่ยวข้องกับใบเบิกสัญญาที่ {$budget->serial}");
+    }
+
+    private function create(Budget $budget)
+    {
+        if (!$this->infoStep) return $this->infoStep = true;
         $validated = $this->validate([
-            'serial' => ['required', 'string', 'max:255'],
+            'user_id' => ['required', new UserRole("USER")],
+            'serial' => $this->budgetForm->rules()['serial']
         ]);
 
-        $budget = Budget::where($validated)->first();
+        /* OVERRIDE */
+        $this->budgetForm->serial = $validated['serial'];
+        $budget->user_id = $validated['user_id'];
 
-        if ($budget) {
-            $this->redirectRoute('budgets.show.admin', [
-                'budget' => Budget::getOwnerBudget($budget)
-            ]);
-        }
-        $this->isNew = true;
-    }
+        $budget->fill($this->budgetForm->validate());
+        $budget->save();
+        $budgetItemValue = ['budget_id' => $budget->id, 'user_id' => $budget->user_id];
+        $budgetItem = $budget->budgetItems()->updateOrCreate($budgetItemValue, $budgetItemValue);
 
-    public function save()
-    {
-        $validated = $this->validate();
-        $validated['office_id']     = Office::getOffice('id')->id;
-        $validated['invitation_id'] = Invitation::getInvitation('id')->id;
-        $validated['date'] = now();
-        $validated['order_at'] = $validated['date'];
-
-        $budget = Budget::updateOrCreate([
-            'serial' => $validated['serial'],
-            'user_id' => $validated['user_id']
-        ], $validated);
-
-        if ($budget->wasRecentlyCreated) {
-            $item = $budget->budgetItems()->create(['user_id' => $validated['user_id']]);
-            $this->redirectRoute('budgets.show.admin', ['budget' => $item]);
-        } else {
-            $this->redirectRoute('budgets.show.admin', ['budget' => Budget::getOwnerBudget($budget)]);
-        }
+        $this->clear();
+        return $this->view($validated['serial'], $budgetItem->id);
     }
 
     public function submit()
     {
-        return $this->isNew ? $this->save() : $this->search();
+        $validated = $this->validate(['serial' => $this->budgetForm->rules()['serial']]);
+        $budget = $this->budgetForm->parseBudget($validated['serial']);
+
+        return $budget->exists ?
+            $this->search($budget) :
+            $this->create($budget);
     }
 
     public function render()
     {
         return view('livewire.budgets-admin.dialog');
-    }
-
-    public function rules()
-    {
-        return [
-            'user_id' => ['required', new UserRole("USER")],
-            'serial' => ['required', 'string', 'max:255'],
-            'value' => ['required', 'integer'],
-            'order_id' => ['required', 'string', 'max:255'],
-            'subject' => ['required', 'string', 'max:255']
-        ];
-    }
-
-    /* Listeners */
-
-    public function selectedUser($item, $text)
-    {
-        $this->user_id = $item;
-        $this->user_label = $text;
     }
 }

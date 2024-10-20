@@ -6,48 +6,39 @@
             <section class="space-y-2 mt-6">
                 <div class="space-y-2">
                     <x-form.label for="serial" value="{{ __('budgets.input-serial') }}" />
-                    <x-form.input id="serial" :disabled="$isNew" wire:model="serial" type="text"
+                    <x-form.input id="serial" :disabled="$infoStep" wire:model="serial" type="text"
                         class="block w-full" />
                     <x-form.error :messages="$errors->get('serial')" />
                 </div>
 
-                <div class="space-y-2 {{!$isNew ?'hidden' : ''}}"> {{-- ถ้าใช้ if ครอบ event จะไม่ทำงาน --}}
+                <div class="space-y-2">
                     <x-form.label :value="__('budgets.input-name')" />
-                    <select wire:model="user" id="user-selector" class="w-full">
-                        @isset($user_id)
-                            @isset($user_label)
-                                <option value="{{ $user_id }}" selected>{{ $user_label }}</option>
-                            @endisset
-                        @endisset
-                    </select>
-                    <x-form.error :messages="$errors->get('user')" />
+                    <div wire:ignore>
+                        <select id="user_id" class="w-full user-selector"></select>
+                    </div>
+                    <x-form.error :messages="$errors->get('user_id')" />
                 </div>
 
-                @if ($isNew)
+                @if ($infoStep)
                     <div class="grid grid-cols-2 gap-2">
                         <div class="space-y-2">
-                            <x-form.label for="order_id" :value="__('budgets.input-order_id')" />
-                            <x-form.input id="order_id" wire:model="order_id" name="order_id"
-                                type="text" class="block w-full" />
-                            <x-form.error :messages="$errors->get('order_id')" />
+                            <x-form.label for="budgetForm.date" :value="__('budgets.input-date')" />
+                            <x-form.input id="budgetForm.date" wire:model="budgetForm.date" name="budgetForm.date"
+                                type="date" class="block w-full" />
+                            <x-form.error :messages="$errors->get('budgetForm.date')" />
                         </div>
-                        <div class="space-y-2">
-                            <x-form.label for="subject" :value="__('budgets.input-subject')" />
-                            <x-form.input id="subject" wire:model="subject" name="subject" :placeholder="__('budgets.input-subject-placeholder')"
-                                type="text" class="block w-full" />
-                            <x-form.error :messages="$errors->get('subject')" />
-                        </div>
-                        <div class="space-y-2 col-span-2">
-                            <x-form.input id="value" name="value" type="number" wire:model="value"
-                                class="block w-full" :placeholder="__('budgets.input-value-placeholder')" />
-                            <x-form.error :messages="$errors->get('value')" />
+                        <div class="space-y-2 ">
+                            <x-form.label for="budgetForm.value" :value="__('budgets.input-value-minimize')" />
+                            <x-form.input id="budgetForm.value" name="budgetForm.value" type="number"
+                                wire:model="budgetForm.value" class="block w-full" :placeholder="__('budgets.input-value-placeholder')" />
+                            <x-form.error :messages="$errors->get('budgetForm.value')" />
                         </div>
                     </div>
                 @endif
             </section>
 
             <div class="mt-6 flex justify-end">
-                @if ($isNew)
+                @if ($infoStep)
                     <x-button type="button" variant="secondary" class="mr-auto" wire:click="clear">
                         {{ __('budgets.dialog-back-btn') }}
                     </x-button>
@@ -67,38 +58,33 @@
     @script
         <script>
             $(document).ready(function(e) {
-                window.initSelectors = () => {
-                    $('#user-selector').select2({
-                        width: '100%',
-                        placeholder: @js(__('budgets.input-user-placeholder')),
-                        ajax: {
-                            url: @js(route('users.companions')),
-                            dataType: 'json',
-                            delay: 250,
-                            processResults: function(data) {
-                                return {
-                                    results: $.map(data, function(item) {
-                                        return {
-                                            text: item.name,
-                                            id: item.id
-                                        }
-                                    })
-                                };
-                            },
-                            cache: true
-                        }
-                    });
+                $('.user-selector').select2({
+                    width: '100%',
+                    placeholder: @js(__('budgets.input-user-placeholder')),
+                    ajax: {
+                        url: @js(route('users.companions')),
+                        dataType: 'json',
+                        delay: 250,
+                        processResults: function(data) {
+                            return {
+                                results: $.map(data, function(item) {
+                                    return {
+                                        text: item.name,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                });
 
-
-                }
-
-                initSelectors();
-                $('#user-selector').on('select2:select', (e) => $dispatch('selectedUser', {
-                    item: e.params.data.id,
-                    text: e.params.data.text
-                }));
-                Livewire.hook('morph.updated', initSelectors);
+                $('.user-selector').on('select2:select', (e) => {
+                    @this.set(e.target.id, e.params.data.id);
+                });
             })
+
+            window.addEventListener('onUserSelectorClear', (e) => $(`.user-selector`).val(null).trigger('change'));
         </script>
     @endscript
 </section>
