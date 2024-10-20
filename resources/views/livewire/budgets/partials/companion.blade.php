@@ -4,18 +4,20 @@
             <h3 class="font-bold">{{ __('budgets.companion-header') }}</h3>
         </header>
         @if ($budgetItemForm->exists())
-            <form wire:submit="onAddCompanion" class="flex lg:flex-row md:flex-row flex-col">
-                <div class="flex-grow">
-                    <div wire:ignore>
-                        <select class="w-full companions-selector" id="budgetItemCompanionFrom.user_id"></select>
+            @if ($hasPermissionToManage)
+                <form wire:submit="onAddCompanion" class="flex lg:flex-row md:flex-row flex-col">
+                    <div class="flex-grow">
+                        <div wire:ignore>
+                            <select class="w-full companions-selector" id="budgetItemCompanionFrom.user_id"></select>
+                        </div>
+                        <x-form.error :messages="$errors->get('budgetItemCompanionFrom.user_id')" />
                     </div>
-                    <x-form.error :messages="$errors->get('budgetItemCompanionFrom.user_id')" />
-                </div>
-                <div>
-                    <x-button type="submit" name="submit" size="sm"
-                        class="w-full justify-center truncate lg:ms-2 lg:mt-0 md:ms-2 md:mt-0 mt-2">{{ __('budgets.add-companion-btn') }}</x-button>
-                </div>
-            </form>
+                    <div>
+                        <x-button type="submit" name="submit" size="sm"
+                            class="w-full justify-center truncate lg:ms-2 lg:mt-0 md:ms-2 md:mt-0 mt-2">{{ __('budgets.add-companion-btn') }}</x-button>
+                    </div>
+                </form>
+            @endif
 
             <section class="relative overflow-x-auto border-none mt-2">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit border-none">
