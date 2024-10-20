@@ -12,30 +12,5 @@
     @endif
 
     {{-- BUDGET --}}
-    <livewire:budgets.budget-patial />
-
-    @if (true)
-        {{-- COMPANION --}}
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800 my-2">
-            <div class="max-w-full">
-              {{--   @include('user.budgets.create.patials.budget-companion') --}}
-            </div>
-        </div>
-
-        {{-- ADDRESS --}}
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800 my-2">
-            <div class="max-w-full">
-           {{--      @include('user.budgets.create.patials.budget-address') --}}
-            </div>
-        </div>
-
-        {{-- EXPENSE --}}
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800 my-2">
-            <div class="max-w-full">
-                {{-- @include('user.budgets.create.patials.budget-expense') --}}
-            </div>
-        </div>
-    @else
-        <x-alert :text="__('budgets.none-create-message')" class="mt-2 shadow sm:rounded-lg" variant="danger"/>
-    @endif
+    <livewire:budgets.budget-partial />
 </x-app-layout>

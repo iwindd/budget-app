@@ -9,7 +9,7 @@ use App\Models\BudgetItemAddress;
 use Illuminate\Http\Request;
 use Livewire\Component;
 
-class BudgetPatial extends Component
+class BudgetPartial extends Component
 {
     public BudgetForm $budgetForm;
     public BudgetItemForm $budgetItemForm;
