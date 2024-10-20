@@ -57,7 +57,7 @@
                                 <td class="px-6 py-1 text-end">
                                     {{ $format->number($expense->total * ($expense->days ?? 1)) }}
                                 </td>
-                                <td class="px-6 py-1 text-end">
+                                <td class="px-6 py-1 flex justify-end">
                                     <x-button type="button" wire:click.prevent="onRemoveExpense({{ $expense['id'] }})"
                                         icon-only variant="danger" size="sm">
                                         <x-heroicon-o-trash class="w-6 h-6" />

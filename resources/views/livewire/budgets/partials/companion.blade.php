@@ -55,7 +55,7 @@
                                     {!! __('budgetitems.table-hasData-'.($format->isBudgetItemFinished($companion) ? 'true' : 'false')) !!}
                                 </td>
                                 @if ($hasPermissionToManage)
-                                    <td class="px-6 py-1 text-end">
+                                    <td class="px-6 py-1 flex justify-end">
                                         <x-button type="button" wire:click.prevent="onRemoveCompanion({{ $companion['id'] }})"
                                             icon-only variant="danger" size="sm">
                                             <x-heroicon-o-trash class="w-6 h-6" />
