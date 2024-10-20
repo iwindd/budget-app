@@ -60,7 +60,7 @@
         <table>
             <tr>
                 <td class="fit">{{ __('exports.document-name') }}</td>
-                <td class="under w-4"><span>{{ $name }}</span></td>
+                <td class="under w-4"><span>{{ $owner }}</span></td>
                 <td class="fit">{{ __('exports.document-value') }}</td>
                 <td class="under"><span>{{ $format->number($value) }}</span></td>
                 <td class="fit">{{ __('exports.document-value-suffix') }}</td>
@@ -79,11 +79,11 @@
         <table class="w-7 push-center">
             <tr>
                 <td class="fit">{{ __('exports.document-date-day') }}</td>
-                <td class="under"><span>{{ $format->date($date, 'd') }}</span></td>
+                <td class="under"><span>{{ $format->date($order_at, 'd') }}</span></td>
                 <td class="fit">{{ __('exports.document-date-month') }}</td>
-                <td class="under"><span>{{ $format->date($date, 'F') }}</span></td>
+                <td class="under"><span>{{ $format->date($order_at, 'F') }}</span></td>
                 <td class="fit">{{ __('exports.document-date-year') }}</td>
-                <td class="under"><span>{{ $format->date($date, 'Y') }}</span></td>
+                <td class="under"><span>{{ $format->date($order_at, 'Y') }}</span></td>
             </tr>
         </table>
     </section>
@@ -103,7 +103,7 @@
         <table>
             <tr>
                 <td class="fit indent">{{ __('exports.document-order_id') }}</td>
-                <td class="under"><span>{{ $order_id }}</span></td>
+                <td class="under"><span>{{ $order }}</span></td>
                 <td class="fit">{{ __('exports.document-order_at') }}</td>
                 <td class="under"><span>{{ $format->date($order_at) }}</span></td>
                 <td class="fit">{{ __('exports.document-allowed') }}</td>
@@ -142,7 +142,7 @@
         <table>
             <tr>
                 <td class="fit">{{ __('exports.document-subject') }}</td>
-                <td class="under"><span>{{ $subject }}</span></td>
+                <td class="under"><span>{{$subject}} / {{ $header }}</span></td>
                 <td class="fit">{{ __('exports.document-subject-suffix') }}</td>
             </tr>
         </table>
@@ -252,7 +252,7 @@
         <table>
             <tr>
                 <td class="fit text-right">{{ __('exports.document-named') }}</td>
-                <td class="under"><span></span></td>
+                <td class="under"><span>{{$name}}</span></td>
                 <td class="fit">{{ __('exports.document-recipient') }}</td>
             </tr>
             <tr>
@@ -262,7 +262,7 @@
             </tr>
             <tr>
                 <td class="fit text-right">{{ __('exports.document-position') }}</td>
-                <td class="under"><span></span></td>
+                <td class="under"><span>{{$position}}</span></td>
                 <td class="fit"></td>
             </tr>
         </table>
@@ -330,14 +330,14 @@
             <tr>
                 <td class="fit indent" >{{ __('exports.document-text-3') }}</td>
                 <td class="fit">{{ __('exports.document-count') }}</td>
-                <td class="under"><span></span></td>
+                <td class="under"><span>{{$total}}</span></td>
                 <td class="fit">{{ __('exports.document-bath') }}</td>
             </tr>
         </table>
         <table class="w-6" style="margin-bottom: 1em;">
             <tr>
                 <td class="fit">(</td>
-                <td class="under"></td>
+                <td class="under"><span>{{$format->bahtText($total)}}</span></td>
                 <td class="fit">)</td>
                 <td class="fit">{{ __('exports.document-text-4') }}</td>
             </tr>
@@ -346,7 +346,7 @@
             <table>
                 <tr>
                     <td class="fit text-right">{{ __('exports.document-named') }}</td>
-                    <td class="under"><span></span></td>
+                    <td class="under"><span>{{$name}}</span></td>
                     <td class="fit">{{ __('exports.document-payee') }}</td>
                 </tr>
                 <tr>
@@ -359,7 +359,7 @@
             <table>
                 <tr>
                     <td class="fit text-right">{{ __('exports.document-position') }}</td>
-                    <td class="under"><span></span></td>
+                    <td class="under"><span>{{$position}}</span></td>
                 </tr>
             </table>
             <table>
@@ -373,7 +373,7 @@
             <table>
                 <tr>
                     <td class="fit text-right">{{ __('exports.document-named') }}</td>
-                    <td class="under"><span></span></td>
+                    <td class="under"><span>{{$owner}}</span></td>
                     <td class="fit">{{ __('exports.document-payer') }}</td>
                 </tr>
                 <tr>
@@ -386,7 +386,7 @@
             <table>
                 <tr>
                     <td class="fit text-right">{{ __('exports.document-position') }}</td>
-                    <td class="under"><span></span></td>
+                    <td class="under"><span>{{$owner_position}}</span></td>
                 </tr>
             </table>
             <table>
@@ -400,9 +400,9 @@
         <table>
             <tr>
                 <td class="fit text-right">{{ __('exports.document-text-5') }}</td>
-                <td class="under"><span></span></td>
+                <td class="under"><span>{{$order}}</span></td>
                 <td class="fit text-right">{{ __('exports.document-date') }}</td>
-                <td class="under"><span></span></td>
+                <td class="under"><span>{{$format->date($order_at)}}</span></td>
             </tr>
         </table>
     </section>

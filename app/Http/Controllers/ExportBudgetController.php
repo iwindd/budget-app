@@ -9,30 +9,33 @@ use Carbon\Carbon;
 
 class ExportBudgetController extends Controller
 {
-    public function document(BudgetItem $budget)
+    public function document(Budget $budget, BudgetItem $budgetItem)
     {
-        $budgetFromBack = BudgetItem::getFromBack($budget);
+        $budgetFromBack = BudgetItem::getFromBack($budgetItem);
 
         $fromDate = Carbon::parse($budgetFromBack['from']);
         $backDate = Carbon::parse($budgetFromBack['back']);
 
         $pdf = Pdf::loadView('exports.document.index', [
-            'serial' => $budget->budget->serial,
-            'date' => $budget->budget->date,
-            'name' => $budget->user->name,
-            'value' => $budget->budget->value,
-            'office' => $budget->budget->office->label,
-            'invitation' => $budget->budget->invitation->label,
-            'order_id' => $budget->budget->order_id,
-            'order_at' => $budget->budget->order_at,
-            'position' => $budget->user->position->label,
-            'affiliation' => $budget->user->affiliation->label,
-            'companions' => $budget->budget->budgetItems()->with('user')->where('user_id', '!=', $budget->user_id)->get(),
-            'subject' => $budget->budget->subject, /* TODO:: place will change to subject later */
-            'addresses' => $budget->budgetItemAddresses()->with(['from', 'back'])->get(),
+            'serial' => $budget->serial,
+            'date' => $budget->date,
+            'owner' => $budget->user->name,
+            'name' => $budgetItem->user->name,
+            'value' => $budget->value,
+            'office' => $budget->office->label,
+            'invitation' => $budget->invitation->label,
+            'order' => $budgetItem->order,
+            'order_at' => $budget->date,
+            'position' => $budgetItem->user->position->label,
+            'owner_position' => $budget->user->position->label,
+            'affiliation' => $budgetItem->user->affiliation->label,
+            'companions' => $budget->budgetItems()->with('user')->where('user_id', '!=', $budget->user_id)->get(),
+            'header' => $budgetItem->header,
+            'subject' => $budgetItem->subject,
+            'addresses' => $budgetItem->budgetItemAddresses()->with(['from', 'back'])->get(),
             'days' => $fromDate->diffInDays($backDate),
             'hours' => $fromDate->diffInHours($backDate),
-            'expenses' => $budget->budgetItemExpenses()->with('expense')->orderBy('days', 'desc')->get()
+            'expenses' => $budgetItem->budgetItemExpenses()->with('expense')->orderBy('days', 'desc')->get()
         ]);
 
         return $pdf->stream();

@@ -43,8 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/selectize/locations', [LocationController::class, 'locations'])->name('locations.selectize');
     Route::get('/selectize/expenses', [ExpenseController::class, 'expenses'])->name('expenses.selectize');
 
-    Route::get('/export/document/{budget}', [ExportBudgetController::class, 'document'])->name('export.document');
-    Route::get('/export/evidence/{budget}', [ExportBudgetController::class, 'evidence'])->name('export.evidence');
+    Route::get('/budgets/{budget:serial}/document/{budgetItem}', [ExportBudgetController::class, 'document'])->name('budgets.export.document');
+    Route::get('/budgets/{budget:serial}/evidence', [ExportBudgetController::class, 'evidence'])->name('budgets.export.evidence');
     Route::get('/export/certificate/{budget}', [ExportBudgetController::class, 'certificate'])->name('export.certificate');
     Route::get('/export/travel/{budget}', [ExportBudgetController::class, 'travel'])->name('export.travel');
 });

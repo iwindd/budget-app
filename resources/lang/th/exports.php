@@ -1,6 +1,10 @@
 <?php
 
 return [
+    /* MAIN */
+    'export-dropdown-btn' => "พิมพ์",
+    'export-document-btn' => "ใบเบิกค่าใช้จ่ายในการเดินทางไปราชการ",
+    'export-evidence-btn' => "หลักฐานการจ่ายเงินค่าใช่จ่ายในการเดินทางไปราชการ",
     /* DOCUMENT */
     'document-serial' => 'สัญญายืมเลขที่',
     'document-date' => 'วันที่',

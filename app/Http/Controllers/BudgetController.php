@@ -8,8 +8,9 @@ use App\Models\Invitation;
 use App\Models\Office;
 use App\Http\Requests\StoreBudgetRequest;
 use App\Models\BudgetItem;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 
 class BudgetController extends Controller
 {
@@ -29,19 +30,24 @@ class BudgetController extends Controller
         return Redirect::route("budgets.show", ['budget' => $request->validated()['serial']]);
     }
 
+    public function getBudgetItem(String $serial) {
+        try {
+            $budget = Budget::where("serial", $serial)->firstOrFail();
+
+            return ($budget->budgetItems()->where('user_id', Auth::user()->id)->first('id'))->id;
+        } catch (\Throwable $th) {
+            return 0;
+        }
+    }
+
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show(Request $request)
     {
-        return view('user.budgets.create.index');
-/*         $data = Budget::where('serial', $budget)->first('user_id');
-
         return view('user.budgets.create.index', [
-            'serial' => $budget,
-            'isNew' => !$data,
-            'isOwner' => !$data || $data->user_id == $this->auth()->id,
-        ]); */
+            'budgetItemId' => $this->getBudgetItem($request->budget)
+        ]);
     }
 
     /**
