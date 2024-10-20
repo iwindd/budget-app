@@ -14,5 +14,6 @@
         </div>
     </form>
 
+    @include('livewire.budgets.partials.companion')
     @include('livewire.budgets.partials.address')
 </section>
