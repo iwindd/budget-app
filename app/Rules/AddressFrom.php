@@ -2,22 +2,21 @@
 
 namespace App\Rules;
 
-use App\Models\Budget;
+use App\Models\BudgetItem;
+use App\Models\BudgetItemAddress;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 class AddressFrom implements ValidationRule
 {
-    protected string $budget;
-    protected string $user_id;
-    protected int $max_id;
+    protected BudgetItem $budgetItem;
+    protected BudgetItemAddress $budgetItemAddress;
 
-    public function __construct(string $budget, string $user_id, int $max_id)
+    public function __construct(BudgetItem $budgetItem, BudgetItemAddress $budgetItemAddress)
     {
-        $this->budget = $budget;
-        $this->user_id = $user_id;
-        $this->max_id = $max_id;
+        $this->budgetItem = $budgetItem;
+        $this->budgetItemAddress = $budgetItemAddress;
     }
 
     /**
@@ -27,30 +26,18 @@ class AddressFrom implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $budget = Budget::where('serial', $this->budget)->first();
-        if (!$budget) { $fail(__('The specified budget could not be found.')); return; }
+        $query = $this->budgetItem->budgetItemAddresses();
 
-        $item = $budget->budgetItems()->where('user_id', $this->user_id)->first();
-        if (!$item) { $fail(__('The specified budget could not be found.')); return; }
-
-        $query = $item->budgetItemAddresses();
-
-        if (($this->max_id) - 1 > 0) {
-            $query = $query->where('id', '<=', ($this->max_id) - 1);
+        if ($this->budgetItemAddress->exists) {
+            $query = $query->where('id', '<', $this->budgetItemAddress->id);
         }
 
-        // Use an array to pass multiple columns to the `first()` method
-        $lastAddress = $query->orderBy('id', 'desc')->first(['id', 'back_date']);
-
-        if ($lastAddress) {
-            // Ensure that the `back_date` is earlier than the `$value`
-            if ($lastAddress->back_date >= $value) {
-                $backDate = Carbon::parse($lastAddress->back_date);
-
-                $fail(__('The selected date must be after the last back date of :date.', [
-                    'date' => $backDate->format('Y-m-d')
-                ]));
-            }
+        $address = $query->orderBy('id', 'desc')->first(['id', 'back_date']);
+        if ($address && $address->back_date >= $value) {
+            $backDate = Carbon::parse($address->back_date);
+            $fail(__('The selected date must be after the last back date of :date.', [
+                'date' => $backDate->format('Y-m-d')
+            ]));
         }
     }
 }

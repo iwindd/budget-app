@@ -57,6 +57,14 @@ class BudgetForm extends Form
         return $budget;
     }
 
+    public function exists() {
+        return $this->budget && $this->budget->exists;
+    }
+
+    public function owner() {
+        return $this->exists() && $this->budget->user_id == Auth::user()->id;
+    }
+
     public function rules()
     {
         return [

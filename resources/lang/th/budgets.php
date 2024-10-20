@@ -76,6 +76,7 @@ return [
     'table-address-action' => "เครื่องมือ",
     'table-addresses-not-found' => "ไม่พบการเดินทาง",
     'add-address-btn' => "บันทึกการเดินทาง",
+    'address-budget-item-not-found' => "*จำเป็นต้องบันทึกรายละเอียดใบเบิกก่อนเพิ่มรายละเอียดก่อนเดินทาง",
     /* ADMIN DIALOG */
     'admin-add-dialog-header' => "ใบเบิกเงิน"
 ];

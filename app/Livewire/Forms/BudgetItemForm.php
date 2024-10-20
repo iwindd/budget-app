@@ -52,6 +52,10 @@ class BudgetItemForm extends Form
         $budgetItem->save();
     }
 
+    public function exists() {
+        return $this->budgetItem && $this->budgetItem->exists;
+    }
+
     public function rules()
     {
         return [
