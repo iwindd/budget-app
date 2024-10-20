@@ -28,10 +28,10 @@
                         <x-form.error :messages="$errors->get('budgetItemExpenseForm.days')" />
                     </section>
                 </div>
-                <div class="space-y-2">
+                <div class="space-y-2 lg:ms-2">
                     <x-form.label class="mt-2 lg:mt-0" for="submit" :value="__('budgets.table-companion-action')" />
                     <x-button type="submit" name="submit"
-                        class="w-full justify-center truncate lg:ms-2">{{ __('budgets.add-expense-btn') }}</x-button>
+                        class="w-full justify-center truncate">{{ __('budgets.add-expense-btn') }}</x-button>
                 </div>
             </form>
 

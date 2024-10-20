@@ -6,15 +6,17 @@
         @if ($budgetItemForm->exists())
             @if ($hasPermissionToManage)
                 <form wire:submit="onAddCompanion" class="flex lg:flex-row md:flex-row flex-col">
-                    <div class="flex-grow">
+                    <div class="flex-grow space-y-2">
+                        <x-form.label class="mt-2 lg:mt-0" for="submit" :value="__('budgets.input-companion')" />
                         <div wire:ignore>
                             <select class="w-full companions-selector" id="budgetItemCompanionFrom.user_id"></select>
                         </div>
                         <x-form.error :messages="$errors->get('budgetItemCompanionFrom.user_id')" />
                     </div>
-                    <div>
-                        <x-button type="submit" name="submit" size="sm"
-                            class="w-full justify-center truncate lg:ms-2 lg:mt-0 md:ms-2 md:mt-0 mt-2">{{ __('budgets.add-companion-btn') }}</x-button>
+                    <div class="space-y-2 lg:ms-2 lg:mt-0 md:ms-2 md:mt-0 mt-2">
+                        <x-form.label class="mt-2 lg:mt-0" for="submit" :value="__('budgets.table-companion-action')" />
+                        <x-button type="submit" name="submit"
+                            class="w-full justify-center truncate ">{{ __('budgets.add-companion-btn') }}</x-button>
                     </div>
                 </form>
             @endif
