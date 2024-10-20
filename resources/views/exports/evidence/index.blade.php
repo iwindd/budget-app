@@ -58,21 +58,21 @@
         <table class="w-4 push-center">
             <tr>
                 <td class="fit">{{__('exports.evidence-header-office')}}</td>
-                <td class="under"><span></span></td>
+                <td class="under"><span>{{$office}}</span></td>
                 <td class="fit">{{__('exports.evidence-header-province')}}</td>
-                <td class="under"><span></span></td>
+                <td class="under"><span>{{$province}}</span></td>
             </tr>
         </table>
         <table class="w-7 push-center">
             <tr>
                 <td class="fit">{{__('exports.evidence-header-owner')}}</td>
-                <td class="under w-4"><span></span></td>
+                <td class="under w-4"><span>{{$name}}</span></td>
                 <td class="fit">{{__('exports.evidence-order_at')}}</td>
-                <td class="under"><span></span></td>
+                <td class="under"><span>{{ $format->date($date, 'd') }}</span></td>
                 <td class="fit">{{__('exports.evidence-month')}}</td>
-                <td class="under"><span></span></td>
+                <td class="under"><span>{{ $format->date($date, 'F') }}</span></td>
                 <td class="fit">{{__('exports.evidence-year')}}</td>
-                <td class="under"><span></span></td>
+                <td class="under"><span>{{ $format->date($date, 'Y') }}</span></td>
             </tr>
         </table>
     </section>
@@ -114,7 +114,7 @@
                         @endforeach
                         <td>{{$format->number($expense_total)}}</td>
                         <td>{{-- MANUAL --}}</td>
-                        <td>{{-- MANUAL --}}</td>
+                        <td>{{$format->date($item->date)}}</td>
                         <td>{{-- MANUAL --}}</td>
                     </tr>
                 @endforeach
@@ -182,7 +182,7 @@
             <table class="push-center w-8">
                 <tr>
                     <td class="fit text-right">{{ __('exports.document-named') }}</td>
-                    <td class="under"><span></span></td>
+                    <td class="under"><span>{{$name}}</span></td>
                     <td class="fit">{{ __('exports.document-payer') }}</td>
                 </tr>
                 <tr>
@@ -192,7 +192,7 @@
                 </tr>
                 <tr>
                     <td class="fit text-right">{{ __('exports.document-position') }}</td>
-                    <td class="under"><span></span></td>
+                    <td class="under"><span>{{$position}}</span></td>
                     <td class="fit"></td>
                 </tr>
                 <tr>

@@ -6,6 +6,7 @@ use App\Models\Budget;
 use App\Models\BudgetItem;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use PA\ProvinceTh\Factory;
 
 class ExportBudgetController extends Controller
 {
@@ -43,6 +44,10 @@ class ExportBudgetController extends Controller
 
     public function evidence(Budget $budget) {
         $pdf = PDF::loadView('exports.evidence.index', [
+            'office' => $budget->office->label,
+            'province' => Factory::province()->find($budget->office->province)['name_th'],
+            'name' => $budget->user->name,
+            'position' => $budget->user->position->label,
             'listExpenses' => Budget::getExpenses($budget)->get(['id', 'label']),
             'items' => $budget->budgetItems,
             'serial' => $budget->serial,
