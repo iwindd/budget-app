@@ -41,9 +41,9 @@ class BudgetForm extends Form
         $this->value      = $this->budget->value;
 
         $this->serial     = $this->budget->serial;
-        $this->name       = $this->budget->user->name;
-        $this->office     = $this->budget->office->label;
-        $this->invitation = $this->budget->invitation->label;
+        $this->name       = $this->budget->user->name ?? '';
+        $this->office     = $this->budget->office->label ?? 0;
+        $this->invitation = $this->budget->invitation->label ?? 0;
 
         return $this->budget;
     }
