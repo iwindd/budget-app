@@ -24,7 +24,7 @@ class BudgetPartial extends Component
 
     public function mount(Request $request)
     {
-        $budget = $this->budgetForm->setBudget($request->budget);
+        $budget = $this->budgetForm->setBudget($this->budgetForm->parseBudget($request->budget));
         $this->budgetItemForm->setBudgetItem($this->budgetItemForm->parseBudgetItem($budget));
         $this->budgetItemAddressForm->setBudgetItemAddress(new BudgetItemAddress());
         $this->hasPermissionToManage = $this->budgetItemCompanionFrom->hasPermissionToManage($budget);

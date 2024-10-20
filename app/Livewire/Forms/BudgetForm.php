@@ -21,7 +21,7 @@ class BudgetForm extends Form
     public $office;
     public $invitation;
 
-    private function parseBudget(String $serial): Budget
+    public function parseBudget(String $serial): Budget
     {
         $budget = Budget::where('serial', $serial)->first() ?? new Budget();
         if ($budget->exists) return $budget;
@@ -33,9 +33,9 @@ class BudgetForm extends Form
         return $budget;
     }
 
-    public function setBudget(String $serial): Budget
+    public function setBudget(Budget $budget): Budget
     {
-        $this->budget = $this->parseBudget($serial);
+        $this->budget     = $budget;
         /* FORMS */
         $this->date       = $this->budget->date;
         $this->value      = $this->budget->value;
@@ -51,7 +51,10 @@ class BudgetForm extends Form
     public function save(): Budget
     {
         $validated = $this->validate();
-        $budget = $this->parseBudget($validated['serial']);
+        $budget = $this->budget;
+        if (!$budget->exists){
+            $budget = $this->parseBudget($this->serial);
+        }
         $budget->fill($validated);
         $budget->save();
         return $budget;
