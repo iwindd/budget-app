@@ -6,14 +6,14 @@
 
         <section class="grid grid-cols-2 gap-2">
             {{-- ORDER --}}
-            <section class="space-y-2">
+            <section class="space-y-2 md:col-span-1 col-span-2">
                 <x-form.label for="budgetItemForm.order" :value="__('budgets.input-order_id')" />
                 <x-form.input id="budgetItemForm.order" wire:model="budgetItemForm.order"
                     name="budgetItemForm.order" type="text" class="block w-full" />
                 <x-form.error :messages="$errors->get('budgetItemForm.order')" />
             </section>
             {{-- DATE --}}
-            <section class="space-y-2">
+            <section class="space-y-2 md:col-span-1 col-span-2">
                 <x-form.label for="budgetItemForm.date" :value="__('budgets.input-order_at')" />
                 <x-form.input id="budgetItemForm.date" name="budgetItemForm.date" type="date"
                     wire:model="budgetItemForm.date" class="block w-full" />
@@ -43,14 +43,14 @@
                 </section>
             </section>
             {{-- HEADER --}}
-            <section class="space-y-2">
+            <section class="space-y-2 md:col-span-1 col-span-2">
                 <x-form.label for="budgetItemForm.header" :value="__('budgets.input-header')" />
                 <x-form.input id="budgetItemForm.header" wire:model="budgetItemForm.header"
                     name="budgetItemForm.header" :placeholder="__('budgets.input-header-placeholder')" type="text" class="block w-full" />
                 <x-form.error :messages="$errors->get('budgetItemForm.header')" />
             </section>
             {{-- SUBJECT --}}
-            <section class="space-y-2">
+            <section class="space-y-2 md:col-span-1 col-span-2">
                 <x-form.label for="budgetItemForm.subject" :value="__('budgets.input-subject')" />
                 <x-form.input id="budgetItemForm.subject" wire:model="budgetItemForm.subject"
                     name="budgetItemForm.subject" :placeholder="__('budgets.input-subject-placeholder')" type="text" class="block w-full" />
