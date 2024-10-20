@@ -21,25 +21,31 @@ class Datatable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+        $this->addAdditionalSelects(['budget_items.subject as subject']);
     }
 
     public function columns(): array
     {
         return [
-            Column::make("Id", "id")
-                ->sortable(),
+            Column::make(trans('budgetitems.table-hasData'), 'id')
+                ->format(fn ($val) => trans('budgetitems.table-hasData-'.(
+                    BudgetItem::isHasData(BudgetItem::find($val)) ? 'true' : 'false'
+                )))
+                ->html(),
             Column::make(trans('budgetitems.table-serial'), "budget.serial")
                 ->sortable(),
-            Column::make(trans('budgetitems.table-order_id'), "budget.order_id")
-                ->sortable(),
-            Column::make(trans('budgetitems.table-subject'), "budget.subject")
-                ->sortable(),
+            Column::make(trans('budgetitems.table-subject'), "header")
+                ->sortable()
+                ->format(fn ($val, $row) => "{$val}/{$row->subject}"),
             Column::make(trans('budgetitems.table-owner'), "user.name")
                 ->format(fn($value) => $this->formatter->userName($value))
                 ->sortable(),
-            Column::make(trans('budgetitems.table-created_at'), "created_at")
-                ->format(fn($value) => $this->formatter->date($value))
+            Column::make(trans('budgetitems.table-value'), "budget.value")
+                ->format(fn ($value) => $this->formatter->number($value))
                 ->sortable(),
+            Column::make(trans('budgetitems.table-date'), "date")
+                ->sortable()
+                ->format(fn ($val) => $this->formatter->date($val)),
             ButtonGroupColumn::make('Actions')
                 ->setView('components.budgets_admin.action')
         ];
