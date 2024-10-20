@@ -59,7 +59,7 @@
                                 </td>
                                 <td class="px-6 py-1 text-end">
                                     <x-button type="button" wire:click.prevent="onRemoveExpense({{ $expense['id'] }})"
-                                        icon-only variant="danger">
+                                        icon-only variant="danger" size="sm">
                                         <x-heroicon-o-trash class="w-6 h-6" />
                                     </x-button>
                                 </td>

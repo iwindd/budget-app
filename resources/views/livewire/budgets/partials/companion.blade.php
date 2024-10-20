@@ -12,7 +12,7 @@
                     <x-form.error :messages="$errors->get('budgetItemCompanionFrom.user_id')" />
                 </div>
                 <div>
-                    <x-button type="submit" name="submit"
+                    <x-button type="submit" name="submit" size="sm"
                         class="w-full justify-center truncate lg:ms-2 lg:mt-0 md:ms-2 md:mt-0 mt-2">{{ __('budgets.add-companion-btn') }}</x-button>
                 </div>
             </form>
