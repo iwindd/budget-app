@@ -29,12 +29,12 @@
             <section class="space-y-2 md:col-span-1 col-span-2"> {{-- DATE --}}
                 <x-form.label for="budgetForm.date" :value="__('budgets.input-date')" />
                 <x-form.input id="budgetForm.date" name="budgetForm.date" type="date" wire:model="budgetForm.date"
-                    class="block w-full" />
+                    class="block w-full" disabled="{{!$hasPermissionToManage}}"/>
                 <x-form.error :messages="$errors->get('budgetForm.date')" />
             </section>
             <section class="space-y-2 md:col-span-1 col-span-2"> {{-- VALUE --}}
                 <x-form.label for="budgetForm.value" :value="__('budgets.input-value')" />
-                <x-form.input id="budgetForm.value" name="value" type="number" wire:model="budgetForm.value"
+                <x-form.input id="budgetForm.value" disabled="{{!$hasPermissionToManage}}" name="value" type="number" wire:model="budgetForm.value"
                     class="block w-full" :placeholder="__('budgets.input-value-placeholder')" />
                 <x-form.error :messages="$errors->get('budgetForm.value')" />
             </section>

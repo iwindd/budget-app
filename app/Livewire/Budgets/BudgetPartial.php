@@ -35,7 +35,7 @@ class BudgetPartial extends Component
         $this->validate();
         $budget = null;
 
-        if ($this->budgetForm->owner()) {
+        if ($this->hasPermissionToManage) {
             $budget = $this->budgetForm->save();
             $this->budgetItemForm->save($budget);
         } else {
