@@ -31,7 +31,7 @@
                 <div class="space-y-2">
                     <x-form.label class="mt-2 lg:mt-0" for="submit" :value="__('budgets.table-companion-action')" />
                     <x-button type="submit" name="submit"
-                        class="w-full text-center truncate lg:ms-2"><i>{{ __('budgets.add-expense-btn') }}</i></x-button>
+                        class="w-full justify-center truncate lg:ms-2">{{ __('budgets.add-expense-btn') }}</x-button>
                 </div>
             </form>
 

@@ -13,7 +13,7 @@
                 </div>
                 <div>
                     <x-button type="submit" name="submit"
-                        class="w-full text-center truncate lg:ms-2 lg:mt-0 md:ms-2 md:mt-0 mt-2"><i>{{ __('budgets.add-companion-btn') }}</i></x-button>
+                        class="w-full justify-center truncate lg:ms-2 lg:mt-0 md:ms-2 md:mt-0 mt-2">{{ __('budgets.add-companion-btn') }}</x-button>
                 </div>
             </form>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit mt-2">

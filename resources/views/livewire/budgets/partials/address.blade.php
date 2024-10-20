@@ -32,7 +32,7 @@
                 <div class="space-y-2 lg:pl-2 lg:mt-0 mt-2">
                     <x-form.label for="submit" :value="__('budgets.table-address-action')" />
                     <x-button type="submit" name="submit"
-                        class="w-full text-center truncate">{{ __('budgets.add-address-btn') }}</x-button>
+                        class="w-full justify-center truncate">{{ __('budgets.add-address-btn') }}</x-button>
                 </div>
             </form>
             <section class="relative overflow-x-auto border-none">
