@@ -41,33 +41,32 @@
             </section>
             <section class="relative overflow-x-auto border-none mt-2">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit border-none">
-                    <thead
-                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900/10 dark:text-inherit text-center">
-                        <tr class="border">
-                            <th class="pb-3 border" rowspan="2">{{ __('exports.travel-table-order') }}</th>
-                            <th class="w-[12.5%] border" rowspan="2">{{ __('exports.travel-table-plate') }}</th>
-                            <th class="w-[12.5%] border" colspan="2">{{ __('exports.travel-table-travel') }}</th>
-                            <th class="w-[12.5%] border" rowspan="2">{{ __('exports.travel-table-vehicle-user') }}
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900/10 dark:text-inherit text-center border-none">
+                        <tr>
+                            <th class="pb-3 border dark:border-gray-900/25" rowspan="2">{{ __('exports.travel-table-order') }}</th>
+                            <th class="w-[12.5%] border dark:border-gray-900/25" rowspan="2">{{ __('exports.travel-table-plate') }}</th>
+                            <th class="w-[12.5%] border dark:border-gray-900/25" colspan="2">{{ __('exports.travel-table-travel') }}</th>
+                            <th class="w-[12.5%] border dark:border-gray-900/25" rowspan="2">{{ __('exports.travel-table-vehicle-user') }}
                             </th>
-                            <th class="w-[12.5%] border" rowspan="2">{{ __('exports.travel-table-place') }}</th>
-                            <th class="w-[12.5%] border" colspan="2">{{ __('exports.travel-table-back') }}</th>
-                            <th class="border" rowspan="2">{!! __('exports.travel-table-distance') !!}</th>
-                            <th class="border" rowspan="2">{{ __('exports.travel-table-round') }}</th>
-                            <th class="border" rowspan="2">{{ __('exports.travel-table-total-distance') }}</th>
-                            <th class="border" rowspan="2">{!! __('exports.travel-table-bahtperkm') !!}</th>
-                            <th class="border" rowspan="2">{!! __('exports.travel-table-action') !!}</th>
+                            <th class="w-[12.5%] border dark:border-gray-900/25" rowspan="2">{{ __('exports.travel-table-place') }}</th>
+                            <th class="w-[12.5%] border dark:border-gray-900/25" colspan="2">{{ __('exports.travel-table-back') }}</th>
+                            <th class="border dark:border-gray-900/25" rowspan="2">{!! __('exports.travel-table-distance') !!}</th>
+                            <th class="border dark:border-gray-900/25" rowspan="2">{{ __('exports.travel-table-round') }}</th>
+                            <th class="border dark:border-gray-900/25" rowspan="2">{{ __('exports.travel-table-total-distance') }}</th>
+                            <th class="border dark:border-gray-900/25" rowspan="2">{!! __('exports.travel-table-bahtperkm') !!}</th>
+                            <th class="border dark:border-gray-900/25" rowspan="2">{!! __('exports.travel-table-action') !!}</th>
                         </tr>
-                        <tr class="border">
-                            <th class="pt-2">{{ __('exports.travel-table-date') }}</th>
-                            <th>{{ __('exports.travel-table-time') }}</th>
-                            <th>{{ __('exports.travel-table-date') }}</th>
-                            <th>{{ __('exports.travel-table-time') }}</th>
+                        <tr>
+                            <th class="pt-2 border dark:border-gray-900/25">{{ __('exports.travel-table-date') }}</th>
+                            <th class="border dark:border-gray-900/25">{{ __('exports.travel-table-time') }}</th>
+                            <th class="border dark:border-gray-900/25">{{ __('exports.travel-table-date') }}</th>
+                            <th class="border dark:border-gray-900/25">{{ __('exports.travel-table-time') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <template x-for="(row, index) in rows">
                             <tr class="travel-row">
-                                <td class="bg-gray-50 dark:bg-gray-900-10 text-center border"><i x-text="index+1"></i>
+                                <td class="bg-gray-50 dark:bg-gray-900/10 text-center border"><i x-text="index+1"></i>
                                 </td>
                                 <td>
                                     <input type="text" x-model="rows[index].plate"
@@ -113,7 +112,7 @@
                         </template>
                         <tr>
                             <td x-on:click="rows.push(JSON.parse(template))" colspan="13"
-                                class="py-2 text-center bg-gray-50 dark:bg-gray-900-10 hover:bg-gray-100 text-center border cursor-pointer">
+                                class="py-2 text-center bg-gray-50 dark:bg-gray-900/10 hover:bg-gray-100 dark:hover:bg-gray-900/25 text-center border dark:border-gray-900/25 cursor-pointer">
                                 <span class="select-none">{{__("travel.add-btn")}}</span>
                             </td>
                         </tr>

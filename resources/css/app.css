@@ -32,5 +32,5 @@
 }
 
 .travel-row td{
-    @apply border
+    @apply border dark:border-gray-900/25
 }
