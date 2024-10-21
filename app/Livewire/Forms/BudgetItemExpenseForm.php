@@ -32,7 +32,7 @@ class BudgetItemExpenseForm extends Form
             'expense_id' => ['required', 'string', 'max:255'],
         ]);
 
-        return Expense::create([
+        return Expense::firstOrCreate(['label' => $validated['expense_id']],[
             'user_id' => Auth::user()->id,
             'label' => $validated['expense_id'],
             'merge' => true,
