@@ -51,12 +51,19 @@ class ExportBudgetController extends Controller
     }
 
     public function evidence(Budget $budget) {
+        $expenses = Budget::getExpenses($budget)
+            ->where('merge', false)
+            ->where('default', false)
+            ->get(['id', 'label', 'merge']);
+
+        $expenses->push(Expense::getDefault());
+
         $pdf = PDF::loadView('exports.evidence.index', [
             'office' => $budget->office->label,
             'province' => Factory::province()->find($budget->office->province)['name_th'],
             'name' => $budget->user->name,
             'position' => $budget->user->position->label,
-            'listExpenses' => Budget::getExpenses($budget)->get(['id', 'label']),
+            'listExpenses' => $expenses,
             'items' => $budget->budgetItems,
             'serial' => $budget->serial,
             'date' => $budget->date
