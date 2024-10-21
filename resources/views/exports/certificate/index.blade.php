@@ -73,7 +73,7 @@
                     <tr>
                         <td class="fit" style="height: 1.5em;"></td>
                         <td class="fit">{{ $expense->expense->label }}</td>
-                        <td class="fit">{{ $format->number($expense->total * $expense->days ?? 1) }}</td>
+                        <td class="fit">{{ $format->number($expense->total * ($expense->days ?? 1)) }}</td>
                         <td class="fit"></td>
                     </tr>
                 @endforeach
@@ -96,9 +96,9 @@
             </tr>
             <tr>
                 <td class="fit text-right">{{ __('exports.certificate-name') }}</td>
-                <td class="under"><span>{{ $name }}</span></td>
+                <td class="under"><span></span></td>
                 <td class="fit">{{ __('exports.certificate-position') }}</td>
-                <td class="under"><span>{{ $position }}</span></td>
+                <td class="under"><span></span></td>
             </tr>
         </table>
         <table>
@@ -116,7 +116,7 @@
         <table class="push-left w-4">
             <tr>
                 <td class="fit text-right">{{ __('exports.certificate-named') }}</td>
-                <td class="under" colspan="2"><span></span></td>
+                <td class="under" colspan="2"><span>{{ $name }}</span></td>
             </tr>
             <tr>
                 <td class="fit text-right">(</td>

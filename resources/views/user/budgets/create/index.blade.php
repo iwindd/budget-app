@@ -35,6 +35,12 @@
                             ])">
                                 {{ __('exports.export-evidence-btn') }}
                             </x-dropdown-link>
+                            <x-dropdown-link :href="route('budgets.export.certificate', [
+                                'budget' => request()->budget,
+                                'budgetItem' => $budgetItemId,
+                            ])">
+                                {{ __('exports.export-certificate-btn') }}
+                            </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
                 @endif
