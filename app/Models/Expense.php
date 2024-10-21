@@ -20,6 +20,17 @@ class Expense extends Model
     ];
 
     /**
+     * setDefault
+     *
+     * @return void
+    */
+    public static function setDefault(Expense $expense) {
+        self::where('default', true)->update(['default' => false]);
+        $expense->default = true;
+        $expense->save();
+    }
+
+    /**
      * Get the user that created
      */
     public function user()

@@ -18,6 +18,8 @@ return [
     'table-id' => "#",
     'table-label' => "ค่าใช้จ่าย",
     'table-created_by' => "เพิ่มโดย",
+    'table-merge' => "รวมรวบ",
+    'table-default' => "รวบรวมที่",
     'table-created_at' => "เพิ่มเมื่อ",
     'table-action' => "เครื่องมือ",
     'table-action-text' => "เครื่องมือ",

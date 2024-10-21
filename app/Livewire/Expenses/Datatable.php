@@ -6,6 +6,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Expense;
 use App\Services\FormatHelperService;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 
 class Datatable extends DataTableComponent
@@ -24,6 +25,17 @@ class Datatable extends DataTableComponent
         $this->addAdditionalSelects(['expenses.id as id']);
     }
 
+    public function toggleMerge(Expense $expense)
+    {
+        if ($expense->default) return;
+        $expense->merge = !$expense->merge;
+        $expense->save();
+    }
+
+    public function toggleDefault(Expense $expense) {
+        return Expense::setDefault($expense);
+    }
+
     public function columns(): array
     {
         return [
@@ -31,6 +43,13 @@ class Datatable extends DataTableComponent
                 ->sortable(),
             Column::make(trans("expenses.table-created_by"), "user.name")
                 ->format(fn($value) => $this->formatter->userName($value))
+                ->sortable(),
+            BooleanColumn::make(trans('expenses.table-merge'), "merge")
+                ->setCallback(fn($value, $row) => $value && !$row->default)
+                ->toggleable('toggleMerge')
+                ->sortable(),
+            BooleanColumn::make(trans('expenses.table-default'), "default")
+                ->toggleable('toggleDefault')
                 ->sortable(),
             Column::make(trans('expenses.table-created_at'), "created_at")
                 ->format(fn($value) => $this->formatter->date($value))

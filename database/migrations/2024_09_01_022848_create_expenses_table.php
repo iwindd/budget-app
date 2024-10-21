@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('label');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->boolean('merge')->default(true);
+            $table->boolean('default')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });
