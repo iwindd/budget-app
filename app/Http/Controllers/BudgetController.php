@@ -8,6 +8,7 @@ use App\Models\Invitation;
 use App\Models\Office;
 use App\Http\Requests\StoreBudgetRequest;
 use App\Models\BudgetItem;
+use App\Models\BudgetItemTravel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -40,13 +41,25 @@ class BudgetController extends Controller
         }
     }
 
+    public function getBudgetItemTravel(String $serial) {
+        try {
+            $travel = BudgetItemTravel::where("budget_item_id", $this->getBudgetItem($serial))
+                ->firstOrFail();
+
+            return $travel->id;
+        } catch (\Throwable $th) {
+            return 0;
+        }
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(Request $request)
     {
         return view('user.budgets.create.index', [
-            'budgetItemId' => $this->getBudgetItem($request->budget)
+            'budgetItemId' => $this->getBudgetItem($request->budget),
+            'budgetItemTravelId' => $this->getBudgetItemTravel($request->budget)
         ]);
     }
 

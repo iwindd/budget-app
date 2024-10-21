@@ -41,6 +41,14 @@
                             ])">
                                 {{ __('exports.export-certificate-btn') }}
                             </x-dropdown-link>
+                            @if ($budgetItemTravelId > 0)
+                                <x-dropdown-link :href="route('budgets.export.travel', [
+                                    'budget' => request()->budget,
+                                    'budgetItem' => $budgetItemId,
+                                ])">
+                                    {{ __('exports.export-travel-btn') }}
+                                </x-dropdown-link>
+                            @endif
                         </x-slot>
                     </x-dropdown>
                 @endif

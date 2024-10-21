@@ -6,6 +6,7 @@ return [
     'export-document-btn' => "ใบเบิกค่าใช้จ่ายในการเดินทางไปราชการ",
     'export-evidence-btn' => "หลักฐานการจ่ายเงินค่าใช่จ่ายในการเดินทางไปราชการ",
     'export-certificate-btn' => "ใบรับรองแทนใบเสร็จรับเงิน",
+    'export-travel-btn' => "รายละเอียดการเดินทางไปราชการ",
     /* DOCUMENT */
     'document-serial' => 'สัญญายืมเลขที่',
     'document-date' => 'วันที่',
