@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('budget_item_travel_id')->constrained('budget_item_travel')->onDelete('cascade')->onUpdate('cascade');
             $table->string('plate');
-            $table->date('start');
+            $table->dateTime('start');
             $table->string('driver');
             $table->string('location');
-            $table->date('end');
+            $table->dateTime('end');
             $table->integer('distance');
             $table->integer('round');
         });

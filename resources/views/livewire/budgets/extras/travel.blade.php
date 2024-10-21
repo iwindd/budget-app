@@ -74,7 +74,7 @@
                                         placeholder="{{ __('travel.row-input-plate') }}" autofocus>
                                 </td>
                                 <td colspan="2">
-                                    <input type="date" x-model="rows[index].start" name="start" id="start">
+                                    <input type="datetime-local" x-model="rows[index].start" name="start" id="start">
                                 </td>
                                 <td>
                                     <input type="text" x-model="rows[index].driver" name="driver"
@@ -85,7 +85,7 @@
                                         placeholder="{{ __('travel.row-input-location') }}">
                                 </td>
                                 <td colspan="2">
-                                    <input type="date" x-model="rows[index].end" name="end" id="end">
+                                    <input type="datetime-local" x-model="rows[index].end" name="end" id="end">
                                 </td>
                                 <td>
                                     <input type="number" x-model="rows[index].distance" name="distance" id="distance"
