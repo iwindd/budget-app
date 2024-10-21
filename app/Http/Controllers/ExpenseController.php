@@ -36,7 +36,7 @@ class ExpenseController extends Controller
      */
     public function store(StoreExpenseRequest $request)
     {
-        $expense = $this->auth()->budgetItemExpenses()->create($request->validated());
+        $expense = $this->auth()->expenses()->create($request->validated());
 
         return Redirect::back()->with('alert', [
             'text' => trans("expenses.controller-store", ["label" => $expense->label]),
