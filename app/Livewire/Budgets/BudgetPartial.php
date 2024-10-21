@@ -7,6 +7,7 @@ use App\Livewire\Forms\BudgetForm;
 use App\Livewire\Forms\BudgetItemAddressForm;
 use App\Livewire\Forms\BudgetItemExpenseForm;
 use App\Livewire\Forms\BudgetItemForm;
+use App\Livewire\Forms\BudgetItemTravelForm;
 use App\Models\BudgetItem;
 use App\Models\BudgetItemAddress;
 use App\Models\BudgetItemExpense;
@@ -20,13 +21,16 @@ class BudgetPartial extends Component
     public BudgetCompanionForm $budgetItemCompanionFrom;
     public BudgetItemAddressForm $budgetItemAddressForm;
     public BudgetItemExpenseForm $budgetItemExpenseForm;
+    public BudgetItemTravelForm  $budgetItemTravelForm;
     public $hasPermissionToManage = false;
 
     public function mount(Request $request)
     {
         $budget = $this->budgetForm->setBudget($this->budgetForm->parseBudget($request->budget));
-        $this->budgetItemForm->setBudgetItem($this->budgetItemForm->parseBudgetItem($budget));
+        $budgetItem = $this->budgetItemForm->parseBudgetItem($budget);
+        $this->budgetItemForm->setBudgetItem($budgetItem);
         $this->budgetItemAddressForm->setBudgetItemAddress(new BudgetItemAddress());
+        $this->budgetItemTravelForm->setBudgetItemTravel($budgetItem);
         $this->hasPermissionToManage = $this->budgetItemCompanionFrom->hasPermissionToManage($budget);
     }
 
@@ -84,5 +88,10 @@ class BudgetPartial extends Component
 
     public function onRemoveExpense(BudgetItemExpense $budgetItemExpense) {
         return $this->budgetItemExpenseForm->delete($budgetItemExpense);
+    }
+
+    /* TRAVEL */
+    public function onSaveTravel() {
+        return $this->budgetItemTravelForm->save($this->budgetItemForm->budgetItem);
     }
 }

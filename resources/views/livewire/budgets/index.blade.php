@@ -17,4 +17,5 @@
     @include('livewire.budgets.partials.companion')
     @include('livewire.budgets.partials.address')
     @include('livewire.budgets.partials.expense')
+    @include('livewire.budgets.extras.travel')
 </section>

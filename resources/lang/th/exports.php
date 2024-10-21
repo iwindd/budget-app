@@ -128,6 +128,7 @@ return [
     'travel-table-bahtperkm' => 'เป็นเงิน กม.<br/>ละ 4 บาท',
     'travel-table-date' => 'วันที่',
     'travel-table-time' => 'เวลา',
+    'travel-table-action' => 'เครื่องมือ',
     'travel-footer-text-1' => 'ข้าพเจ้าขอรับรองว่ารายการที่กล่าวมาข้างต้นเป็นความจริงทุกประการ',
     'travel-named' => 'ลงชื่อ',
     'travel-position' => 'ตำแหน่ง'

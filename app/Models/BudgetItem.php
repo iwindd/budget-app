@@ -103,4 +103,9 @@ class BudgetItem extends Model
     {
         return $this->hasMany(BudgetItemExpense::class, 'budget_item_id', 'id');
     }
+
+    public function budgetItemTravel()
+    {
+        return $this->hasOne(BudgetItemTravel::class);
+    }
 }
