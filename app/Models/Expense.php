@@ -31,6 +31,29 @@ class Expense extends Model
         $expense->save();
     }
 
+    public static function getDefault() {
+        return Expense::where('default', true)->firstOrFail();
+    }
+
+    public static function createDefaultBudgetItemExpense(BudgetItem $budgetItem) : BudgetItemExpense {
+        $default = self::getDefault();
+        $budgetItemExpense = new BudgetItemExpense();
+        $budgetItemExpense->fill([
+            'budget_item_id' => $budgetItem->id,
+            'expense_id' => $default->id,
+            'days' => null,
+            'total' => $budgetItem->budgetItemExpenses
+                ->filter(function ($budgetItemExpense) {
+                    return $budgetItemExpense->expense->merge == true;
+                })
+                ->sum(function ($budgetItemExpense) {
+                    return $budgetItemExpense->total * ($budgetItemExpense->days ?? 1);
+                })
+        ]);
+
+        return $budgetItemExpense;
+    }
+
     /**
      * Get the user that created
      */

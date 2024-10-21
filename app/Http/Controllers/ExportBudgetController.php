@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Budget;
 use App\Models\BudgetItem;
+use App\Models\Expense;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use PA\ProvinceTh\Factory;
@@ -36,7 +37,14 @@ class ExportBudgetController extends Controller
             'addresses' => $budgetItem->budgetItemAddresses()->with(['from', 'back'])->get(),
             'days' => $fromDate->diffInDays($backDate),
             'hours' => $fromDate->diffInHours($backDate),
-            'expenses' => $budgetItem->budgetItemExpenses()->with('expense')->orderBy('days', 'desc')->get()
+            'expenses' => $budgetItem->budgetItemExpenses()
+                ->whereHas('expense', function($query) {
+                    $query->where('merge', false);
+                    $query->where('default', false);
+                })
+                ->with('expense')
+                ->orderBy('days', 'desc')->get(),
+            'defaultExpense' => Expense::createDefaultBudgetItemExpense($budgetItem)
         ]);
 
         return $pdf->stream();
