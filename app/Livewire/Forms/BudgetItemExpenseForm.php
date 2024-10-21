@@ -49,6 +49,7 @@ class BudgetItemExpenseForm extends Form
             'total' => ['required', 'integer', 'min:0'],
         ]);
 
+        $validated['days'] = empty($validated['days']) ? 0 : $validated['days'];
         $budgetItem->budgetItemExpenses()->updateOrCreate(['expense_id' => $validated['expense_id']], $validated);
         $this->clear();
     }
