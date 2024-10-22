@@ -29,6 +29,21 @@
             autocomplete="name"
         />
 
+        <div class="grid grid-cols-2 gap-2">
+            <x-textfield
+                :label="__('positions.label')"
+                :value="$user->position->label"
+                type="text"
+                disabled
+            />
+            <x-textfield
+                :label="__('affiliations.label')"
+                :value="$user->affiliation->label"
+                type="text"
+                disabled
+            />
+        </div>
+
         <x-textfield
             :label="__('auth.email')"
             :value="$user->email"
