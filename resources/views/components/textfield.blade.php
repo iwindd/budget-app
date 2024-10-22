@@ -16,7 +16,7 @@
         flex border rounded-md justify-center items-center dark:bg-dark-eval-1 dark:disabled:bg-dark-eval-0 overflow-hidden
         " . ($error ? 'border-danger dark:border-danger' : 'border-gray-400 focus-within:border-primary dark:border-gray-600 dark:focus-within:border-primary') . "
         disabled:bg-gray-200 w-full
-        gap-2 px-2
+        gap-2 px-2 mb-1
     ";
 @endphp
 
