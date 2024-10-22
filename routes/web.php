@@ -25,9 +25,7 @@ use App\Http\Controllers\UserController;
 */
 
 /* GUEST ROUTES */
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn() => redirect("login"));
 
 /* USER & ADMIN ROUTES */
 Route::middleware('auth')->group(function () {
