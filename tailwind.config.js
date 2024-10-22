@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -25,6 +26,30 @@ module.exports = {
                     'eval-2': '#2A2F42',
                     'eval-3': '#2C3142',
                 },
+                'primary': {
+                    DEFAULT: colors.blue[500],
+                    ...colors.blue
+                },
+                'danger': {
+                    DEFAULT: colors.rose[500],
+                    ...colors.rose
+                },
+                'success': {
+                    DEFAULT: colors.emerald[500],
+                    ...colors.emerald
+                },
+                'warning': {
+                    DEFAULT: colors.yellow[500],
+                    ...colors.yellow
+                },
+                'secondary': {
+                    DEFAULT: colors.gray[500],
+                    ...colors.gray
+                },
+                'info': {
+                    DEFAULT: colors.sky[500],
+                    ...colors.sky
+                }
             },
         },
     },

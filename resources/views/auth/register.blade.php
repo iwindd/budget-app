@@ -117,7 +117,7 @@
 
                 <p class="text-sm text-gray-600 dark:text-gray-400">
                     {{ __('Already registered?') }}
-                    <a href="{{ route('login') }}" class="text-blue-500 hover:underline">
+                    <a href="{{ route('login') }}" class="text-primary hover:underline">
                         {{ __('Login') }}
                     </a>
                 </p>

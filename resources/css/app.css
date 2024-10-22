@@ -24,7 +24,7 @@
 
 .select2-container--default
     .select2-results__option--highlighted.select2-results__option--selectable {
-    @apply bg-purple-500 text-white;
+    @apply bg-primary text-white;
 }
 
 .travel-row input{

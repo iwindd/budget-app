@@ -67,7 +67,7 @@
                         <input
                             id="remember_me"
                             type="checkbox"
-                            class="text-purple-500 border-gray-300 rounded focus:border-purple-300 focus:ring focus:ring-purple-500 dark:border-gray-600 dark:bg-dark-eval-1 dark:focus:ring-offset-dark-eval-1"
+                            class="text-primary border-gray-300 rounded focus:border-primary-300 focus:ring focus:ring-primary dark:border-gray-600 dark:bg-dark-eval-1 dark:focus:ring-offset-dark-eval-1"
                             name="remember"
                         >
 
@@ -77,7 +77,7 @@
                     </label>
 
                     @if (Route::has('password.request'))
-                        <a class="text-sm text-blue-500 hover:underline" href="{{ route('password.request') }}">
+                        <a class="text-sm text-primary hover:underline" href="{{ route('password.request') }}">
                             {{ __('auth.forgot_password') }}
                         </a>
                     @endif
@@ -94,7 +94,7 @@
                 @if (Route::has('register'))
                     <p class="text-sm text-gray-600 dark:text-gray-400">
                         {{ __('Don’t have an account?') }}
-                        <a href="{{ route('register') }}" class="text-blue-500 hover:underline">
+                        <a href="{{ route('register') }}" class="text-primary hover:underline">
                             {{ __('Register') }}
                         </a>
                     </p>

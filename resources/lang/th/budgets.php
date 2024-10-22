@@ -54,7 +54,7 @@ return [
     'input-companion-placeholder' => "เลือกรายชื่อเพื่อเพิ่มคณะเดินทาง",
     'table-companion-name' => "ชื่อผู้ร่วมเดินทาง",
     'table-companion-type' => "ประเภท",
-    'table-value-companion-type-owner' => "<span class='text-green-500'>ผู้สร้างใบเบิก</span>",
+    'table-value-companion-type-owner' => "<span class='text-success'>ผู้สร้างใบเบิก</span>",
     'table-value-companion-type-companion' => "ผู้ร่วมเดินทาง",
     'table-companion-expense' => "ค่าใช้จ่าย",
     'table-value-companion-expense' => ":count รายการ | รวมทั้งสิ้น :sum บาท",

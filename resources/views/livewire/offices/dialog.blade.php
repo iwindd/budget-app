@@ -21,7 +21,7 @@
                 <section class="flex items-center justify-between">
                     <label for="office.default" class="inline-flex items-center">
                         <input id="office.default" wire:model='office.default' type="checkbox"
-                            class="text-purple-500 border-gray-300 rounded focus:border-purple-300 focus:ring focus:ring-purple-500 dark:border-gray-600 dark:bg-dark-eval-1 dark:focus:ring-offset-dark-eval-1"
+                            class="text-primary border-gray-300 rounded focus:border-primary-300 focus:ring focus:ring-primary dark:border-gray-600 dark:bg-dark-eval-1 dark:focus:ring-offset-dark-eval-1"
                             name="office.default">
                         <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">
                             {{ __('offices.dialog-input-default') }}

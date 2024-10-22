@@ -4,32 +4,32 @@
 ])
 
 @php
-    $baseClasses = 'flex items-center justify-between p-4 rounded-lg bg-inherit';
+    $baseClasses = 'flex items-center justify-between p-4 rounded-lg';
 
     switch ($variant) {
         case 'primary':
-            $variantClasses = 'text-purple-500 bg-purple-500/20';
+            $variantClasses = 'text-primary bg-primary-400/15';
             break;
         case 'secondary':
-            $variantClasses = 'text-gray-500 bg-gray-500/20';
+            $variantClasses = 'text-secondary bg-secondary-400/15';
             break;
         case 'success':
-            $variantClasses = 'text-green-500 bg-green-500/20';
+            $variantClasses = 'text-success bg-success-400/15';
             break;
         case 'danger':
-            $variantClasses = 'text-red-500 bg-red-500/20';
+            $variantClasses = 'text-danger bg-danger-400/15';
             break;
         case 'warning':
-            $variantClasses = 'text-yellow-500 bg-yellow-500/20';
+            $variantClasses = 'text-warning bg-warning-400/15';
             break;
         case 'info':
-            $variantClasses = 'text-cyan-500 bg-cyan-500/20';
+            $variantClasses = 'text-info bg-info-400/15';
             break;
         case 'black':
-            $variantClasses = 'text-black bg-black/20';
+            $variantClasses = 'text-black bg-black/15';
             break;
         default:
-            $variantClasses = 'text-purple-500 bg-purple/20';
+            $variantClasses = 'text-primary bg-primary-400/15';
     }
 
     $classes = $baseClasses . ' ' . $variantClasses;

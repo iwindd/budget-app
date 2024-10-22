@@ -121,7 +121,7 @@
 
                 @if ($errors->has('budgetItemTravelForm.rows.*'))
                     <span
-                        class="text-sm text-red-600 dark:text-red-400 space-y-1">{{ __('travel.rows-error') }}</span>
+                        class="text-sm text-danger-600 dark:text-danger-400 space-y-1">{{ __('travel.rows-error') }}</span>
                     {{-- TODO:: REWORK LATER. SO TRIED --}}
                     @foreach ($errors->get('budgetItemTravelForm.rows.*') as $error)
                         <x-form.error :messages="$error" />
