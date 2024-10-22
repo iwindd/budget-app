@@ -1,65 +1,38 @@
 <x-guest-layout>
-    <x-auth-card>
+    <x-auth-card title="เข้าสู่ระบบ">
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <div class="grid gap-6">
+            <div class="grid gap-4">
                 <!-- Email Address -->
-                <div class="space-y-2">
-                    <x-form.label
-                        for="email"
-                        :value="__('auth.email')"
-                    />
-
-                    <x-form.input-with-icon-wrapper>
-                        <x-slot name="icon">
-                            <x-heroicon-o-envelope aria-hidden="true" class="w-5 h-5" />
-                        </x-slot>
-
-                        <x-form.input
-                            withicon
-                            id="email"
-                            class="block w-full"
-                            type="email"
-                            name="email"
-                            :value="old('email')"
-                            placeholder="{{ __('auth.email') }}"
-                            required
-                            autofocus
-                        />
-                    </x-form.input-with-icon-wrapper>
-                </div>
+                <x-textfield
+                    :label="__('auth.email')"
+                    :startIcon="@svg('heroicon-o-envelope')"
+                    :value="old('email')"
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="{{ __('auth.email') }}"
+                    required
+                    autofocus
+                    :error="$errors->get('email')"
+                />
 
                 <!-- Password -->
-                <div class="space-y-2">
-                    <x-form.label
-                        for="password"
-                        :value="__('auth.password')"
-                    />
-
-                    <x-form.input-with-icon-wrapper>
-                        <x-slot name="icon">
-                            <x-heroicon-o-lock-closed aria-hidden="true" class="w-5 h-5" />
-                        </x-slot>
-
-                        <x-form.input
-                            withicon
-                            id="password"
-                            class="block w-full"
-                            type="password"
-                            name="password"
-                            required
-                            autocomplete="current-password"
-                            placeholder="{{ __('auth.password') }}"
-                        />
-                    </x-form.input-with-icon-wrapper>
-                </div>
+                <x-textfield
+                    :label="__('auth.password')"
+                    :startIcon="@svg('heroicon-o-lock-closed')"
+                    id="password"
+                    type="password"
+                    name="password"
+                    value=""
+                    required
+                    placeholder="{{ __('auth.password') }}"
+                    autocomplete="false"
+                />
 
                 <!-- Remember Me -->
                 <div class="flex items-center justify-between">
