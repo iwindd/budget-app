@@ -117,7 +117,7 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
-
+    'current_password' => "รหัสผ่านปัจจุบันไม่ถูกต้อง.",
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -146,6 +146,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => "ชื่อ",
+        'email' => "อีเมล",
+        'password' => "รหัสผ่าน",
+    ],
 
 ];
