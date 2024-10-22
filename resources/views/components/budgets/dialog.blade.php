@@ -5,6 +5,7 @@
 
         <div class="mt-6 space-y-6">
             <x-textfield
+                :startIcon="@svg('heroicon-o-hashtag')"
                 :error="$errors->findBudget->get('serial')"
                 type="text"
                 id="serial"
