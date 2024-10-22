@@ -47,8 +47,11 @@ class BudgetPartial extends Component
                 $this->budgetForm->save();
         }
 
-        $this->budgetItemForm->save($budget);
-        $this->js('window.location.reload()');
+        $budgetItem = $this->budgetItemForm->save($budget);
+        $this->budgetForm->setBudget($budget);
+        $this->budgetItemForm->setBudgetItem($budgetItem);
+        $this->budgetItemTravelForm->setBudgetItemTravel($budgetItem);
+        $this->hasPermissionToManage = $this->budgetItemCompanionFrom->hasPermissionToManage($budget);
     }
 
     public function render()

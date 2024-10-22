@@ -51,7 +51,7 @@ class BudgetItemForm extends Form
         $this->affiliation = $this->budgetItem->user->affiliation->label;
     }
 
-    public function save(Budget $budget)
+    public function save(Budget $budget) : BudgetItem
     {
         $validated = $this->validate();
         $budgetItem = $this->budgetItem;
@@ -60,6 +60,8 @@ class BudgetItemForm extends Form
         }
         $budgetItem->fill($validated);
         $budgetItem->save();
+
+        return $budgetItem;
     }
 
     public function exists()
