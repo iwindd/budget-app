@@ -12,64 +12,42 @@
     <form
         method="post"
         action="{{ route('password.update') }}"
-        class="mt-6 space-y-6"
+        class="mt-6 space-y-2"
     >
         @csrf
         @method('put')
 
-        <div class="space-y-2">
-            <x-form.label
-                for="current_password"
-                :value="__('auth.current_password')"
-            />
+        <x-textfield
+            :label="__('auth.current_password')"
+            :startIcon="@svg('heroicon-o-lock-closed')"
+            :error="$errors->updatePassword->get('current_password')"
+            id="current_password"
+            name="current_password"
+            type="password"
+        />
 
-            <x-form.input
-                id="current_password"
-                name="current_password"
-                type="password"
-                class="block w-full"
-                autocomplete="current-password"
-            />
+        <x-textfield
+            :label="__('auth.new_password')"
+            :startIcon="@svg('heroicon-c-lock-closed')"
+            :error="$errors->updatePassword->get('password')"
+            id="password"
+            name="password"
+            type="password"
+        />
 
-            <x-form.error :messages="$errors->updatePassword->get('current_password')" />
-        </div>
-
-        <div class="space-y-2">
-            <x-form.label
-                for="password"
-                :value="__('auth.new_password')"
-            />
-
-            <x-form.input
-                id="password"
-                name="password"
-                type="password"
-                class="block w-full"
-                autocomplete="new-password"
-            />
-
-            <x-form.error :messages="$errors->updatePassword->get('password')" />
-        </div>
-
-        <div class="space-y-2">
-            <x-form.label
-                for="password_confirmation"
-                :value="__('auth.new_password_confirmation')"
-            />
-
-            <x-form.input
-                id="password_confirmation"
-                name="password_confirmation"
-                type="password"
-                class="block w-full"
-                autocomplete="new-password"
-            />
-
-            <x-form.error :messages="$errors->updatePassword->get('password_confirmation')" />
-        </div>
+        <x-textfield
+            :label="__('auth.new_password_confirmation')"
+            :startIcon="@svg('heroicon-c-lock-closed')"
+            :error="$errors->updatePassword->get('password_confirmation')"
+            id="password_confirmation"
+            name="password_confirmation"
+            type="password"
+        />
 
         <div class="flex items-center gap-4">
-            <x-button>
+            <x-button
+                variant="success"
+            >
                 {{ __('profile.save-btn') }}
             </x-button>
 
