@@ -112,8 +112,8 @@
                         </template>
                         <tr>
                             <td x-on:click="rows.push(JSON.parse(template))" colspan="13"
-                                class="py-2 text-center bg-gray-50 dark:bg-gray-900/10 hover:bg-gray-100 dark:hover:bg-gray-900/25 text-center border dark:border-gray-900/25 cursor-pointer">
-                                <span class="select-none">{{__("travel.add-btn")}}</span>
+                                class="py-2 text-center bg-primary-100/50 transition dark:bg-gray-900/10 hover:bg-primary-100 dark:hover:bg-gray-900/25 text-center border dark:border-gray-900/25 cursor-pointer">
+                                <span class="select-none text-primary decoration-1 decoration-primary">{{__("travel.add-btn")}}</span>
                             </td>
                         </tr>
                     </tbody>
