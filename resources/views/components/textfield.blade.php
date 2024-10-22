@@ -13,9 +13,10 @@
 
 @php
     $wrapperClasses = "
-        flex border rounded-md justify-center items-center dark:bg-dark-eval-1 dark:disabled:bg-dark-eval-0 overflow-hidden
+        flex border rounded-md justify-center items-center overflow-hidden
         " . ($error ? 'border-danger dark:border-danger' : 'border-gray-400 focus-within:border-primary dark:border-gray-600 dark:focus-within:border-primary') . "
-        disabled:bg-gray-200 w-full
+        " . ($disabled ? 'bg-gray-200 dark:bg-dark-eval-0' : 'dark:bg-dark-eval-1') ."
+        w-full
         gap-2 px-2 mb-1
     ";
 @endphp
@@ -50,7 +51,7 @@
                 'placeholder' => $placeholder,
                 'disabled' => $disabled,
                 'id' => $id,
-                'class' => 'py-2 px-0 dark:text-gray-300 border-0 ring-0 outline-0 focus:border-0 focus:outline-0 focus:ring-0 flex-grow',
+                'class' => 'py-2 px-0 dark:text-gray-300 border-0 ring-0 outline-0 focus:border-0 focus:outline-0 focus:ring-0 flex-grow bg-inherit',
             ])!!}
         />
 
