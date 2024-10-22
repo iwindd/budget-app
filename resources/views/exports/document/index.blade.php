@@ -142,7 +142,7 @@
         <table>
             <tr>
                 <td class="fit">{{ __('exports.document-subject') }}</td>
-                <td class="under"><span>{{$subject}} / {{ $header }}</span></td>
+                <td class="under"><span>{{$header}} / {{ $subject }}</span></td>
                 <td class="fit">{{ __('exports.document-subject-suffix') }}</td>
             </tr>
         </table>
