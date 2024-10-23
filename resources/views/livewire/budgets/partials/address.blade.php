@@ -1,4 +1,9 @@
-<div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
+<div
+    class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800"
+    x-data="{
+        from_date: @entangle('budgetItemAddressForm.from_date')
+    }"
+>
     <div class="max-w-full">
         <header>
             <h3 class="font-bold">{{ __('budgets.address-header') }}</h3>
@@ -6,32 +11,17 @@
         @if ($budgetItemForm->exists())
             <form wire:submit="onAddAddress" class="mb-2 flex lg:flex-row flex-col">
                 <section class="grid grid-cols-4 gap-2 grow flex-grow">
-                    <section class="space-y-2 lg:col-span-1 md:col-span-2 col-span-4">
-                        <x-selectize
-                            :fetch="route('locations.selectize')"
-                            lang='budgets.input-address-from'
-                            wire:model="budgetItemAddressForm.from_location_id"
-                        />
-                    </section>
-                    <section class="space-y-2 lg:col-span-1 md:col-span-2 col-span-4">
-                        <x-form.label for="budgetItemAddressForm.from_date" :value="__('budgets.input-address-from-datetime')" />
-                        <x-form.input name="budgetItemAddressForm.from_date"
-                            wire:model="budgetItemAddressForm.from_date" type="datetime-local" class="block w-full" />
-                        <x-form.error :messages="$errors->get('budgetItemAddressForm.from_date')" />
-                    </section>
-                    <section class="space-y-2 lg:col-span-1 md:col-span-2 col-span-4">
-                        <x-selectize
-                            :fetch="route('locations.selectize')"
-                            lang='budgets.input-address-back'
-                            wire:model="budgetItemAddressForm.back_location_id"
-                        />
-                    </section>
-                    <section class="space-y-2 lg:col-span-1 md:col-span-2 col-span-4">
-                        <x-form.label for="budgetItemAddressForm.back_date" :value="__('budgets.input-address-back-datetime')" />
-                        <x-form.input name="budgetItemAddressForm.back_date"
-                            wire:model="budgetItemAddressForm.back_date" type="datetime-local" class="block w-full" />
-                        <x-form.error :messages="$errors->get('budgetItemAddressForm.back_date')" />
-                    </section>
+                    @php
+                        $root = ['class' => 'space-y-2 lg:col-span-1 md:col-span-2 col-span-4'];
+                    @endphp
+                    <x-selectize :fetch="route('locations.selectize')" :root="$root" lang='budgets.input-address-from'
+                        wire:model="budgetItemAddressForm.from_location_id" />
+                    <x-textfield :root="$root" lang="budgets.input-address-from-datetime"
+                        wire:model="budgetItemAddressForm.from_date" type="datetime-local" />
+                    <x-selectize :fetch="route('locations.selectize')" :root="$root" lang='budgets.input-address-back'
+                        wire:model="budgetItemAddressForm.back_location_id" />
+                    <x-textfield :root="$root" lang="budgets.input-address-back-datetime"
+                        wire:model="budgetItemAddressForm.back_date" x-bind:min="from_date" type="datetime-local" />
                 </section>
                 <div class="space-y-2 lg:pl-2 lg:mt-0 mt-2">
                     <x-form.label for="submit" :value="__('budgets.table-address-action')" />
