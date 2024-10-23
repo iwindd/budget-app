@@ -1,5 +1,6 @@
 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800" x-data="{
     rows: @entangle('budgetItemTravelForm.rows'),
+    start_date: @entangle('budgetItemTravelForm.start'),
     template: JSON.stringify({
         plate: '',
         start: null,
@@ -8,7 +9,7 @@
         end: null,
         distance: '',
         round: '',
-    })
+    }),
 }" {{-- ทำ template เป็น json เพื่อไป parse เพื่อใช้ deepcopy ป้องกันการแก้ไข --}}>
     <header>
         <h3 class="font-bold">{{ __('travel.header') }}</h3>
@@ -16,28 +17,13 @@
     @if ($budgetItemForm->exists())
         <form wire:submit="onSaveTravel" class="max-w-full">
             <section class="grid grid-cols-4 gap-2">
-                <section class="space-y-2 md:col-span-1 col-span-2">
-                    <x-form.label :value="__('travel.input-owner')" />
-                    <x-form.input disabled type="text" class="block w-full" value="{{ $budgetItemForm->name }}" />
-                </section>
-                <section class="space-y-2 md:col-span-1 col-span-2">
-                    <x-form.label for="budgetItemTravelForm.start" :value="__('travel.input-start')" />
-                    <x-form.input id="budgetItemTravelForm.start" name="budgetItemTravelForm.start"
-                        wire:model="budgetItemTravelForm.start" type="date" class="block w-full" />
-                    <x-form.error :messages="$errors->get('budgetItemTravelForm.start')" />
-                </section>
-                <section class="space-y-2 md:col-span-1 col-span-2">
-                    <x-form.label for="budgetItemTravelForm.end" :value="__('travel.input-end')" />
-                    <x-form.input id="budgetItemTravelForm.end" name="budgetItemTravelForm.end"
-                        wire:model="budgetItemTravelForm.end" type="date" class="block w-full" />
-                    <x-form.error :messages="$errors->get('budgetItemTravelForm.end')" />
-                </section>
-                <section class="space-y-2 md:col-span-1 col-span-2">
-                    <x-form.label for="budgetItemTravelForm.n" :value="__('travel.input-n')" />
-                    <x-form.input id="budgetItemTravelForm.n" name="budgetItemTravelForm.n"
-                        wire:model="budgetItemTravelForm.n" type="text" class="block w-full" />
-                    <x-form.error :messages="$errors->get('budgetItemTravelForm.n')" />
-                </section>
+                @php
+                    $root = ['class'=>"space-y-2 md:col-span-1 col-span-2"];
+                @endphp
+                <x-textfield lang="travel.input-owner" wire:model="budgetItemForm.name" :root="$root" disabled/>
+                <x-textfield lang="travel.input-start" type="date" wire:model="budgetItemTravelForm.start" :root="$root" />
+                <x-textfield lang="travel.input-end" type="date" wire:model="budgetItemTravelForm.end" x-bind:min="start_date" :root="$root" />
+                <x-textfield lang="travel.input-n" wire:model="budgetItemTravelForm.n" :root="$root" />
             </section>
             <section class="relative overflow-x-auto border-none mt-2">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit border-none">
