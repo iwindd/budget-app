@@ -79,11 +79,13 @@ class BudgetPartial extends Component
 
     /* COMPANION */
     public function onAddCompanion() {
-        return $this->budgetItemCompanionFrom->save($this->budgetForm->budget);
+        $this->budgetItemCompanionFrom->save($this->budgetForm->budget);
+        return $this->dispatch("alert", trans('budgets.alert-companion-add'));
     }
 
     public function onRemoveCompanion(BudgetItem $budgetItem) {
-        return $this->budgetItemCompanionFrom->delete($budgetItem);
+        $this->budgetItemCompanionFrom->delete($budgetItem);
+        return $this->dispatch("alert", trans('budgets.alert-companion-remove'));
     }
 
     /* EXPENSE */
