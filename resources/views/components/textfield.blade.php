@@ -11,6 +11,7 @@
     'bag' => null,
     'wrapper' => [],
     'root' => [],
+    'lang' => null,
 ])
 
 @php
@@ -27,6 +28,13 @@
         $id = $id ?? $wireModel;
         $name = $name ?? $wireModel;
         $error = $error ?? $errors->get($wireModel);
+    }
+
+    if ($lang){
+        $label = $label ?? __($lang);
+        $langPlaceholder = "$lang-placeholder";
+        $placeholder = $placeholder ?? __($langPlaceholder);
+        if ($placeholder == $langPlaceholder) $placeholder = null;
     }
 @endphp
 
