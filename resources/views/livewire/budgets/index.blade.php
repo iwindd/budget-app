@@ -1,18 +1,24 @@
 @inject('format', 'App\Services\FormatHelperService')
 
 <section class="space-y-2">
-    <form wire:submit="save" class="space-y-2" id="budget-form">
-        @include('livewire.budgets.partials.budget')
-        @include('livewire.budgets.partials.budget-item')
-    </form>
+    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
+        <div class="max-w-full space-y-4">
+            <form wire:submit="save" class="space-y-4" id="budget-form">
+                <h3 class="font-bold">{{ __('budgets.budgets-header') }}</h3>
+                @include('livewire.budgets.partials.budget')
 
-    @include('livewire.budgets.partials.companion')
+                <h3 class="font-bold">{{ __('budgets.budgetitem-header') }}</h3>
+                @include('livewire.budgets.partials.budget-item')
+            </form>
 
-    <div class="p-2 sm:p-2 bg-white shadow sm:rounded-lg dark:bg-gray-800 mt-2">
-        <div class="max-w-full">
-            <section class="max-w-full col-span-2 flex justify-end">
-                <x-button type="submit" form="budget-form" variant="success">บันทึกใบเบิก</x-button>
-            </section>
+            <h3 class="font-bold">{{ __('budgets.companion-header') }}</h3>
+            @include('livewire.budgets.partials.companion')
+
+            <div class="max-w-full">
+                <section class="max-w-full col-span-2 flex justify-end">
+                    <x-button type="submit" form="budget-form" variant="success">บันทึกใบเบิก</x-button>
+                </section>
+            </div>
         </div>
     </div>
 
