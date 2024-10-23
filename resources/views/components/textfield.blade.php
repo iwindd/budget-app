@@ -9,7 +9,7 @@
     'error' => null,
     'bag' => null,
     'wrapper' => [],
-    'parent' => []
+    'root' => []
 ])
 
 @php
@@ -22,7 +22,7 @@
     ";
 @endphp
 
-<section {{ $attributes->only('parent')->merge($parent) }}>
+<section {{ $attributes->only('root')->merge($root) }}>
     @if ($label)
         <label
             for="{{$id}}"
