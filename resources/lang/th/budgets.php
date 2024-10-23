@@ -81,5 +81,7 @@ return [
     'add-address-btn' => "บันทึกการเดินทาง",
     'address-budget-item-not-found' => "*จำเป็นต้องบันทึกรายละเอียดใบเบิกก่อนเพิ่มรายละเอียดก่อนเดินทาง",
     /* ADMIN DIALOG */
-    'admin-add-dialog-header' => "ใบเบิกเงิน"
+    'admin-add-dialog-header' => "ใบเบิกเงิน",
+    /* ALERT "[bagName]variant<duration>:message" - bagName, duration is optional */
+    'alert-budget-saved' => "[budget.message]success<3000>:บันทึกใบเบิกแล้ว!"
 ];

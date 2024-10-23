@@ -52,6 +52,7 @@ class BudgetPartial extends Component
         $this->budgetItemForm->setBudgetItem($budgetItem);
         $this->budgetItemTravelForm->setBudgetItemTravel($budgetItem);
         $this->hasPermissionToManage = $this->budgetItemCompanionFrom->hasPermissionToManage($budget);
+        $this->dispatch("alert", trans('budgets.alert-budget-saved'));
     }
 
     public function render()

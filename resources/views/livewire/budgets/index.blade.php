@@ -15,6 +15,8 @@
             @include('livewire.budgets.partials.companion')
 
             <div class="max-w-full">
+                <x-alert key="budget.message"/>
+
                 <section class="max-w-full col-span-2 flex justify-end">
                     <x-button type="submit" form="budget-form" variant="success">บันทึกใบเบิก</x-button>
                 </section>
