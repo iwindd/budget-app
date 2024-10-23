@@ -15,14 +15,6 @@
 ])
 
 @php
-    $wrapper['class'] = ($wrapper['class'] ?? ''). "
-        flex border rounded-md justify-center items-center overflow-hidden
-        " . ($error ? 'border-danger dark:border-danger' : 'border-gray-400 focus-within:border-primary dark:border-gray-600 dark:focus-within:border-primary') . "
-        " . ($disabled ? 'bg-gray-200 dark:bg-dark-eval-0' : 'dark:bg-dark-eval-1') ."
-        w-full
-        gap-2 px-2 mb-1
-    ";
-
     if ($attributes->has('wire:model')){
         $wireModel = $attributes->get('wire:model');
         $id = $id ?? $wireModel;
@@ -36,6 +28,14 @@
         $placeholder = $placeholder ?? __($langPlaceholder);
         if ($placeholder == $langPlaceholder) $placeholder = null;
     }
+
+    $wrapper['class'] = ($wrapper['class'] ?? ''). "
+        flex border rounded-md justify-center items-center overflow-hidden
+        " . ($error ? 'border-danger dark:border-danger' : 'border-gray-400 focus-within:border-primary dark:border-gray-600 dark:focus-within:border-primary') . "
+        " . ($disabled ? 'bg-gray-200 dark:bg-dark-eval-0' : 'dark:bg-dark-eval-1') ."
+        w-full
+        gap-2 px-2 mb-1
+    ";
 @endphp
 
 <section {{ $attributes->only('root')->merge($root) }}>
