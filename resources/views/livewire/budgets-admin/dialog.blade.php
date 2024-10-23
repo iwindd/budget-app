@@ -5,10 +5,12 @@
 
             <section class="space-y-2 mt-6">
                 <div class="space-y-2">
-                    <x-form.label for="serial" value="{{ __('budgets.input-serial') }}" />
-                    <x-form.input id="serial" :disabled="$infoStep" wire:model="serial" type="text"
-                        class="block w-full" />
-                    <x-form.error :messages="$errors->get('serial')" />
+                    <x-textfield
+                        :startIcon="@svg('heroicon-o-hashtag')"
+                        :disabled="$infoStep"
+                        wire:model="serial"
+                        lang="budgets.input-serial"
+                    />
                 </div>
 
                 <div class="space-y-2">
@@ -22,18 +24,18 @@
 
                 @if ($infoStep)
                     <div class="grid grid-cols-2 gap-2">
-                        <div class="space-y-2">
-                            <x-form.label for="budgetForm.date" :value="__('budgets.input-date')" />
-                            <x-form.input id="budgetForm.date" wire:model="budgetForm.date" name="budgetForm.date"
-                                type="date" class="block w-full" />
-                            <x-form.error :messages="$errors->get('budgetForm.date')" />
-                        </div>
-                        <div class="space-y-2 ">
-                            <x-form.label for="budgetForm.value" :value="__('budgets.input-value-minimize')" />
-                            <x-form.input id="budgetForm.value" name="budgetForm.value" type="number"
-                                wire:model="budgetForm.value" class="block w-full" :placeholder="__('budgets.input-value-placeholder')" />
-                            <x-form.error :messages="$errors->get('budgetForm.value')" />
-                        </div>
+                        <x-textfield
+                            :startIcon="@svg('heroicon-o-calendar')"
+                            wire:model="budgetForm.date"
+                            lang="budgets.input-date"
+                            type="date"
+                        />
+                        <x-textfield
+                            :startIcon="@svg('heroicon-o-banknotes')"
+                            :placeholder="__('budgets.input-value-placeholder')"
+                            wire:model="budgetForm.value"
+                            lang="budgets.input-value-minimize"
+                        />
                     </div>
                 @endif
             </section>
