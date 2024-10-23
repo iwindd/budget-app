@@ -7,54 +7,74 @@
         <section class="grid grid-cols-2 gap-2">
             {{-- ORDER --}}
             <section class="space-y-2 md:col-span-1 col-span-2">
-                <x-form.label for="budgetItemForm.order" :value="__('budgets.input-order_id')" />
-                <x-form.input id="budgetItemForm.order" wire:model="budgetItemForm.order"
-                    name="budgetItemForm.order" type="text" class="block w-full" />
-                <x-form.error :messages="$errors->get('budgetItemForm.order')" />
+                <x-textfield
+                    :label="__('budgets.input-order_id')"
+                    :error="$errors->get('budgetItemForm.order')"
+                    :startIcon="@svg('heroicon-o-paper-clip')"
+                    id="budgetItemForm.order"
+                    wire:model="budgetItemForm.order"
+                />
             </section>
             {{-- DATE --}}
             <section class="space-y-2 md:col-span-1 col-span-2">
-                <x-form.label for="budgetItemForm.date" :value="__('budgets.input-order_at')" />
-                <x-form.input id="budgetItemForm.date" name="budgetItemForm.date" type="date"
-                    wire:model="budgetItemForm.date" class="block w-full" />
-                <x-form.error :messages="$errors->get('budgetItemForm.date')" />
+                <x-textfield
+                    :label="__('budgets.input-order_at')"
+                    :error="$errors->get('budgetItemForm.date')"
+                    :startIcon="@svg('heroicon-o-calendar')"
+                    id="budgetItemForm.date"
+                    wire:model="budgetItemForm.date"
+                    type="date"
+                />
             </section>
             {{-- BUDGET_ITEM_OWNER_NAME --}}
             <section class="space-y-2">
-                <x-form.label for="budgetItemForm.name" :value="__('budgets.input-budget-owner-name')" />
-                <x-form.input id="budgetItemForm.name" name="budgetItemForm.name" wire:model="budgetItemForm.name" type="text" disabled
-                    class="block w-full" />
-                <x-form.error :messages="$errors->get('order_at')" />
+                <x-textfield
+                    :label="__('budgets.input-budget-owner-name')"
+                    :error="$errors->get('budgetItemForm.name')"
+                    id="budgetItemForm.name"
+                    wire:model="budgetItemForm.name"
+                    disabled
+                />
             </section>
             <section class="grid grid-cols-2 gap-2">
                 {{-- BUDGET_ITEM_OWNER_POSITION --}}
                 <section class="space-y-2">
-                    <x-form.label for="budgetItemForm.position" :value="__('budgets.input-budget-owner-position')" />
-                    <x-form.input id="budgetItemForm.position" name="budgetItemForm.position" wire:model="budgetItemForm.position"  type="text" disabled
-                        class="block w-full" />
-                    <x-form.error :messages="$errors->get('order_at')" />
+                    <x-textfield
+                        :label="__('budgets.input-budget-owner-position')"
+                        wire:model="budgetItemForm.position"
+                        disabled
+                    />
                 </section>
                 {{-- BUDGET_ITEM_OWNER_AFFILIATION --}}
                 <section class="space-y-2">
-                    <x-form.label for="budgetItemForm.affiliation" :value="__('budgets.input-budget-owner-affiliation')" />
-                    <x-form.input id="budgetItemForm.affiliation" name="budgetItemForm.affiliation" wire:model="budgetItemForm.affiliation" type="text"
-                        disabled class="block w-full" />
-                    <x-form.error :messages="$errors->get('order_at')" />
+                    <x-textfield
+                        :label="__('budgets.input-budget-owner-affiliation')"
+                        wire:model="budgetItemForm.affiliation"
+                        disabled
+                    />
                 </section>
             </section>
             {{-- HEADER --}}
             <section class="space-y-2 md:col-span-1 col-span-2">
-                <x-form.label for="budgetItemForm.header" :value="__('budgets.input-header')" />
-                <x-form.input id="budgetItemForm.header" wire:model="budgetItemForm.header"
-                    name="budgetItemForm.header" :placeholder="__('budgets.input-header-placeholder')" type="text" class="block w-full" />
-                <x-form.error :messages="$errors->get('budgetItemForm.header')" />
+                <x-textfield
+                    :label="__('budgets.input-header')"
+                    :placeholder="__('budgets.input-header-placeholder')"
+                    :error="$errors->get('budgetItemForm.header')"
+                    :startIcon="@svg('heroicon-o-map-pin')"
+                    id="budgetItemForm.header"
+                    wire:model="budgetItemForm.header"
+                />
             </section>
             {{-- SUBJECT --}}
             <section class="space-y-2 md:col-span-1 col-span-2">
-                <x-form.label for="budgetItemForm.subject" :value="__('budgets.input-subject')" />
-                <x-form.input id="budgetItemForm.subject" wire:model="budgetItemForm.subject"
-                    name="budgetItemForm.subject" :placeholder="__('budgets.input-subject-placeholder')" type="text" class="block w-full" />
-                <x-form.error :messages="$errors->get('budgetItemForm.subject')" />
+                <x-textfield
+                    :label="__('budgets.input-subject')"
+                    :placeholder="__('budgets.input-subject-placeholder')"
+                    :error="$errors->get('budgetItemForm.subject')"
+                    :startIcon="@svg('heroicon-o-book-open')"
+                    id="budgetItemForm.subject"
+                    wire:model="budgetItemForm.subject"
+                />
             </section>
         </section>
     </div>
