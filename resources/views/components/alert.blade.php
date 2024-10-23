@@ -1,6 +1,7 @@
 @props([
     'variant' => 'info',
     'text' => '',
+    'sr' => null
 ])
 
 @php
@@ -39,7 +40,9 @@
     role="alert">
     <div class="flex">
         <x-icons.alert />
-        <span class="sr-only">ข้อมูลเพิ่มเติม</span>
+        @if ($sr)
+            <span class="sr-only">{{$sr}}</span>
+        @endif
 
         <p class="ms-3 text-sm">
             {{ $text }}
