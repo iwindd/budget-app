@@ -1,11 +1,17 @@
 @props([
     'variant' => 'info',
     'text' => '',
+    'alert' => null,
     'sr' => null
 ])
 
 @php
     $baseClasses = 'flex items-center justify-between p-4 rounded-lg';
+
+    if (isset($alert) && !empty($alert) && preg_match('/(\w+):/', $alert, $matches)){
+        $variant = $matches[1];
+        $text = trim(str_replace($matches[0], '', $alert));
+    }
 
     switch ($variant) {
         case 'primary':
@@ -36,16 +42,18 @@
     $classes = $baseClasses . ' ' . $variantClasses;
 @endphp
 
-<div {{ $attributes->merge(['class' => $classes]) }}
-    role="alert">
-    <div class="flex">
-        <x-icons.alert />
-        @if ($sr)
-            <span class="sr-only">{{$sr}}</span>
-        @endif
+@if (!empty($text))
+    <div {{ $attributes->merge(['class' => $classes]) }}
+        role="alert">
+        <div class="flex">
+            <x-icons.alert />
+            @if ($sr)
+                <span class="sr-only">{{$sr}}</span>
+            @endif
 
-        <p class="ms-3 text-sm">
-            {{ $text }}
-        </p>
+            <p class="ms-3 text-sm">
+                {!! $text !!}
+            </p>
+        </div>
     </div>
-</div>
+@endif
