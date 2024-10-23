@@ -10,7 +10,11 @@
 @php
     $baseClasses = 'flex items-center justify-between p-4 rounded-lg';
 
-    if ($session) $alert = session()->get($session);
+    if ($session) {
+        $alert = session()->get($session);
+        session()->forget($session);
+    };
+
     if (isset($alert) && !empty($alert) && preg_match('/(\w+)(?:<(\d+)>)?:/', $alert, $matches)){
         $variant = $matches[1];
         $duration = isset($matches[2]) ? (int)$matches[2] : null;
