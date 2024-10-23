@@ -1,7 +1,8 @@
 @props([
     'disabled' => false,
-    'placeholder' => '',
-    'id' => '',
+    'placeholder' => null,
+    'id' => null,
+    'name' => null,
     'startIcon' => null,
     'endIcon' => null,
     'label' => null,
@@ -9,7 +10,7 @@
     'error' => null,
     'bag' => null,
     'wrapper' => [],
-    'root' => []
+    'root' => [],
 ])
 
 @php
@@ -20,6 +21,13 @@
         w-full
         gap-2 px-2 mb-1
     ";
+
+    if ($attributes->has('wire:model')){
+        $wireModel = $attributes->get('wire:model');
+        $id = $id ?? $wireModel;
+        $name = $name ?? $wireModel;
+        $error = $error ?? $errors->get($wireModel);
+    }
 @endphp
 
 <section {{ $attributes->only('root')->merge($root) }}>
@@ -50,6 +58,7 @@
                 'placeholder' => $placeholder,
                 'disabled' => $disabled,
                 'id' => $id,
+                'name' => $name,
                 'class' => 'py-2 px-0 dark:text-gray-300 border-0 ring-0 outline-0 focus:border-0 focus:outline-0 focus:ring-0 flex-grow bg-inherit',
             ])!!}
         />
