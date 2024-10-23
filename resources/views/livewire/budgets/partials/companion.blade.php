@@ -3,11 +3,12 @@
         @if ($hasPermissionToManage)
             <form wire:submit="onAddCompanion" class="flex lg:flex-row md:flex-row flex-col">
                 <div class="flex-grow space-y-2">
-                    <x-form.label class="mt-2 lg:mt-0" for="submit" :value="__('budgets.input-companion')" />
-                    <div wire:ignore>
-                        <select class="w-full companions-selector" id="budgetItemCompanionFrom.user_id"></select>
-                    </div>
-                    <x-form.error :messages="$errors->get('budgetItemCompanionFrom.user_id')" />
+                    <x-selectize
+                        :fetch="route('companions.selectize')"
+                        lang='budgets.input-companion'
+                        wire:model="budgetItemCompanionFrom.user_id"
+                        display="name"
+                    />
                 </div>
                 <div class="space-y-2 lg:ms-2 lg:mt-0 md:ms-2 md:mt-0 mt-2">
                     <x-form.label class="mt-2 lg:mt-0" for="submit" :value="__('budgets.table-companion-action')" />
@@ -71,38 +72,6 @@
                 </tbody>
             </table>
         </section>
-        @script
-            <script>
-                $(document).ready(function(e) {
-                    $('.companions-selector').select2({
-                        width: '100%',
-                        placeholder: @js(__('budgets.input-companion-placeholder')),
-                        ajax: {
-                            url: @js(route('users.companions')),
-                            dataType: 'json',
-                            delay: 250,
-                            processResults: function(data) {
-                                return {
-                                    results: $.map(data, function(item) {
-                                        return {
-                                            text: item.name,
-                                            id: item.id
-                                        }
-                                    })
-                                };
-                            },
-                            cache: true
-                        }
-                    });
-
-                    $('.companions-selector').on('select2:select', (e) => {
-                        @this.set(e.target.id, e.params.data.id);
-                    });
-                })
-
-                window.addEventListener('onCompanionSelectorClear', (e) => $(`.companions-selector`).val(null).trigger('change'));
-            </script>
-        @endscript
     @else
         <x-form.error class="indent-4" :messages="__('budgets.companion-budget-item-not-found')" />
     @endif

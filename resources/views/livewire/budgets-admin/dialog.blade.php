@@ -12,11 +12,12 @@
                 </div>
 
                 <div class="space-y-2">
-                    <x-form.label :value="__('budgets.input-name')" />
-                    <div wire:ignore>
-                        <select id="user_id" class="w-full user-selector"></select>
-                    </div>
-                    <x-form.error :messages="$errors->get('user_id')" />
+                    <x-selectize
+                        :fetch="route('companions.selectize')"
+                        lang="budgets.input-name"
+                        wire:model="user_id"
+                        display="name"
+                    />
                 </div>
 
                 @if ($infoStep)
@@ -54,37 +55,4 @@
             </div>
         </form>
     </x-modal>
-
-    @script
-        <script>
-            $(document).ready(function(e) {
-                $('.user-selector').select2({
-                    width: '100%',
-                    placeholder: @js(__('budgets.input-user-placeholder')),
-                    ajax: {
-                        url: @js(route('users.companions')),
-                        dataType: 'json',
-                        delay: 250,
-                        processResults: function(data) {
-                            return {
-                                results: $.map(data, function(item) {
-                                    return {
-                                        text: item.name,
-                                        id: item.id
-                                    }
-                                })
-                            };
-                        },
-                        cache: true
-                    }
-                });
-
-                $('.user-selector').on('select2:select', (e) => {
-                    @this.set(e.target.id, e.params.data.id);
-                });
-            })
-
-            window.addEventListener('onUserSelectorClear', (e) => $(`.user-selector`).val(null).trigger('change'));
-        </script>
-    @endscript
 </section>

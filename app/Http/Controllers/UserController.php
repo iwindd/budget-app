@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -12,19 +13,11 @@ class UserController extends Controller
         return view('admin.users.index');
     }
 
-    public function companion()
+    public function companion(Request $request)
     {
-        $search = request()->get('q');
-        $query = User::select("id", "name")
-            ->where('role', 'user')
-            ->where('id', '!=' , $this->auth()->id);
-
-        if (!empty($search)) {
-            $query->where('name', 'LIKE', "%$search%");
-        }
-
-        $data = $query->take(5)->get();
-
-        return response()->json($data);
+        return $this->select($request, User::class, [
+            ['role', 'user'],
+            ['id', '!=', auth()->id()]
+        ]);
     }
 }

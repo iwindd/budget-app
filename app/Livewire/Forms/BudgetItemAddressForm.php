@@ -17,15 +17,6 @@ class BudgetItemAddressForm extends Form
     public $back_location_id;
     public $back_date;
 
-    private function onLocationSelectorChanged(String $name, ?Location $location)
-    {
-        return $this->getComponent()->dispatch("onLocationSelectorChanged", [
-            'name' => $name,
-            'value' => $this->getPropertyValue($name),
-            'label' => $location->label ?? ""
-        ]);
-    }
-
     public function setBudgetItemAddress(BudgetItemAddress $budgetItemAddress)
     {
         $this->budgetItemAddress = $budgetItemAddress;
@@ -34,9 +25,6 @@ class BudgetItemAddressForm extends Form
         $this->from_date         = $budgetItemAddress->from_date;
         $this->back_location_id  = $budgetItemAddress->back_location_id;
         $this->back_date         = $budgetItemAddress->back_date;
-
-        $this->onLocationSelectorChanged("from_location_id", $budgetItemAddress->from);
-        $this->onLocationSelectorChanged("back_location_id", $budgetItemAddress->back);
     }
 
     public function clear()

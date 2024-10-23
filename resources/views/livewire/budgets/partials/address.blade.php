@@ -7,9 +7,11 @@
             <form wire:submit="onAddAddress" class="mb-2 flex lg:flex-row flex-col">
                 <section class="grid grid-cols-4 gap-2 grow flex-grow">
                     <section class="space-y-2 lg:col-span-1 md:col-span-2 col-span-4">
-                        <x-form.label for="budgetItemAddressForm.from_location_id" :value="__('budgets.input-address-from')" />
-                        <div wire:ignore><select class="w-full outline-none location-selector" id="budgetItemAddressForm-from_location_id"></select></div>
-                        <x-form.error :messages="$errors->get('budgetItemAddressForm.from_location_id')" />
+                        <x-selectize
+                            :fetch="route('locations.selectize')"
+                            lang='budgets.input-address-from'
+                            wire:model="budgetItemAddressForm.from_location_id"
+                        />
                     </section>
                     <section class="space-y-2 lg:col-span-1 md:col-span-2 col-span-4">
                         <x-form.label for="budgetItemAddressForm.from_date" :value="__('budgets.input-address-from-datetime')" />
@@ -18,9 +20,11 @@
                         <x-form.error :messages="$errors->get('budgetItemAddressForm.from_date')" />
                     </section>
                     <section class="space-y-2 lg:col-span-1 md:col-span-2 col-span-4">
-                        <x-form.label for="budgetItemAddressForm.back_location_id" :value="__('budgets.input-address-back')" />
-                        <div wire:ignore><select class="w-full outline-none location-selector" id="budgetItemAddressForm-back_location_id"></select></div>
-                        <x-form.error :messages="$errors->get('budgetItemAddressForm.back_location_id')" />
+                        <x-selectize
+                            :fetch="route('locations.selectize')"
+                            lang='budgets.input-address-back'
+                            wire:model="budgetItemAddressForm.back_location_id"
+                        />
                     </section>
                     <section class="space-y-2 lg:col-span-1 md:col-span-2 col-span-4">
                         <x-form.label for="budgetItemAddressForm.back_date" :value="__('budgets.input-address-back-datetime')" />
@@ -87,50 +91,6 @@
                     </tbody>
                 </table>
             </section>
-
-            @script
-                <script>
-                    $(document).ready(function(e) {
-                        $('.location-selector').select2({
-                            width: '100%',
-                            placeholder: @js(__('budgets.input-location-placeholder')),
-                            ajax: {
-                                url: @js(route('locations.selectize')),
-                                dataType: 'json',
-                                delay: 250,
-                                processResults: function(data) {
-                                    return {
-                                        results: $.map(data, function(item) {
-                                            return {
-                                                text: item.label,
-                                                id: item.id
-                                            }
-                                        })
-                                    };
-                                },
-                                cache: true
-                            }
-                        });
-
-                        $('.location-selector').on('select2:select', (e) => {
-                            @this.set(e.target.id.replace("-", "."), e.params.data.id);
-                        });
-                    })
-
-                    window.addEventListener('onLocationSelectorChanged', (e) => {
-                        const {name, value, label} = e.detail[0];
-                        const selector = $(`select#budgetItemAddressForm-${name}`);
-
-                        if (value) {
-                            const option = $("<option selected></option>").val(value).text(label);
-                            selector.append(option);
-                        }
-
-                        selector.val(value)
-                        selector.trigger('change');
-                    });
-                </script>
-            @endscript
         @else
             <x-form.error class="indent-4" :messages="__('budgets.address-budget-item-not-found')" />
         @endif

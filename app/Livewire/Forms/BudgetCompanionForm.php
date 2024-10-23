@@ -26,7 +26,6 @@ class BudgetCompanionForm extends Form
     public function clear()
     {
         $this->reset();
-        $this->getComponent()->dispatch("onCompanionSelectorClear");
     }
 
     public function delete(BudgetItem $budgetItem)

@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/selectize/companions', [UserController::class, 'companion'])->name('users.companions');
+    Route::get('/selectize/companions', [UserController::class, 'companion'])->name('companions.selectize');
     Route::get('/selectize/locations', [LocationController::class, 'locations'])->name('locations.selectize');
     Route::get('/selectize/expenses', [ExpenseController::class, 'expenses'])->name('expenses.selectize');
 

@@ -7,12 +7,11 @@
             <form wire:submit="onAddExpense" class="flex flex-col lg:flex-row">
                 <div class="flex-grow grid grid-cols-8 gap-2">
                     <section class="space-y-2 lg:col-span-5 md:col-span-8 col-span-8">
-                        <x-form.label for="budgetItemExpenseForm.expense_id" :value="__('budgets.input-expense')" />
-                        <div wire:ignore>
-                            <select name="budgetItemExpenseForm.expense_id" id="budgetItemExpenseForm.expense_id"
-                                class="w-full expense-selector"></select>
-                        </div>
-                        <x-form.error :messages="$errors->get('budgetItemExpenseForm.expense_id')" />
+                        <x-selectize
+                            :fetch="route('expenses.selectize')"
+                            lang='budgets.input-expense'
+                            wire:model="budgetItemExpenseForm.expense_id"
+                        />
                     </section>
                     <section class="space-y-2 lg:col-span-1 md:col-span-5 col-span-4">
                         <x-form.label for="budgetItemExpenseForm.total" :value="__('budgets.input-total')" />
@@ -74,39 +73,6 @@
                     </tbody>
                 </table>
             </section>
-            @script
-                <script>
-                    $(document).ready(function(e) {
-                        $('.expense-selector').select2({
-                            width: '100%',
-                            placeholder: @js(__('budgets.input-expense-placeholder')),
-                            tags: true,
-                            ajax: {
-                                url: @js(route('expenses.selectize')),
-                                dataType: 'json',
-                                delay: 250,
-                                processResults: function(data) {
-                                    return {
-                                        results: $.map(data, function(item) {
-                                            return {
-                                                text: item.label,
-                                                id: item.id
-                                            }
-                                        })
-                                    };
-                                },
-                                cache: true
-                            }
-                        });
-
-                        $('.expense-selector').on('select2:select', (e) => {
-                            @this.set(e.target.id, e.params.data.id);
-                        });
-                    })
-
-                    window.addEventListener('onExpenseSelectorClear', (e) => $(`.expense-selector`).val(null).trigger('change'));
-                </script>
-            @endscript
         @else
             <x-form.error class="indent-4" :messages="__('budgets.expense-budget-item-not-found')" />
         @endif

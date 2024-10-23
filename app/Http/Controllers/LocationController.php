@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Location;
 use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class LocationController extends Controller
@@ -17,18 +18,9 @@ class LocationController extends Controller
         return view('admin.locations.index');
     }
 
-    public function locations()
+    public function locations(Request $request)
     {
-        $search = request()->get('q');
-        $query = Location::select("id", "label");
-
-        if (!empty($search)) {
-            $query->where('label', 'LIKE', "%$search%");
-        }
-
-        $data = $query->take(5)->get();
-
-        return response()->json($data);
+        return $this->select($request, Location::class);
     }
 
     /**

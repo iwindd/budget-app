@@ -20,12 +20,6 @@ class Dialog extends Component
         $this->dispatch('setProvince', $target->province);
     }
 
-    #[On('onSelectProvince')]
-    public function onSelectProvince($id)
-    {
-        $this->office->province = $id;
-    }
-
     #[On('onCloseModal')]
     public function onCloseModal() {
         $this->office->reset();

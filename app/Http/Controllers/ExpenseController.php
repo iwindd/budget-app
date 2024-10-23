@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Expense;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class ExpenseController extends Controller
@@ -17,18 +18,9 @@ class ExpenseController extends Controller
         return view('admin.expenses.index');
     }
 
-    public function expenses()
+    public function expenses(Request $request)
     {
-        $search = request()->get('q');
-        $query = Expense::select("id", "label");
-
-        if (!empty($search)) {
-            $query->where('label', 'LIKE', "%$search%");
-        }
-
-        $data = $query->take(5)->get();
-
-        return response()->json($data);
+        return $this->select($request, Expense::class);
     }
 
     /**

@@ -18,7 +18,6 @@ class BudgetItemExpenseForm extends Form
     public function clear()
     {
         $this->reset();
-        $this->getComponent()->dispatch("onExpenseSelectorClear");
     }
 
     public function delete(BudgetItemExpense $budgetItemExpense)

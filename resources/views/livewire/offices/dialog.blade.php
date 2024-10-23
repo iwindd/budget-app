@@ -12,10 +12,12 @@
                 </section>
 
                 <section>
-                    <section wire:ignore>
-                        <select id="province-selector"></select>
-                    </section>
-                    <x-form.error :messages="$errors->get('office.province')" />
+                    <x-selectize
+                        :options="$provinces"
+                        lang="budgets.input-name"
+                        wire:model="office.province"
+                        display="name_th"
+                    />
                 </section>
 
                 <section class="flex items-center justify-between">
@@ -45,35 +47,7 @@
 
     @script
         <script>
-            const provinces = (@js($provinces)).map(p => ({
-                id: p.id,
-                text: p.name_th
-            }));
-
-            const setProvince = (id) => {
-                $("#province-selector").val(id);
-                $("#province-selector").trigger('change');
-            }
-
-            $(document).ready(function(e) {
-                $('#province-selector').select2({
-                    width: '100%',
-                    data: provinces,
-                    placeholder: @js(__('budgets.input-companion-placeholder')),
-                });
-
-                $('#province-selector').on('select2:select', (e) => $dispatch('selectedProvince', {
-                    id: e.params.data.id
-                }));
-
-                setProvince(67);
-            })
-
-            window.addEventListener('setProvince', (data) => setProvince(data.detail[0]));
-            window.addEventListener('CreateOfficeDialog', () => {
-                $dispatch('open-modal', 'office-form');
-                setProvince(67);
-            });
+            window.addEventListener('CreateOfficeDialog', () => $dispatch('open-modal', 'office-form'));
         </script>
     @endscript
 </section>
