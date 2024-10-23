@@ -1,11 +1,16 @@
-<section class="grid grid-cols-2 gap-2">
+<section
+    class="grid grid-cols-2 gap-2"
+    x-data="{
+        budget_date: @entangle('budgetForm.date')
+    }"
+>
     {{-- ORDER --}}
     <section class="space-y-2 md:col-span-1 col-span-2">
         <x-textfield lang="budgets.input-order_id" :startIcon="@svg('heroicon-o-paper-clip')" wire:model="budgetItemForm.order" />
     </section>
     {{-- DATE --}}
     <section class="space-y-2 md:col-span-1 col-span-2">
-        <x-textfield lang="budgets.input-order_at" :startIcon="@svg('heroicon-o-calendar')" wire:model="budgetItemForm.date" type="date" />
+        <x-textfield lang="budgets.input-order_at" :startIcon="@svg('heroicon-o-calendar')" x-bind:min="budget_date"  wire:model="budgetItemForm.date" type="date" />
     </section>
     {{-- BUDGET_ITEM_OWNER_NAME --}}
     <section class="space-y-2">
