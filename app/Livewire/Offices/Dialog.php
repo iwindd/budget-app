@@ -17,7 +17,6 @@ class Dialog extends Component
     public function onOpenDialog(Office $target) {
         $this->office->set($target);
         $this->dispatch('open-modal', 'office-form');
-        $this->dispatch('setProvince', $target->province);
     }
 
     #[On('onCloseModal')]

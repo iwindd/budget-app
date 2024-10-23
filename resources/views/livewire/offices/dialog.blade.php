@@ -5,10 +5,10 @@
 
             <div class="mt-6 space-y-2">
                 <section>
-                    <x-form.label for="label" value="{{ __('offices.dialog-input-office') }}" class="sr-only" />
-                    <x-form.input wire:model='office.label' name="label" type="text" class="block w-full"
-                        placeholder="{{ __('offices.dialog-input-office') }}" />
-                    <x-form.error :messages="$errors->get('office.label')" />
+                    <x-textfield
+                        lang="offices.dialog-input-office"
+                        wire:model="office.label"
+                    />
                 </section>
 
                 <section>
@@ -17,6 +17,7 @@
                         lang="budgets.input-name"
                         wire:model="office.province"
                         display="name_th"
+                        defaultValue="67"
                     />
                 </section>
 
@@ -44,10 +45,4 @@
             </div>
         </form>
     </x-modal>
-
-    @script
-        <script>
-            window.addEventListener('CreateOfficeDialog', () => $dispatch('open-modal', 'office-form'));
-        </script>
-    @endscript
 </section>
