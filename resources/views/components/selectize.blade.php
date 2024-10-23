@@ -73,7 +73,7 @@
 
         $watch('value', raw => {
             const value = String(raw);
-            if (!selector.find(`option[value='${value}']`).length && fetch){
+            if (raw != null && !selector.find(`option[value='${value}']`).length && fetch){
                 $.ajax({
                     type: 'GET',
                     url: fetch + '&find=' + value
