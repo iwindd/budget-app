@@ -4,7 +4,8 @@
     'alert' => null,
     'sr' => null,
     'duration' => null,
-    'session' => null
+    'session' => null,
+    'key' => null,
 ])
 
 @php
@@ -13,62 +14,49 @@
     if ($session) {
         $alert = session()->get($session);
         session()->forget($session);
-    };
+    }
 
-    if (isset($alert) && !empty($alert) && preg_match('/(\w+)(?:<(\d+)>)?:/', $alert, $matches)){
+    if (isset($alert) && !empty($alert) && preg_match('/(\w+)(?:<(\d+)>)?:/', $alert, $matches)) {
         $variant = $matches[1];
-        $duration = isset($matches[2]) ? (int)$matches[2] : null;
+        $duration = isset($matches[2]) ? (int) $matches[2] : null;
         $text = trim(str_replace($matches[0], '', $alert));
     }
-
-    switch ($variant) {
-        case 'primary':
-            $variantClasses = 'text-primary bg-primary-400/15';
-            break;
-        case 'secondary':
-            $variantClasses = 'text-secondary bg-secondary-400/15';
-            break;
-        case 'success':
-            $variantClasses = 'text-success bg-success-400/15';
-            break;
-        case 'danger':
-            $variantClasses = 'text-danger bg-danger-400/15';
-            break;
-        case 'warning':
-            $variantClasses = 'text-warning bg-warning-400/15';
-            break;
-        case 'info':
-            $variantClasses = 'text-info bg-info-400/15';
-            break;
-        case 'black':
-            $variantClasses = 'text-black bg-black/15';
-            break;
-        default:
-            $variantClasses = 'text-primary bg-primary-400/15';
-    }
-
-    $classes = $baseClasses . ' ' . $variantClasses;
 @endphp
 
-@if (!empty($text))
-    <div
-        {{ $attributes->merge(['class' => $classes]) }}
-        @if ($duration)
-            x-data="{ show: true }"
-            x-show="show"
-            x-transition
-            x-init="setTimeout(() => show = false, {{$duration}})"
-        @endif
-        role="alert">
-        <div class="flex">
-            <x-icons.alert />
-            @if ($sr)
-                <span class="sr-only">{{$sr}}</span>
-            @endif
-
-            <p class="ms-3 text-sm">
-                {!! $text !!}
-            </p>
-        </div>
+<div x-data="{
+    show: @js($text ? true : false),
+    sr: @js($sr),
+    bag: @js($key),
+    text: @js($text),
+    variant: @js($variant),
+    duration: @js($duration),
+    get className() {
+        return `flex items-center justify-between p-4 rounded-lg ${
+                this.variant === 'black' ?
+                    'text-black bg-black/15' :
+                    `text-${this.variant} bg-${this.variant}-400/15`
+            }`
+    }
+}" x-show="show" x-transition x-init="() => duration > 0 ? setTimeout(() => show = false, duration) : null"
+    x-on:alert.window="() => {
+        const alert = $event.detail[0];
+        const match = alert.match(/^\[(.+?)\](\w+)<(\d+)>:\s*(.+)$/);
+        if (match){
+            if (bag != null && bag != match[1]) return;
+            variant = match[2];
+            duration = parseInt(match[3]);
+            text = match[4];
+            show = text ? true : false;
+            $el.className = className;
+            if (duration) setTimeout(() => show = false, duration);
+        }else{
+            text = alert;
+        }
+    }"
+    :class="className">
+    <div class="flex">
+        <x-icons.alert />
+        <span class="sr-only" x-text="sr"></span>
+        <p class="ms-3 text-sm" x-text="text"></p>
     </div>
-@endif
+</div>
