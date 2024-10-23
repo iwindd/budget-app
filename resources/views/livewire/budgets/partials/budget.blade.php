@@ -10,23 +10,21 @@
             <x-textfield :label="__('budgets.input-serial')" wire:model="budgetForm.serial" disabled />
             <x-textfield :label="__('budgets.input-name')" wire:model="budgetForm.name" disabled />
             <x-textfield
-                :label="__('budgets.input-date')"
                 :disabled="!$hasPermissionToManage"
                 :startIcon="@svg('heroicon-o-calendar')"
-                :error="$errors->get('budgetForm.date')"
+                :root="['class' => 'lg:col-span-1 col-span-2']"
+                lang="budgets.input-date"
                 wire:model="budgetForm.date"
                 type="date"
-                id="budgetForm.date"
             />
+
             <x-textfield
-                :label="__('budgets.input-value')"
-                :placeholder="__('budgets.input-value-placeholder')"
                 :disabled="!$hasPermissionToManage"
                 :startIcon="@svg('heroicon-o-banknotes')"
-                :error="$errors->get('budgetForm.value')"
+                :root="['class' => 'lg:col-span-1 col-span-2']"
+                lang="budgets.input-value"
                 wire:model="budgetForm.value"
                 type="number"
-                id="budgetForm.value"
             />
         </section>
     </div>
