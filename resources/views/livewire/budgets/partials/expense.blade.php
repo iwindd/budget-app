@@ -6,26 +6,12 @@
         @if ($budgetItemForm->exists())
             <form wire:submit="onAddExpense" class="flex flex-col lg:flex-row">
                 <div class="flex-grow grid grid-cols-8 gap-2">
-                    <section class="space-y-2 lg:col-span-5 md:col-span-8 col-span-8">
-                        <x-selectize
-                            :fetch="route('expenses.selectize')"
-                            lang='budgets.input-expense'
-                            wire:model="budgetItemExpenseForm.expense_id"
-                        />
-                    </section>
-                    <section class="space-y-2 lg:col-span-1 md:col-span-5 col-span-4">
-                        <x-form.label for="budgetItemExpenseForm.total" :value="__('budgets.input-total')" />
-                        <x-form.input wire:model="budgetItemExpenseForm.total" name="budgetItemExpenseForm.total"
-                            type="number" class="block w-full" />
-                        <x-form.error :messages="$errors->get('budgetItemExpenseForm.total')" />
-                    </section>
-                    <section class="space-y-2 lg:col-span-2 md:col-span-3 col-span-4">
-                        <x-form.label for="budgetItemExpenseForm.days" :value="__('budgets.input-days')" />
-                        <x-form.input wire:model="budgetItemExpenseForm.days" :placeholder="__('budgets.input-days-placeholder')"
-                            id="budgetItemExpenseForm.days" name="budgetItemExpenseForm.days" type="number"
-                            class="block w-full" />
-                        <x-form.error :messages="$errors->get('budgetItemExpenseForm.days')" />
-                    </section>
+                    <x-selectize :fetch="route('expenses.selectize')" lang='budgets.input-expense'
+                        wire:model="budgetItemExpenseForm.expense_id" :root="['class' => 'space-y-2 lg:col-span-5 md:col-span-8 col-span-8']" />
+                    <x-textfield lang="budgets.input-total" wire:model="budgetItemExpenseForm.total" type="number"
+                        :root="['class' => 'space-y-2 lg:col-span-1 md:col-span-5 col-span-4']" />
+                    <x-textfield lang="budgets.input-days" wire:model="budgetItemExpenseForm.days" type="number"
+                        :root="['class' => 'space-y-2 lg:col-span-2 md:col-span-3 col-span-4']" />
                 </div>
                 <div class="space-y-2 lg:ms-2">
                     <x-form.label class="mt-2 lg:mt-0" for="submit" :value="__('budgets.table-companion-action')" />
