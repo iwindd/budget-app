@@ -101,7 +101,7 @@
         </label>
     @endif
 
-    <div wire:ignore>
+    <div wire:ignore class="mb-1">
         <select
             x-ref="select"
             {!!$attributes->merge([
