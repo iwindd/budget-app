@@ -30,6 +30,12 @@
     text: @js($text),
     variant: @js($variant),
     duration: @js($duration),
+    timeoutId: null,
+    clearTimeout() {
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId); // Clear the existing timeout
+        }
+    },
     get className() {
         return `flex items-center justify-between p-4 rounded-lg ${
                 this.variant === 'black' ?
@@ -37,10 +43,11 @@
                     `text-${this.variant} bg-${this.variant}-400/15`
             }`
     }
-}" x-show="show" x-transition x-init="() => duration > 0 ? setTimeout(() => show = false, duration) : null"
+}" x-show="show" x-transition x-init="() => duration > 0 ? {timeoutId = setTimeout(() => show = false, duration) }: null"
     x-on:alert.window="() => {
         const alert = $event.detail[0];
         const match = alert.match(/^\[(.+?)\](\w+)<(\d+)>:\s*(.+)$/);
+        clearTimeout();
         if (match){
             if (bag != null && bag != match[1]) return;
             variant = match[2];
@@ -48,7 +55,7 @@
             text = match[4];
             show = text ? true : false;
             $el.className = className;
-            if (duration) setTimeout(() => show = false, duration);
+            if (duration) timeoutId = setTimeout(() => show = false, duration);
         }else{
             text = alert;
         }
