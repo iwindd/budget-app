@@ -13,6 +13,7 @@
     'placeholder' => null,
     'lang' => null,
     'error' => null,
+    'defaultValue' => null,
     'root' => []
 ])
 @php
@@ -36,6 +37,7 @@
         model: @js($model),
         parseInt: @js($parseInt),
         fetch: @js($fetch),
+        defaultValue: @js($parseInt ? intval($defaultValue) : $defaultValue),
         value: @entangle($model),
         setValue(value) {
             this.value = (this.parseInt ? Number(value) : value);
@@ -68,10 +70,7 @@
 
         selector.on('select2:select', e => setValue(e.params.data.id));
 
-        const defaultValue = selector.select2('data')[0];
-        if (defaultValue) setValue(defaultValue.id);
-
-        $watch('value', raw => {
+        const updateOption = (raw) => {
             const value = String(raw);
             if (raw != null && !selector.find(`option[value='${value}']`).length && fetch){
                 $.ajax({
@@ -83,8 +82,13 @@
             }else{
                 selector.val(value).trigger('change')
             }
+        }
 
-        });
+        const currentValue = defaultValue ? defaultValue : selector.select2('data')[0]?.id;
+        if (currentValue) updateOption(currentValue);
+        if (currentValue) setValue(currentValue);
+
+        $watch('value', updateOption);
     }"
 
     {{ $attributes->only('root')->merge($root) }}
