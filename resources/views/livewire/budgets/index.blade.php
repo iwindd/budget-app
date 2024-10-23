@@ -14,7 +14,7 @@
             <h3 class="font-bold">{{ __('budgets.companion-header') }}</h3>
             @include('livewire.budgets.partials.companion')
 
-            <div class="max-w-full">
+            <div class="max-w-full space-y-2">
                 <x-alert key="budget.message"/>
 
                 <section class="max-w-full col-span-2 flex justify-end">
