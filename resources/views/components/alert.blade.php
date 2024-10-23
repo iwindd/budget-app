@@ -2,14 +2,16 @@
     'variant' => 'info',
     'text' => '',
     'alert' => null,
-    'sr' => null
+    'sr' => null,
+    'duration' => null
 ])
 
 @php
     $baseClasses = 'flex items-center justify-between p-4 rounded-lg';
 
-    if (isset($alert) && !empty($alert) && preg_match('/(\w+):/', $alert, $matches)){
+    if (isset($alert) && !empty($alert) && preg_match('/(\w+)(?:<(\d+)>)?:/', $alert, $matches)){
         $variant = $matches[1];
+        $duration = isset($matches[2]) ? (int)$matches[2] : null;
         $text = trim(str_replace($matches[0], '', $alert));
     }
 
@@ -43,7 +45,14 @@
 @endphp
 
 @if (!empty($text))
-    <div {{ $attributes->merge(['class' => $classes]) }}
+    <div
+        {{ $attributes->merge(['class' => $classes]) }}
+        @if ($duration)
+            x-data="{ show: true }"
+            x-show="show"
+            x-transition
+            x-init="setTimeout(() => show = false, {{$duration}})"
+        @endif
         role="alert">
         <div class="flex">
             <x-icons.alert />
