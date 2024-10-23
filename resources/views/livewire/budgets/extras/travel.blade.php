@@ -18,7 +18,7 @@
         <form wire:submit="onSaveTravel" class="max-w-full">
             <section class="grid grid-cols-4 gap-2">
                 @php
-                    $root = ['class'=>"space-y-2 md:col-span-1 col-span-2"];
+                    $root = ['class'=>"lg:col-span-1 md:col-span-2 col-span-4"];
                 @endphp
                 <x-textfield lang="travel.input-owner" wire:model="budgetItemForm.name" :root="$root" disabled/>
                 <x-textfield lang="travel.input-start" type="date" wire:model="budgetItemTravelForm.start" :root="$root" />
