@@ -8,11 +8,12 @@
     'helper' => null,
     'error' => null,
     'bag' => null,
-    'wrapperProps' => []
+    'wrapper' => [],
+    'parent' => []
 ])
 
 @php
-    $wrapperClasses = "
+    $wrapper['class'] = ($wrapper['class'] ?? ''). "
         flex border rounded-md justify-center items-center overflow-hidden
         " . ($error ? 'border-danger dark:border-danger' : 'border-gray-400 focus-within:border-primary dark:border-gray-600 dark:focus-within:border-primary') . "
         " . ($disabled ? 'bg-gray-200 dark:bg-dark-eval-0' : 'dark:bg-dark-eval-1') ."
@@ -21,7 +22,7 @@
     ";
 @endphp
 
-<section>
+<section {{ $attributes->only('parent')->merge($parent) }}>
     @if ($label)
         <label
             for="{{$id}}"
@@ -35,9 +36,7 @@
     @endif
     <section
         {!!
-            $attributes->only($wrapperProps)->merge([
-                'class' => $wrapperClasses
-            ])
+            $attributes->only('wrapper')->merge($wrapper)
         !!}
     >
         @if ($startIcon)
