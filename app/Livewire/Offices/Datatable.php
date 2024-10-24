@@ -73,22 +73,23 @@ class Datatable extends DataTableComponent
                             'label' => trans('offices.action-edit'),
                             'dispatch' => ['open-office-dialog', $row->only(['id', 'label', 'province', 'default'])]
                         ],
-                        [
-                            'icon' => 'heroicon-o-trash',
-                            'label' => trans('offices.action-delete'),
-                            'attributes' => [
-                                'wire:confirmation'=> trans('offices.delete-confirmation', ['office' => $row->label]),
-                                'wire:click' => "delete({$row->id})"
+
+                        ...(!$row->default ? [ [
+                                'icon' => 'heroicon-o-trash',
+                                'label' => trans('offices.action-delete'),
+                                'attributes' => [
+                                    'wire:confirmation'=> trans('offices.delete-confirmation', ['office' => $row->label]),
+                                    'wire:click' => "delete({$row->id})"
+                                ]
+                            ], [
+                                'icon' => 'heroicon-o-arrows-up-down',
+                                'label' => trans('offices.action-enable'),
+                                'attributes' => [
+                                    'wire:confirmation'=> trans('offices.enabled-confirmation', ['office' => $row->label]),
+                                    'wire:click.prevent' => "activated({$row->id})"
+                                ]
                             ]
-                        ],
-                        ...(!$row->default ? [[
-                            'icon' => 'heroicon-o-arrows-up-down',
-                            'label' => trans('offices.action-enable'),
-                            'attributes' => [
-                                'wire:confirmation'=> trans('offices.enabled-confirmation', ['office' => $row->label]),
-                                'wire:click.prevent' => "activated({$row->id})"
-                            ]
-                        ]]: [])
+                        ]: [])
                     ]
                 ])
         ];
