@@ -23,7 +23,7 @@ return [
     'table-province' => "จังหวัด",
     'table-default' => "สถานะ",
     'table-created_by' => "เพิ่มโดย",
-    'table-created_at' => "เพิ่มเมื่อ",
+    'table-updated_at' => "อัพเดทล่าสุด",
     'table-action' => "เครื่องมือ",
     'table-action-text' => "จัดการ",
     'col-default-1' => "กำลังใช้งาน",

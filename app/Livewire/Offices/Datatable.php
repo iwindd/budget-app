@@ -51,8 +51,8 @@ class Datatable extends DataTableComponent
             Column::make(trans('offices.table-created_by'), "user.name")
                 ->format(fn($value) => $this->formatter->userName($value))
                 ->sortable(),
-            Column::make(trans('offices.table-created_at'), "created_at")
-                ->format(fn($value) => $this->formatter->date($value))
+            Column::make(trans('offices.table-updated_at'), "updated_at")
+                ->format(fn($value) => $this->formatter->dateDiffHumans($value))
                 ->sortable(),
             ButtonGroupColumn::make(trans('offices.table-action'))
                 ->setView("components.action")
