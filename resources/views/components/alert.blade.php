@@ -39,7 +39,7 @@
     get className() {
         return `alert ${this.variant}`;
     }
-}" x-show="show" x-transition x-init="() => duration && duration > 0 ? {timeoutId = setTimeout(() => show = false, duration) }: null"
+}" x-show="show" x-transition
     x-on:alert.window="() => {
         const alert = $event.detail[0];
         const match = alert.match(/^\[(.+?)\](\w+)<(\d+)>:\s*(.+)$/);
