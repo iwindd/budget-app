@@ -85,5 +85,54 @@
     </div>
 
     @livewireScripts
+    <script>
+        Livewire.directive('confirmation', ({ el, directive, component, cleanup }) => {
+            let content =  directive.expression
+
+            const showConfirmation = (data) => {
+                return new Promise((resolve, reject) => {
+                    const event = new CustomEvent("confirmation", {
+                        detail: {
+                            ...data,
+                            confirm: () => {
+                                resolve();
+                            },
+                            cancel: () => {
+                                reject();
+                            }
+                        },
+                        bubbles: true,
+                        composed: true,
+                    });
+
+                    el.dispatchEvent(event);
+                });
+            }
+
+            let onClick = async e => {
+                e.stopImmediatePropagation()
+                e.preventDefault()
+                try {
+                    const result = content.match(/^(?<variant>\w+)?(?:\:\[(?<title>[^\]]+)\])?(?<text>.*)$/);
+                    const variant = result && result.groups ? (result.groups.variant || "primary") : "primary";
+                    const title = result && result.groups ? (result.groups.title || null) : null;
+                    const text = result && result.groups ? (result.groups.text || null) : null;
+
+                    await showConfirmation({variant, title, text})
+                    el.removeEventListener('click', onClick, { capture: true })
+                    el.click();
+                    el.addEventListener('click', onClick, { capture: true })
+                } catch (error) {
+                    // on cancel
+                }
+            }
+
+            el.addEventListener('click', onClick, { capture: true })
+
+            cleanup(() => {
+                el.removeEventListener('click', onClick)
+            })
+        })
+    </script>
 </body>
 </html>
