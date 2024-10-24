@@ -6,12 +6,12 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Office;
 use App\Services\FormatHelperService;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 
 class Datatable extends DataTableComponent
 {
-    protected $model = Office::class;
     protected $formatter;
 
     public function __construct()
@@ -19,22 +19,31 @@ class Datatable extends DataTableComponent
         $this->formatter = app(FormatHelperService::class);
     }
 
+    public function builder(): Builder
+    {
+        return Office::query()
+            ->orderByRaw("
+                CASE
+                    WHEN `default` = 1 THEN 1
+                    WHEN `default` = 0 THEN 2
+                END
+            ");
+    }
+
     public function configure(): void
     {
         $this->setPrimaryKey('id');
         $this->addAdditionalSelects(['offices.id as id']);
+        $this->setDefaultSort('updated_at', 'desc');
     }
 
-    public function activated(int $id)
+    public function activated(Office $office)
     {
-        $this->model::deactivated();
-        $item = $this->model::find($id);
-        $item->default = !$item->default;
-        $item->save();
+        return Office::setActive($office);
     }
 
-    public function delete($id) {
-        return $this->model::find($id)->delete();
+    public function delete(Office $office) {
+        return $office->delete();
     }
 
     public function columns(): array
