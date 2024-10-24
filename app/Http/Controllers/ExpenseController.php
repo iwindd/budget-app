@@ -22,43 +22,4 @@ class ExpenseController extends Controller
     {
         return $this->select($request, Expense::class);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreExpenseRequest $request)
-    {
-        $expense = $this->auth()->expenses()->create($request->validated());
-
-        return Redirect::back()->with('alert', [
-            'text' => trans("expenses.controller-store", ["label" => $expense->label]),
-            'variant' => "success"
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateExpenseRequest $request, Expense $expense)
-    {
-        $expense->update($request->validated());
-
-        return Redirect::back()->with('alert', [
-            'text' => trans("expenses.controller-update", ["label" => $expense->label]),
-            'variant' => "success"
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Expense $expense)
-    {
-        $expense->delete();
-
-        return Redirect::back()->with('alert', [
-            'text' => trans("expenses.controller-destroy", ["label" => $expense->label]),
-            'variant' => "success"
-        ]);
-    }
 }

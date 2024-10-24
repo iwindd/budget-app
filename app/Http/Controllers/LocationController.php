@@ -22,43 +22,4 @@ class LocationController extends Controller
     {
         return $this->select($request, Location::class);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreLocationRequest $request)
-    {
-        $location = $this->auth()->locations()->create($request->validated());
-
-        return Redirect::back()->with('alert', [
-            'text' => trans("locations.controller-store", ["label" => $location->label]),
-            'variant' => "success"
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateLocationRequest $request, Location $location)
-    {
-        $location->update($request->validated());
-
-        return Redirect::back()->with('alert', [
-            'text' => trans("locations.controller-update", ["label" => $location->label]),
-            'variant' => "success"
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Location $location)
-    {
-        $location->delete();
-
-        return Redirect::back()->with('alert', [
-            'text' => trans("locations.controller-destroy", ["label" => $location->label]),
-            'variant' => "success"
-        ]);
-    }
 }
