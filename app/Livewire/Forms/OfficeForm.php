@@ -19,10 +19,6 @@ class OfficeForm extends Form
     #[Validate('required|boolean')]
     public $default = false;
 
-    private function disableDefault(){
-        Office::where('default', true)->update(['default' => false]);
-    }
-
     public function set(Office $office) {
         $this->office = $office;
         $this->label = $office->label;
@@ -33,16 +29,17 @@ class OfficeForm extends Form
     public function store()
     {
         $validated = $this->validate();
-        if ($validated['default']) $this->disableDefault();
-        Office::create($validated);
+        $office = Office::create($validated);
+        if ($validated['default']) Office::setActive($office);
         $this->reset();
     }
 
     public function update()
     {
         $validated = $this->validate();
-        if ($validated['default']) $this->disableDefault();
+        $office = $this->office;
         $this->office->update($validated);
+        if ($validated['default']) Office::setActive($office);
         $this->reset();
     }
 }
