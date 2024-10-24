@@ -37,11 +37,7 @@
         }
     },
     get className() {
-        return `flex items-center justify-between p-4 rounded-lg ${
-                this.variant === 'black' ?
-                    'text-black bg-black/15' :
-                    `text-${this.variant} bg-${this.variant}-400/15`
-            }`
+        return `alert ${this.variant}`;
     }
 }" x-show="show" x-transition x-init="() => duration > 0 ? {timeoutId = setTimeout(() => show = false, duration) }: null"
     x-on:alert.window="() => {
