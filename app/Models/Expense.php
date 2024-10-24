@@ -18,7 +18,18 @@ class Expense extends Model
     protected $fillable = [
         'user_id',
         'label',
+        'merge',
+        'default'
     ];
+
+    protected $casts = [
+        'default' => 'boolean',
+        'merge' => 'boolean'
+    ];
+
+    public static function deactivated() {
+        return self::where('default', true)->update(['default' => false]);
+    }
 
     /**
      * setDefault
@@ -26,9 +37,8 @@ class Expense extends Model
      * @return void
     */
     public static function setDefault(Expense $expense) {
-        self::where('default', true)->update(['default' => false]);
-        $expense->default = true;
-        $expense->save();
+        self::deactivated();
+        return $expense->update(['default' => true]);
     }
 
     public static function getDefault() {
