@@ -43,6 +43,12 @@ class Office extends Model
         return self::where('default', true)->update(['default' => false]);
     }
 
+    public static function setActive(Office $office) {
+        if ($office->default) return $office;
+        self::deactivated();
+        return $office->update(['default' => true]);
+    }
+
     /**
      * Get the user that created
      */
