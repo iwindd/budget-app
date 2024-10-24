@@ -46,8 +46,23 @@ class Datatable extends DataTableComponent
             Column::make(trans('budgetitems.table-date'), "date")
                 ->sortable()
                 ->format(fn ($val) => $this->formatter->date($val)),
-            ButtonGroupColumn::make('Actions')
-                ->setView('components.budgets_admin.action')
+            ButtonGroupColumn::make(trans('budgetitems.table-action'))
+                ->setView("components.action")
+                ->attributes(fn($row) => [
+                    'label' => trans('budgetitems.table-action-text'),
+                    'options' => [
+                        [
+                            'icon' => 'heroicon-o-pencil',
+                            'label' => trans('budgetitems.action-edit'),
+                            'attributes' => [
+                                'href' => route('budgets.show.admin', [
+                                    'budget' => $row['budget.serial'],
+                                    'budgetItem' => $row->id
+                                ])
+                            ]
+                        ],
+                    ]
+                ])
         ];
     }
 }

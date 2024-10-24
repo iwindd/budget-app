@@ -16,6 +16,6 @@ return [
     'table-hasData-true' => "<span class='text-success'>สำเร็จแล้ว</span>",
     'table-hasData-false' => "<span class='text-danger'>ยังไม่สำเร็จ</span>",
     'table-action' => "เครื่องมือ",
-    'table-action-text' => "เครื่องมือ",
-    'table-action-manage' => "จัดการ"
+    'table-action-text' => "จัดการ",
+    'action-edit' => 'แก้ไข'
 ];
