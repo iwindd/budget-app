@@ -56,9 +56,7 @@ class Datatable extends DataTableComponent
                 ->sortable(),
             Column::make(trans('users.table-budgetitems/expenses-total'))
                 ->sortable()
-                ->label(fn ($row) => $this->formatBudgetExpenseCount($row)),
-            ButtonGroupColumn::make('Actions')
-                ->setView('components.users.action')
+                ->label(fn ($row) => $this->formatBudgetExpenseCount($row))
         ];
     }
 }
