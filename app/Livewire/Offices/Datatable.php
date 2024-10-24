@@ -39,10 +39,12 @@ class Datatable extends DataTableComponent
 
     public function activated(Office $office)
     {
+        $this->dispatch("alert", trans('offices.alert-active', ['label' => $office->label]));
         return Office::setActive($office);
     }
 
     public function delete(Office $office) {
+        $this->dispatch("alert", trans('offices.alert-remove', ['label' => $office->label]));
         return $office->delete();
     }
 

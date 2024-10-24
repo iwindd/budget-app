@@ -1,6 +1,6 @@
 <x-app-layout select2="true">
     <x-slot name="header">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-2">
             <h2 class="text-xl font-semibold leading-tight ">
                 {{ __('offices.heading') }}
             </h2>
@@ -15,6 +15,8 @@
                 <span>{{__('offices.add-btn')}}</span>
             </x-button>
         </div>
+
+        <x-alert key="offices.message" />
     </x-slot>
 
     @if (session('alert'))

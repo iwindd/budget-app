@@ -28,7 +28,8 @@ return [
     'table-action-text' => "จัดการ",
     'col-default-1' => "กำลังใช้งาน",
     "col-default-0" => "-",
-    'controller-store' => "เพิ่มที่ทำการ ':label' สำเร็จแล้ว!",
-    'controller-update' => "แก้ไขที่ทำการ ':label' สำเร็จแล้ว!",
-    'controller-destroy' => "ลบที่ทำการ ':label' สำเร็จแล้ว!",
+    /* ALERT */
+    'alert-remove' => "[offices.message]success<5000>:ลบที่ทำการ ':label' สำเร็จแล้ว!",
+    'alert-active' => "[offices.message]success<5000>:เปิดใช้งานที่ทำการ ':label' แล้ว!",
+    'alert-save' => "[offices.message]success<5000>:บันทึกที่ทำการ ':label' แล้ว!",
 ];

@@ -23,12 +23,14 @@ class Dialog extends Component
     }
 
     public function submit() {
+        $office = null;
         if (empty($this->office->office)){
-            $this->office->store();
+            $office = $this->office->store();
         }else{
-            $this->office->update();
+            $office = $this->office->update();
         }
 
+        $this->dispatch("alert", trans('offices.alert-save', ['label' => $office->label]));
         $this->dispatch('close-modal', 'office-form');
         $this->dispatch('refreshDatatable');
     }

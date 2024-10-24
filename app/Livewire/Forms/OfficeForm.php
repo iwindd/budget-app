@@ -32,6 +32,7 @@ class OfficeForm extends Form
         $office = Office::create($validated);
         if ($validated['default']) Office::setActive($office);
         $this->reset();
+        return $office;
     }
 
     public function update()
@@ -41,5 +42,6 @@ class OfficeForm extends Form
         $this->office->update($validated);
         if ($validated['default']) Office::setActive($office);
         $this->reset();
+        return $office;
     }
 }
