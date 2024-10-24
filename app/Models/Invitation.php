@@ -20,6 +20,10 @@ class Invitation extends Model
         'default'
     ];
 
+    protected $casts = [
+        'default' => 'boolean',
+    ];
+
     /**
      * Get the invitation where default is true.
      *
@@ -36,6 +40,11 @@ class Invitation extends Model
     */
     public static function deactivated() {
         return self::where('default', true)->update(['default' => false]);
+    }
+
+    public static function setActive(Invitation $invitation) {
+        self::deactivated();
+        return $invitation->update(['default' => true]);
     }
 
     /**
