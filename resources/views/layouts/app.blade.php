@@ -89,6 +89,12 @@
         Livewire.directive('confirmation', ({ el, directive, component, cleanup }) => {
             let content =  directive.expression
 
+
+            const closeDropdown = () => el.dispatchEvent(new CustomEvent("close-dropdown", {
+                bubbles: true,
+                composed: true,
+            }));
+
             const showConfirmation = (data) => {
                 return new Promise((resolve, reject) => {
                     const event = new CustomEvent("confirmation", {
@@ -112,12 +118,13 @@
             let onClick = async e => {
                 e.stopImmediatePropagation()
                 e.preventDefault()
+
                 try {
                     const result = content.match(/^(?<variant>\w+)?(?:\:\[(?<title>[^\]]+)\])?(?<text>.*)$/);
                     const variant = result && result.groups ? (result.groups.variant || "primary") : "primary";
                     const title = result && result.groups ? (result.groups.title || null) : null;
                     const text = result && result.groups ? (result.groups.text || null) : null;
-
+                    closeDropdown()
                     await showConfirmation({variant, title, text})
                     el.removeEventListener('click', onClick, { capture: true })
                     el.click();
