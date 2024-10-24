@@ -8,7 +8,7 @@
             <x-button
                 variant="primary"
                 class="items-center max-w-xs gap-2"
-                x-on:click="$dispatch('open-modal', 'office-form')"
+                x-on:click="$dispatch('open-office-dialog')"
             >
                 <x-heroicon-o-plus class="w-6 h-6" aria-hidden="true" />
 

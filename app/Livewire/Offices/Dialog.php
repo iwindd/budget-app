@@ -13,10 +13,8 @@ class Dialog extends Component
     public OfficeForm $office;
     public $provinces;
 
-    #[On('OpenOfficeDialog')]
     public function onOpenDialog(Office $target) {
         $this->office->set($target);
-        $this->dispatch('open-modal', 'office-form');
     }
 
     #[On('onCloseModal')]
@@ -31,7 +29,8 @@ class Dialog extends Component
             $this->office->update();
         }
 
-        $this->redirectRoute('offices');
+        $this->dispatch('close-modal', 'office-form');
+        $this->dispatch('refreshDatatable');
     }
 
     public function mount()

@@ -33,6 +33,10 @@ class Datatable extends DataTableComponent
         $item->save();
     }
 
+    public function delete($id) {
+        return $this->model::find($id)->delete();
+    }
+
     public function columns(): array
     {
         return [
@@ -50,8 +54,34 @@ class Datatable extends DataTableComponent
             Column::make(trans('offices.table-created_at'), "created_at")
                 ->format(fn($value) => $this->formatter->date($value))
                 ->sortable(),
-            ButtonGroupColumn::make('Actions')
-                ->setView('components.offices.action')
+            ButtonGroupColumn::make(trans('offices.table-action'))
+                ->setView("components.action")
+                ->attributes(fn ($row) => [
+                    'label' => trans('offices.table-action-text'),
+                    'options' => [
+                        [
+                            'icon' => 'heroicon-o-pencil',
+                            'label' => trans('offices.action-edit'),
+                            'dispatch' => ['open-office-dialog', $row->only(['id', 'label', 'province', 'default'])]
+                        ],
+                        [
+                            'icon' => 'heroicon-o-trash',
+                            'label' => trans('offices.action-delete'),
+                            'attributes' => [
+                                'wire:confirmation'=> trans('offices.delete-confirmation', ['office' => $row->label]),
+                                'wire:click' => "delete({$row->id})"
+                            ]
+                        ],
+                        ...(!$row->default ? [[
+                            'icon' => 'heroicon-o-arrows-up-down',
+                            'label' => trans('offices.action-enable'),
+                            'attributes' => [
+                                'wire:confirmation'=> trans('offices.enabled-confirmation', ['office' => $row->label]),
+                                'wire:click.prevent' => "activated({$row->id})"
+                            ]
+                        ]]: [])
+                    ]
+                ])
         ];
     }
 }
