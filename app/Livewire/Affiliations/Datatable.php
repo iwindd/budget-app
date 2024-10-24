@@ -39,7 +39,7 @@ class Datatable extends DataTableComponent
             Column::make(trans('affiliations.table-created_by'), "user.name")
                 ->format(fn($value) => $this->formatter->userName($value))
                 ->sortable(),
-            Column::make(trans('locations.table-updated_at'), "updated_at")
+            Column::make(trans('affiliations.table-updated_at'), "updated_at")
                 ->format(fn($value) => $this->formatter->dateDiffHumans($value))
                 ->sortable(),
             CountColumn::make(trans('affiliations.table-users'))

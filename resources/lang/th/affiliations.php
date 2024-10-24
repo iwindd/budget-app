@@ -20,10 +20,10 @@ return [
     'table-label' => "สังกัด",
     'table-users_count' => "ผู้ใช้",
     'table-created_by' => "เพิ่มโดย",
-    'table-created_at' => "เพิ่มเมื่อ",
-    'table-action' => "เครื่องมือ",
+    'table-updated_at' => "อัพเดทล่าสุด",
     'table-users' => 'ผู้ใช้ทั้งหมด',
-    'table-action-text' => "เครื่องมือ",
+    'table-action' => "เครื่องมือ",
+    'table-action-text' => "จัดการ",
     /* ALERT */
     'alert-remove' => "[affiliations.message]success<5000>:ลบสังกัด ':label' สำเร็จแล้ว!",
     'alert-save' => "[affiliations.message]success<5000>:บันทึกสังกัด ':label' แล้ว!",
