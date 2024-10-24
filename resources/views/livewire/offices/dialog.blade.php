@@ -22,7 +22,11 @@
             <div class="mt-6 space-y-2">
                 <x-textfield :startIcon="@svg('heroicon-o-building-office')" lang="offices.dialog-input-office" wire:model="office.label" autofocus/>
                 <x-selectize :options="$provinces" lang="budgets.input-name" wire:model="office.province" display="name_th"  defaultValue="67" />
-                <x-checkbox :label="__('offices.dialog-input-default')" wire:model="office.default" />
+                <x-checkbox
+                    :disabled="$office->office->default ?? false"
+                    :label="__('offices.dialog-input-default')"
+                    wire:model="office.default"
+                />
             </div>
 
             <div class="mt-6 flex justify-end">
