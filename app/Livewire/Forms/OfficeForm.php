@@ -29,8 +29,8 @@ class OfficeForm extends Form
     public function store()
     {
         $validated = $this->validate();
+        if ($validated['default']) Office::deactivated();
         $office = Office::create($validated);
-        if ($validated['default']) Office::setActive($office);
         $this->reset();
         return $office;
     }
@@ -39,8 +39,8 @@ class OfficeForm extends Form
     {
         $validated = $this->validate();
         $office = $this->office;
+        if ($validated['default']) Office::deactivated();
         $this->office->update($validated);
-        if ($validated['default']) Office::setActive($office);
         $this->reset();
         return $office;
     }
