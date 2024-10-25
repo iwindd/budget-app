@@ -14,6 +14,7 @@
     'lang' => null,
     'error' => null,
     'defaultValue' => null,
+    'create' => false,
     'root' => []
 ])
 @php
@@ -40,6 +41,7 @@
         defaultValue: @js($parseInt ? intval($defaultValue) : $defaultValue),
         value: @entangle($model),
         setValue(value) {
+            console.log('set value', value,  (this.parseInt ? Number(value) : value))
             this.value = (this.parseInt ? Number(value) : value);
         }
     }"
@@ -48,6 +50,7 @@
         selector.select2({
             width: '100%',
             placeholder: @js($placeholder),
+            tags: @js($create),
             @if ($fetch)
                 ajax: {
                     url: @js($fetch),
@@ -71,6 +74,7 @@
         selector.on('select2:select', e => setValue(e.params.data.id));
 
         const updateOption = (raw) => {
+            console.log('update value', raw)
             const value = String(raw);
             if (raw != null && !selector.find(`option[value='${value}']`).length && fetch){
                 $.ajax({

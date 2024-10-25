@@ -7,7 +7,7 @@
             <form wire:submit="onAddExpense" class="flex flex-col lg:flex-row">
                 <div class="flex-grow grid grid-cols-8 gap-2">
                     <x-selectize :fetch="route('expenses.selectize')" lang='budgets.input-expense'
-                        wire:model="budgetItemExpenseForm.expense_id" :root="['class' => 'space-y-2 lg:col-span-5 md:col-span-8 col-span-8']" />
+                        wire:model="budgetItemExpenseForm.expense_id" :root="['class' => 'space-y-2 lg:col-span-5 md:col-span-8 col-span-8']" create :parseInt="false"/>
                     <x-textfield lang="budgets.input-total" wire:model="budgetItemExpenseForm.total" type="number"
                         :root="['class' => 'space-y-2 lg:col-span-1 md:col-span-5 col-span-4']" />
                     <x-textfield lang="budgets.input-days" wire:model="budgetItemExpenseForm.days" type="number"
