@@ -16,7 +16,7 @@ class BudgetAdminController extends Controller
     public function show(Request $request) {
         $budget = Budget::where('serial', $request->budget)->firstOrFail();
         $budgetItem = $budget->budgetItems()->findOrFail($request->budgetItem);
-        $travel = $budgetItem->budgetItemTravel();
+        $travel = $budgetItem->budgetItemTravel;
 
         return view('user.budgets.create.index', [
             'budgetItemId' => BudgetItem::isHasData($budgetItem) ? $budgetItem->id : 0,
