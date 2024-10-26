@@ -2,29 +2,13 @@
 @import "tailwindcss/components";
 @import "perfect-scrollbar/css/perfect-scrollbar.css";
 @import "tailwindcss/utilities";
+/* COMPONENTS */
+@import "./components/alert.css";
+@import "./components/select2.css";
 
 .dark .ps__rail-y,
 .dark .ps__rail-x {
     background-color: transparent !important;
-}
-
-.select2-container--default .select2-selection--multiple,
-.select2-container--default .select2-selection {
-    background-color: white;
-    border: 1px solid;
-    cursor: text;
-    position: relative;
-
-    @apply border-gray-400 rounded-md px-2 py-2 dark:border-gray-600 dark:text-gray-300 dark:bg-dark-eval-1;
-}
-
-.select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection{
-    height: 42px;
-}
-
-.select2-container--default
-    .select2-results__option--highlighted.select2-results__option--selectable {
-    @apply bg-primary text-white;
 }
 
 .travel-row input{
@@ -35,14 +19,3 @@
     @apply border dark:border-gray-900/25
 }
 
-.alert{
-    @apply flex items-center justify-between p-4 rounded-lg
-}
-
-.alert.black{ @apply text-black bg-black/15 }
-.alert.primary{ @apply text-primary bg-primary-400/15 }
-.alert.danger{ @apply text-danger bg-danger-400/15 }
-.alert.success{ @apply text-success bg-success-400/15 }
-.alert.warning{ @apply text-warning bg-warning-400/15 }
-.alert.secondary{ @apply text-secondary bg-secondary-400/15 }
-.alert.info{ @apply text-info bg-info-400/15 }
