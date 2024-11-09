@@ -27,6 +27,9 @@
         $langPlaceholder = "$lang-placeholder";
         $placeholder = $placeholder ?? __($langPlaceholder);
         if ($placeholder == $langPlaceholder) $placeholder = null;
+        $langHelper = "$lang-helper";
+        $helper = $helper ?? __($langHelper);
+        if ($helper == $langHelper) $helper = null;
     }
 
     $wrapper['class'] = ($wrapper['class'] ?? ''). "
