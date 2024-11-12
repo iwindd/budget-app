@@ -41,7 +41,6 @@
         defaultValue: @js($parseInt ? intval($defaultValue) : $defaultValue),
         value: @entangle($model),
         setValue(value) {
-            console.log('set value', value,  (this.parseInt ? Number(value) : value))
             this.value = (this.parseInt ? Number(value) : value);
         }
     }"
@@ -74,7 +73,6 @@
         selector.on('select2:select', e => setValue(e.params.data.id));
 
         const updateOption = (raw) => {
-            console.log('update value', raw)
             const value = String(raw);
             if (raw != null && !selector.find(`option[value='${value}']`).length && fetch){
                 $.ajax({
