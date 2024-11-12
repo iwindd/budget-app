@@ -11,8 +11,9 @@
                 @include('livewire.budgets.partials.budget-item')
             </form>
 
-            <h3 class="font-bold">{{ __('budgets.companion-header') }}</h3>
-            @include('livewire.budgets.partials.companion')
+      {{--       <h3 class="font-bold">{{ __('budgets.companion-header') }}</h3>
+             --}}
+             @include('livewire.budgets.partials.companion')
 
             <div class="max-w-full space-y-2">
                 <x-alert key="budget.message"/>
@@ -23,8 +24,8 @@
             </div>
         </div>
     </div>
-
+{{--
     @include('livewire.budgets.partials.address')
     @include('livewire.budgets.partials.expense')
-    @include('livewire.budgets.extras.travel')
+    @include('livewire.budgets.extras.travel') --}}
 </section>

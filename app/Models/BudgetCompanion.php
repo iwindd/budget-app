@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class BudgetCompanion extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -15,10 +16,6 @@ class BudgetCompanion extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'order',
-        'date',
-        'header',
-        'subject',
         'user_id',
         'budget_id'
     ];

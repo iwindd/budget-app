@@ -1,4 +1,21 @@
-<div class="max-w-full">
+<div>
+    <x-selectize
+        :fetch="route('companions.selectize')"
+        lang='budgets.input-companion'
+        wire:model="companions"
+        display="name"
+        multiple
+    />
+{{--
+    <x-selectize
+        :fetch="route('companions.selectize')"
+        lang='budgets.input-companion'
+        wire:model="companions2"
+        display="name"
+    /> --}}
+</div>
+
+{{-- <div class="max-w-full">
     @if ($budgetItemForm->exists())
         @if ($hasPermissionToManage)
             <form wire:submit="onAddCompanion" class="flex lg:flex-row md:flex-row flex-col">
@@ -75,4 +92,4 @@
     @else
         <x-form.error class="indent-4" :messages="__('budgets.companion-budget-item-not-found')" />
     @endif
-</div>
+</div> --}}

@@ -4,58 +4,56 @@ namespace App\Livewire\Budgets;
 
 use App\Livewire\Forms\BudgetCompanionForm;
 use App\Livewire\Forms\BudgetForm;
-use App\Livewire\Forms\BudgetItemAddressForm;
-use App\Livewire\Forms\BudgetItemExpenseForm;
-use App\Livewire\Forms\BudgetItemForm;
-use App\Livewire\Forms\BudgetItemTravelForm;
 use App\Models\Budget;
 use App\Models\BudgetItem;
-use App\Models\BudgetItemAddress;
 use App\Models\BudgetItemExpense;
+use App\Models\Invitation;
+use App\Models\Office;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class BudgetPartial extends Component
 {
     public BudgetForm $budgetForm;
-    public BudgetItemForm $budgetItemForm;
-    public BudgetCompanionForm $budgetItemCompanionFrom;
-    public BudgetItemAddressForm $budgetItemAddressForm;
-    public BudgetItemExpenseForm $budgetItemExpenseForm;
-    public BudgetItemTravelForm  $budgetItemTravelForm;
-    public $hasPermissionToManage = false;
+    public $hasPermissionToManage = true;
     public $addressSelectize = [];
+
+    public $companions = [];
 
     public function mount(Request $request)
     {
-        $budget = $this->budgetForm->setBudget($this->budgetForm->parseBudget($request->budget));
-        $budgetItem = $this->budgetItemForm->parseBudgetItem($budget);
-        $this->budgetItemForm->setBudgetItem($budgetItem);
-        $this->budgetItemTravelForm->setBudgetItemTravel($budgetItem);
-        $this->hasPermissionToManage = $this->budgetItemCompanionFrom->hasPermissionToManage($budget);
-      /*   $this->setAddresses($budgetItem->exists ? $budgetItem->budgetItemAddresses->toArray() : []); */
-        $this->addressSelectize = Budget::Addresses()->toArray();
+        $this->budgetForm->setBudget($request->budget);
+    }
+
+    public function rules() {
+        return [
+            'companions' => ['array'],
+            'companions.*' => ['integer'],
+        ];
     }
 
     public function save()
     {
-        $this->validate();
-        $budget = null;
+        $validated = $this->validate();
+        $budget = $this->budgetForm->budget;
+        $exists = $budget->exists;
 
-        if ($this->hasPermissionToManage) {
-            $budget = $this->budgetForm->save();
-        } else {
-            $budget = $this->budgetForm->exists() ?
-                $this->budgetForm->budget :
-                $this->budgetForm->save();
+        // fill another fields;
+        $validated['user_id'] = $exists ? $budget->user_id : Auth::user()->id;
+        $validated['invitation_id'] = $budget->invitation ? $budget->invitation->id : Invitation::getInvitation('id')->id;
+        $validated['office_id'] = $budget->office ? $budget->office->id : Office::getOffice('id')->id;
+        $validated['addresses'] = json_encode([]);
+        $budget->fill($validated);
+        $budget->save();
+
+        if (!$exists) { // create companion
+            $budget->companions()->createMany(
+                collect($validated['companions'])->map(fn($companion) => ['user_id' => $companion])
+            );
         }
 
-        $budgetItem = $this->budgetItemForm->save($budget);
-        $this->budgetForm->setBudget($budget);
-        $this->budgetItemForm->setBudgetItem($budgetItem);
-        $this->budgetItemTravelForm->setBudgetItemTravel($budgetItem);
-        $this->hasPermissionToManage = $this->budgetItemCompanionFrom->hasPermissionToManage($budget);
         $this->dispatch("alert", trans('budgets.alert-budget-saved'));
     }
 
@@ -66,7 +64,7 @@ class BudgetPartial extends Component
 
     public function getDatesBetween($fromDate, $toDate)
     {
-        $fromDate = Carbon::parse($fromDate);
+/*         $fromDate = Carbon::parse($fromDate);
         $toDate = Carbon::parse($toDate);
         $backDate = Carbon::parse($toDate);
 
@@ -79,7 +77,7 @@ class BudgetPartial extends Component
             $fromDate->addDay();
         }
 
-        return $dates;
+        return $dates; */
     }
 
     /* ADDRESS */
@@ -151,26 +149,21 @@ class BudgetPartial extends Component
 
     /* COMPANION */
     public function onAddCompanion() {
-        $this->budgetItemCompanionFrom->save($this->budgetForm->budget);
-        return $this->dispatch("alert", trans('budgets.alert-companion-add'));
+/*         $this->budgetItemCompanionFrom->save($this->budgetForm->budget);
+        return $this->dispatch("alert", trans('budgets.alert-companion-add')); */
     }
 
     public function onRemoveCompanion(BudgetItem $budgetItem) {
-        $this->budgetItemCompanionFrom->delete($budgetItem);
-        return $this->dispatch("alert", trans('budgets.alert-companion-remove'));
+/*         $this->budgetItemCompanionFrom->delete($budgetItem);
+        return $this->dispatch("alert", trans('budgets.alert-companion-remove')); */
     }
 
     /* EXPENSE */
     public function onAddExpense() {
-        return $this->budgetItemExpenseForm->save($this->budgetItemForm->budgetItem);
+    /*     return $this->budgetItemExpenseForm->save($this->budgetItemForm->budgetItem); */
     }
 
     public function onRemoveExpense(BudgetItemExpense $budgetItemExpense) {
-        return $this->budgetItemExpenseForm->delete($budgetItemExpense);
-    }
-
-    /* TRAVEL */
-    public function onSaveTravel() {
-        return $this->budgetItemTravelForm->save($this->budgetItemForm->budgetItem);
+    /*     return $this->budgetItemExpenseForm->delete($budgetItemExpense); */
     }
 }

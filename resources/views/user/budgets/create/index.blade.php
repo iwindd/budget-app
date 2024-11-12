@@ -5,7 +5,8 @@
                 {{ __('budgets.create-heading', ['serial' => request()->budget]) }}
             </h2>
             <div>
-                @if ($budgetItemId > 0)
+{{--
+                @if ($budgetItemId > 0)  TODO::REWORK
                     <x-dropdown align="right" width="96">
                         <x-slot name="trigger">
                             <button
@@ -52,6 +53,7 @@
                         </x-slot>
                     </x-dropdown>
                 @endif
+--}}
             </div>
         </div>
     </x-slot>

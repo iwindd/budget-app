@@ -22,5 +22,5 @@
     @endif
 
     <x-budgets.dialog />
-    <livewire:budgetitem.datatable />
+{{--     <livewire:budgetitem.datatable /> --}}
 </x-app-layout>

@@ -11,16 +11,19 @@ use Livewire\Form;
 class BudgetForm extends Form
 {
     public ?Budget $budget;
-
-    public $date;
-    public $value;
-
-    /* READONLY */
-    public $serial;
-    public $name;
-    public $office;
-    public $invitation;
-    public $addresses;
+    public $serial,
+        $finish_at,
+        $value,
+        $order,
+        $date,
+        $header,
+        $subject,
+        $addresses,
+        $name,
+        $position,
+        $affiliation;
+    public $invitation,
+        $office;
 
     public function parseBudget(String $serial): Budget
     {
@@ -34,31 +37,39 @@ class BudgetForm extends Form
         return $budget;
     }
 
-    public function setBudget(Budget $budget): Budget
+    public function setBudget(string $serial)
     {
+        $budget = Budget::where('serial', $serial)->first() ?? new Budget();
         $this->budget     = $budget;
-        /* FORMS */
-        $this->date       = $this->budget->date;
-        $this->value      = $this->budget->value;
 
-        $this->serial     = $this->budget->serial;
-        $this->name       = $this->budget->user->name ?? '';
-        $this->office     = $this->budget->office->label ?? 0;
-        $this->invitation = $this->budget->invitation->label ?? 0;
-        $this->addresses  = json_decode($this->budget->addresses) ?? [];
+        $this->serial = $serial;
+        $this->finish_at = $budget->finish_at;
+        $this->value = $budget->value;
+        $this->order = $budget->order;
+        $this->date = $budget->date;
+        $this->header = $budget->header;
+        $this->subject = $budget->subject;
+        $this->addresses = $budget->addresses;
+        $this->invitation = $budget->exists ? $budget->invitation->label : Invitation::getInvitation('label')->label;
+        $this->office     = $budget->exists ? $budget->office->label : Office::getOffice('label')->label;
+        $user       = $budget->exists ? $budget->user : Auth::user();
 
-        return $this->budget;
+        $this->name        = $user->name;
+        $this->position    = $user->position->label;
+        $this->affiliation = $user->affiliation->label;
     }
 
     public function save(): Budget
     {
         $validated = $this->validate();
-        $budget = $this->budget;
+
+        dd($validated);
+        /* $budget = $this->budget;
         if (!$budget->exists){
             $budget = $this->parseBudget($this->serial);
         }
         $budget->fill($validated);
-        $budget->save();
+        $budget->save(); */
         return $budget;
     }
 
@@ -69,6 +80,15 @@ class BudgetForm extends Form
     public function rules()
     {
         return [
+            'serial' => ['required', 'string'],
+            'finish_at' => ['required', 'date', 'date_format:Y-m-d'],
+            'value' => ['required', 'integer', 'min:50'],
+            'order' => ['required', 'string'],
+            'date' => ['required', 'date', 'date_format:Y-m-d'],
+            'header' => ['required', 'string'],
+            'subject' => ['required', 'string'],
+        ];
+ /*        return [
             'serial' => ['required'],
             'date' => ['required'],
             'value' => ['required', 'integer'],
@@ -80,6 +100,6 @@ class BudgetForm extends Form
             'addresses.*.multiple' => ['boolean'],
             'addresses.*.plate' => ['string', 'string'],
             'addresses.*.distance' => ['required', 'integer']
-        ];
+        ]; */
     }
 }

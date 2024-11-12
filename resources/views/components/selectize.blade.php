@@ -15,6 +15,7 @@
     'error' => null,
     'defaultValue' => null,
     'create' => false,
+    'multiple' => false,
     'root' => []
 ])
 @php
@@ -38,10 +39,15 @@
         model: @js($model),
         parseInt: @js($parseInt),
         fetch: @js($fetch),
+        multiple: @js($multiple),
         defaultValue: @js($parseInt ? intval($defaultValue) : $defaultValue),
         value: @entangle($model),
         setValue(value) {
-            this.value = (this.parseInt ? Number(value) : value);
+            if (typeof(value) == 'object'){
+                this.value = value.map(v => +v);
+            }else{
+                this.value = (this.parseInt ? Number(value) : value);
+            }
         }
     }"
     x-init="() => {
@@ -50,6 +56,7 @@
             width: '100%',
             placeholder: @js($placeholder),
             tags: @js($create),
+            multiple: @js($multiple),
             @if ($fetch)
                 ajax: {
                     url: @js($fetch),
@@ -70,19 +77,23 @@
             @endif
         })
 
-        selector.on('select2:select', e => setValue(e.params.data.id));
+        selector.on('select2:select', e => setValue(selector.val()));
 
         const updateOption = (raw) => {
-            const value = String(raw);
-            if (raw != null && !selector.find(`option[value='${value}']`).length && fetch){
-                $.ajax({
-                    type: 'GET',
-                    url: fetch + '&find=' + value
-                }).then(function (data) {
-                    selector.append(new Option(data[@js($display)], @js($value), false, true)).trigger('change');
-                });
+            if (!multiple) {
+                const value = String(raw);
+                if (raw != null && !selector.find(`option[value='${value}']`).length && fetch){
+                    $.ajax({
+                        type: 'GET',
+                        url: fetch + '&find=' + value
+                    }).then(function (data) {
+                        selector.append(new Option(data[@js($display)], @js($value), false, true)).trigger('change');
+                    });
+                }else{
+                    selector.val(value).trigger('change')
+                }
             }else{
-                selector.val(value).trigger('change')
+                console.log(raw);
             }
         }
 

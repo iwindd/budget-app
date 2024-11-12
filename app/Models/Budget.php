@@ -18,8 +18,13 @@ class Budget extends Model
      */
     protected $fillable = [
         'serial',
-        'date',
+        'finish_at',
         'value',
+        'order',
+        'date',
+        'header',
+        'subject',
+        'addresses',
         'user_id',
         'invitation_id',
         'office_id'
