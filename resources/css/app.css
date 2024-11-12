@@ -5,6 +5,7 @@
 /* COMPONENTS */
 @import "./components/alert.css";
 @import "./components/select2.css";
+@import "./components/datepicker.css";
 
 .dark .ps__rail-y,
 .dark .ps__rail-x {
