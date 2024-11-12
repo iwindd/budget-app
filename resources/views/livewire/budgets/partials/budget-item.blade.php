@@ -22,12 +22,19 @@
         {{-- BUDGET_ITEM_OWNER_AFFILIATION --}}
         <x-textfield lang="budgets.input-budget-owner-affiliation" wire:model="budgetForm.affiliation" disabled />
     </section>
-    {{-- HEADER --}}
-    <section class="space-y-2 md:col-span-1 col-span-2">
+    <section class="grid grid-cols-2 gap-2">
+        {{-- HEADER --}}
         <x-textfield lang="budgets.input-header" :startIcon="@svg('heroicon-o-map-pin')" wire:model="budgetForm.header" />
-    </section>
-    {{-- SUBJECT --}}
-    <section class="space-y-2 md:col-span-1 col-span-2">
+        {{-- SUBJECT --}}
         <x-textfield lang="budgets.input-subject" :startIcon="@svg('heroicon-o-book-open')" wire:model="budgetForm.subject" />
+    </section>
+    <section class="space-y-2 md:col-span-1 col-span-2">
+        <x-selectize
+            :fetch="route('companions.selectize')"
+            lang='budgets.input-companion'
+            wire:model="companions"
+            display="name"
+            multiple
+        />
     </section>
 </section>
