@@ -65,21 +65,6 @@ return [
     'table-companion-caption' => "คณะเดินทาง",
     'add-companion-btn' => "เพิ่มคณะเดินทาง",
     'companion-budget-item-not-found' => "*จำเป็นต้องบันทึกรายละเอียดใบเบิกก่อนเพิ่มคณะเดินทาง",
-    /* ADDRESS */
-    'address-header' => "รายละเอียดการเดินทาง",
-    'input-address-from' => "ออกเดินทางจาก",
-    'input-address-from-datetime' => "ตั้งแต่วันที่/เวลา",
-    'input-address-back' => "กลับถึง",
-    'input-address-back-datetime' => "วันที่/เวลา",
-    'input-location-placeholder' => "เลือกสถานที่",
-    'table-address-from-label' => "เดินทางจาก",
-    'table-address-from_date' => "ตั้งแต่วันที่/เวลา",
-    'table-address-back-label' => "กลับถึง",
-    'table-address-back_date' => "วันที่/เวลา",
-    'table-address-action' => "เครื่องมือ",
-    'table-addresses-not-found' => "ไม่พบการเดินทาง",
-    'add-address-btn' => "บันทึกการเดินทาง",
-    'address-budget-item-not-found' => "*จำเป็นต้องบันทึกรายละเอียดใบเบิกก่อนเพิ่มรายละเอียดก่อนเดินทาง",
     /* ADMIN DIALOG */
     'admin-add-dialog-header' => "ใบเบิกเงิน",
     /* ALERT "[bagName]variant<duration>:message" - bagName, duration is optional */

@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('budget_item_id')->constrained('budget_items')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('from_location_id')->constrained('locations')->onDelete('cascade')->onUpdate('cascade');
-            $table->dateTime('from_date');
             $table->foreignId('back_location_id')->constrained('locations')->onDelete('cascade')->onUpdate('cascade');
-            $table->dateTime('back_date');
+            $table->datetime('from_date');
+            $table->datetime('back_date');
+            $table->boolean('multiple');
+            $table->string('plate');
+            $table->integer('distance');
         });
     }
 

@@ -20,7 +20,14 @@ class BudgetItemAddress extends Model
         'from_location_id',
         'from_date',
         'back_location_id',
-        'back_date'
+        'back_date',
+        'plate',
+        'distance',
+        'multiple'
+    ];
+
+    protected $casts = [
+        'multiple' => 'boolean'
     ];
 
     public function budgetItem()

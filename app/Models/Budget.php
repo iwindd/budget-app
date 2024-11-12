@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -23,6 +24,94 @@ class Budget extends Model
         'invitation_id',
         'office_id'
     ];
+
+    public static function Addresses() {
+        return collect([
+            ['id' => 1, 'label' => 'บ้านพัก'],
+            ['id' => 2, 'label' => 'สำนักงาน'],
+            ['id' => 3, 'label' => 'ประเทศไทย']
+        ]);
+    }
+
+    private static function getDatesBetween($fromDate, $toDate)
+    {
+        $fromDate = Carbon::parse($fromDate);
+        $toDate = Carbon::parse($toDate);
+
+        $dates = [];
+        while ($fromDate->lte($toDate)) {
+            $dates[] = $fromDate->copy(); // Customize the format as needed
+            $fromDate->addDay();
+        }
+
+        return collect($dates);
+    }
+
+    public static function SortAddresses($item) {
+        return Carbon::parse($item['from_date']);
+    }
+
+    public static function MinimizeAddresses($payload) {
+        $payload = collect($payload)->sortBy('from_date')->values();
+        $minimize = collect([]);
+        $skipped = [];
+
+        $payload->map(function($address, $index) use ($payload, $minimize, &$skipped){
+            if (in_array($index, $skipped)) return false;
+            $fromDate = Carbon::parse($address['from_date']);
+            $backDate = Carbon::parse($address['back_date']);
+            $stacked = $payload->slice($index+1, $payload->count() - $index - 1)->map(function($a, $i) use ($fromDate, $backDate, $index, &$skipped){
+                $tempFromDate = $fromDate->copy()->addDay($i - $index)->format('Y-m-d H:i');
+                $tempBackDate = $backDate->copy()->addDay($i - $index)->format('Y-m-d H:i');
+
+                if ($tempFromDate == $a['from_date'] && $tempBackDate == $a['back_date']){
+                    $skipped[] = $i;
+                    return $a;
+                }
+            })->filter();
+
+            $minimize->push([
+                'back_date' => $stacked->isNotEmpty() ?
+                    $stacked->last()['back_date'] :
+                    $address['back_date'],
+                'multiple' => $stacked->isNotEmpty()
+            ] + $address);
+        });
+
+        return $minimize->sortBy('from_date')->values();
+    }
+
+    public static function ExtractAddresses($payload) {
+        $payload = collect($payload)->sortBy('from_date')->values();
+        $extract = collect([]);
+
+        collect($payload)->map(function($address) use ($extract) {
+            $fromDate = Carbon::parse($address['from_date']);
+            $backDate = Carbon::parse($address['back_date']);
+
+            if ($address['multiple']){
+                self::getDatesBetween($fromDate, $backDate)->map(function($date) use ($extract, $address, $fromDate, $backDate){
+                    $extract->push([
+                        'from_date' => $date->copy()->setTimeFromTimeString($fromDate->format("H:i"))->format('Y-m-d H:i'),
+                        'back_date' => $date->copy()->setTimeFromTimeString($backDate->format("H:i"))->format('Y-m-d H:i'),
+                    ] + $address);
+                });
+            }else{
+                $extract->push($address);
+            }
+        });
+
+        return $extract->sortBy('from_date')->values();
+    }
+
+    public static function GetEventBetween($extract, $carbonStart, $carbonEnd) {
+        return $extract->filter(function($a) use ($carbonStart, $carbonEnd){
+            $fromDate = Carbon::parse($a['from_date']);
+            $backDate = Carbon::parse($a['back_date']);
+
+            return $fromDate->between($carbonEnd, $carbonEnd) || $backDate->between($carbonStart, $carbonEnd);
+        });
+    }
 
     /**
      * Get user's budget item by serial number with optional customizations.

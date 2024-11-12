@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('invitation_id')->constrained('invitations')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('office_id')->constrained('offices')->onDelete('cascade')->onUpdate('cascade');
+            $table->json('addresses')->default('[]');
             $table->timestamps();
         });
     }

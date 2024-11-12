@@ -20,6 +20,7 @@ class BudgetForm extends Form
     public $name;
     public $office;
     public $invitation;
+    public $addresses;
 
     public function parseBudget(String $serial): Budget
     {
@@ -44,6 +45,7 @@ class BudgetForm extends Form
         $this->name       = $this->budget->user->name ?? '';
         $this->office     = $this->budget->office->label ?? 0;
         $this->invitation = $this->budget->invitation->label ?? 0;
+        $this->addresses  = json_decode($this->budget->addresses) ?? [];
 
         return $this->budget;
     }
@@ -69,7 +71,15 @@ class BudgetForm extends Form
         return [
             'serial' => ['required'],
             'date' => ['required'],
-            'value' => ['required', 'integer']
+            'value' => ['required', 'integer'],
+            'addresses' => ['array'],
+            'addresses.*.from_id' => ['required', 'integer'],
+            'addresses.*.back_id' => ['required', 'integer'],
+            'addresses.*.from_date' => ['required'],
+            'addresses.*.back_date' => ['required'],
+            'addresses.*.multiple' => ['boolean'],
+            'addresses.*.plate' => ['string', 'string'],
+            'addresses.*.distance' => ['required', 'integer']
         ];
     }
 }

@@ -1,5 +1,6 @@
 @props([
-    'select2' => false
+    'select2' => false,
+    'datepicker' => false,
 ])
 
 <!DOCTYPE html>
@@ -81,6 +82,15 @@
         @endisset
         @if ($select2)
             <script src="{{asset('js/select2.min.js')}}"></script>
+        @endif
+        @if ($datepicker)
+            <script src="{{asset('js/datepicker.js')}}"></script>
+            <script src="{{asset('js/datepicker.th.js')}}"></script>
+            <script src="{{asset('js/moment.js')}}"></script>
+            <script>
+                flatpickr.localize(flatpickr.l10ns.th);
+                moment.locale('th');
+            </script>
         @endif
     </div>
 

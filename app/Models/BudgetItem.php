@@ -75,6 +75,24 @@ class BudgetItem extends Model
         });
     }
 
+    public static function GetAddressBetween(BudgetItem $budgetItem, $startDates, $endDates)
+    {
+        return $budgetItem->budgetItemAddresses()->where(function ($query) use ($startDates, $endDates) {
+            foreach ($startDates as $index => $startDate) {
+                $endDate = $endDates[$index];
+
+                $query->orWhere(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('from_date', [$startDate, $endDate])
+                        ->orWhereBetween('back_date', [$startDate, $endDate])
+                        ->orWhere(function ($query) use ($startDate, $endDate) {
+                            $query->where('from_date', '<=', $startDate)
+                                    ->where('back_date', '>=', $endDate);
+                        });
+                });
+            }
+        });
+    }
+
     /**
      * Get the user that created
     */

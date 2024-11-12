@@ -2,55 +2,50 @@
 
 namespace App\Livewire\Forms;
 
-use App\Models\BudgetItem;
-use App\Models\BudgetItemAddress;
-use App\Models\Location;
-use App\Rules\AddressBack;
-use App\Rules\AddressFrom;
+use Carbon\Carbon;
 use Livewire\Form;
 
 class BudgetItemAddressForm extends Form
 {
-    public ?BudgetItemAddress $budgetItemAddress;
-    public $from_location_id;
-    public $from_date;
-    public $back_location_id;
-    public $back_date;
+    public $from_id, $back_id;
+    public $from_date, $back_date;
+    public $dates = [];
+    public $from_time = '09:00';
+    public $back_time = '17:00';
+    public $plate, $distance, $multiple = true;
 
-    public function setBudgetItemAddress(BudgetItemAddress $budgetItemAddress)
-    {
-        $this->budgetItemAddress = $budgetItemAddress;
-        /* FORMS */
-        $this->from_location_id  = $budgetItemAddress->from_location_id;
-        $this->from_date         = $budgetItemAddress->from_date;
-        $this->back_location_id  = $budgetItemAddress->back_location_id;
-        $this->back_date         = $budgetItemAddress->back_date;
-    }
-
-    public function clear()
-    {
-        return $this->setBudgetItemAddress(new BudgetItemAddress());
-    }
-
-    public function save(BudgetItem $budgetItem)
-    {
+    public function submit() {
         $validated = $this->validate([
-            'from_location_id' => ['required', 'integer', 'exists:locations,id'],
-            'from_date' => ['required', 'date', new AddressFrom($budgetItem, $this->budgetItemAddress)],
-            'back_location_id' => ['required', 'integer', 'exists:locations,id'],
-            'back_date' => ['required', 'date', 'after_or_equal:from_date', new AddressBack($budgetItem, $this->budgetItemAddress)]
+            'from_id' => ['required', 'integer'],
+            'back_id' => ['required', 'integer'],
+            'plate' => ['required', 'string'],
+            'distance' => ['required', 'integer'],
+            'from_time' => ['required', 'date_format:H:i'],
+            'back_time' => ['required', 'date_format:H:i'],
+            'multiple' => ['required', 'boolean'], // from client
+            'dates' => ['array', 'required'],
+            'dates.*' => ['date', 'date_format:Y-n-j']
         ]);
 
-        /* SAVE */
-        $budgetItemAddress = $this->budgetItemAddress;
-        if ($budgetItemAddress->exists) {
-            $budgetItemAddress->fill($validated);
-            $budgetItemAddress->save();
-        } else {
-            $budgetItem->budgetItemAddresses()->create($validated);
+        $validated['multiple'] = $this->isMultiple($validated); // check one day
+
+        return $validated;
+    }
+
+    public function clear() {
+        $this->reset(['dates']);
+    }
+
+    private function isMultiple($validated) {
+        if (count($validated['dates']) <= 1) return false;
+
+        if ($validated['multiple']){
+            $fromDate = Carbon::parse($validated['dates'][0] . ' ' . $validated['from_time']);
+            $backDate = Carbon::parse($validated['dates'][count($validated['dates'])-1] . ' ' . $validated['back_time']);
+
+            return $backDate->diffInDays($fromDate) >= 1;
         }
 
-        /* CLEAR */
-        $this->clear();
+        return false;
     }
 }

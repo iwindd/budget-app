@@ -28,7 +28,11 @@ class BudgetItemForm extends Form
 
         // * parameter budgetItem จาก request จะมีเฉพาะ request ของ admin
         $budgetItem  = (
-            request()->budgetItem ? BudgetItem::find(request()->budgetItem) : $budget->budgetItems->where('user_id', Auth::user()->id)->first()
+            request()->budgetItem ? BudgetItem::find(request()->budgetItem) :
+            $budget->budgetItems()
+            ->where('user_id', Auth::user()->id)
+            ->with('budgetItemAddresses.from', 'budgetItemAddresses.back')
+            ->first()
         ) ?? new BudgetItem();
 
         if (!$budgetItem->exists) $budgetItem->user_id = Auth::user()->id;
