@@ -50,12 +50,17 @@ class BudgetPartial extends Component
         $budget->fill($validated);
         $budget->save();
 
-        if (!$exists) { // create companion
-            $budget->companions()->createMany(
-                collect($validated['companions'])->map(fn($companion) => ['user_id' => $companion])
-            );
-        }
+        // update companions
+        $currentCompanions = $exists ? $budget->companions()->pluck('user_id') : collect([]);
+        $newCompanions     = collect($validated['companions']);
 
+        $companionsToAdd   = $newCompanions->diff($currentCompanions);
+        $companionsToRemove = $currentCompanions->diff($newCompanions);
+
+        $budget->companions()->whereIn('user_id', $companionsToRemove)->delete();
+        $budget->companions()->createMany($companionsToAdd->map(fn($companion) => ['user_id' => $companion])->all());
+
+        // etc
         $this->dispatch("alert", trans('budgets.alert-budget-saved'));
     }
 
