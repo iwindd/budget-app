@@ -25,7 +25,7 @@ class Budget extends Model
         'office_id'
     ];
 
-    public static function Addresses() {
+    public static function getAddressList() {
         return collect([
             ['id' => 1, 'label' => 'บ้านพัก'],
             ['id' => 2, 'label' => 'สำนักงาน'],
@@ -187,8 +187,12 @@ class Budget extends Model
         return $this->belongsTo(Office::class);
     }
 
-    public function budgetItems()
+    public function companions() {
+        return $this->hasMany(BudgetCompanion::class);
+    }
+
+/*     public function budgetItems()
     {
         return $this->hasMany(BudgetItem::class);
-    }
+    } */
 }

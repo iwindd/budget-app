@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('budget_item_expenses', function (Blueprint $table) {
+        Schema::create('budget_expenses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('budget_item_id')->constrained('budget_items')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('budget_id')->constrained('budgets')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('expense_id')->constrained('expenses')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('days')->nullable();
             $table->integer('total');
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('budget_item_expenses');
+        Schema::dropIfExists('budget_expenses');
     }
 };

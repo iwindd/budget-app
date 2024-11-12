@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
             $table->string('serial')->unique();
-            $table->date('date');
+            $table->date('finish_at'); // วันที่เสร็จใบเบิก
             $table->integer('value');
+            $table->string('order');
+            $table->date('date');
+            $table->string('header'); // ที่ไหน
+            $table->string('subject'); // เรื่องอะไร
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('invitation_id')->constrained('invitations')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('office_id')->constrained('offices')->onDelete('cascade')->onUpdate('cascade');
