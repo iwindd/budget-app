@@ -45,6 +45,8 @@ class BudgetPartial extends Component
         $validated['invitation_id'] = $budget->invitation ? $budget->invitation->id : Invitation::getInvitation('id')->id;
         $validated['office_id'] = $budget->office ? $budget->office->id : Office::getOffice('id')->id;
         $validated['addresses'] = json_encode([]);
+
+        // save budget
         $budget->fill($validated);
         $budget->save();
 
