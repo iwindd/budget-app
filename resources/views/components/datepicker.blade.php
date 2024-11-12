@@ -48,11 +48,14 @@
             altInput: true
         });
 
-        $watch('value', (newValue) => {
+        const validate = (newValue) => {
             if (!moment(calender.selectedDates).isSame(moment(newValue))){
                 calender.setDate(newValue);
             }
-        });
+        }
+
+        $watch('value', validate);
+        validate(value);
     "
     >
     @if ($label)
