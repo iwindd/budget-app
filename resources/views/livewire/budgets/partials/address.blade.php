@@ -113,6 +113,12 @@
 
                 $wire.onAddAddress();
             },
+            removeEdit(){
+                if (this.editing == null) return;
+
+                this.addressesRaw = this.addressesRaw.filter((_, i) => i != this.editing);
+                this.cancelEdit();
+            },
             get newItems() {
                 if (this.dates.length <= 0) return [];
                 const payload = [];
@@ -542,12 +548,21 @@
                     <x-button type="submit" name="submit"
                         class="w-full justify-center truncate">{{ __('address.add-btn') }}</x-button>
                 </div>
-                <div class="col-span-4">
+                <div class="col-span-4 lg:col-span-1 lg:order-last grid grid-cols-2 gap-1">
                     <template x-if="editing != null">
-                        <span
-                            class="text-xs text-danger">หากต้องการแก้ไขข้อมูลการเดินทางบางวันให้ลบวันที่ต้องการแก้ไขและเพิ่มใหม่อีกครั้ง!</span>
+                        <x-button x-on:click="removeEdit()" type="button" name="button" variant="danger" class="w-full justify-center truncate">{{ __('address.remove-btn') }}</x-button>
+                    </template>
+                    <template x-if="editing != null">
+                        <x-button x-on:click="cancelEdit()" type="button" name="button" variant="secondary" class="w-full justify-center truncate">{{ __('address.cancel-btn') }}</x-button>
                     </template>
                 </div>
+                <div class="col-span-4 lg:col-span-6">
+                    <template x-if="editing != null">
+                        <span class="text-xs text-danger">หากต้องการแก้ไขข้อมูลการเดินทางบางวันให้ลบวันที่ต้องการแก้ไขและเพิ่มใหม่อีกครั้ง!</span>
+                    </template>
+                </div>
+
+
             </form>
             <section>
                 <section class="relative overflow-x-auto border-none mt-2">

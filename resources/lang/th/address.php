@@ -36,6 +36,8 @@ return [
     'table-action' => "เครื่องมือ",
     'table-addresses-not-found' => "ไม่พบการเดินทาง",
     'add-btn' => "บันทึกการเดินทาง",
+    'remove-btn' => "ลบ",
+    'cancel-btn' => "ยกเลิก",
     'address-budget-item-not-found' => "*จำเป็นต้องบันทึกรายละเอียดใบเบิกก่อนเพิ่มรายละเอียดก่อนเดินทาง",
 
     'validation-overlap' => "มีรายการการเดินทางที่ทับซ้อนกัน!"
