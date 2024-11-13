@@ -1,5 +1,5 @@
 <section
-    class="grid grid-cols-2 gap-2"
+    class="grid grid-cols-2 gap-1"
     x-data="{
         budget_date: @entangle('budgetForm.date')
     }"
@@ -16,13 +16,13 @@
     <section class="space-y-2">
         <x-textfield lang="budgets.input-budget-owner-name" wire:model="budgetForm.name" disabled />
     </section>
-    <section class="grid grid-cols-2 gap-2">
+    <section class="grid grid-cols-2 gap-1">
         {{-- BUDGET_ITEM_OWNER_POSITION --}}
         <x-textfield lang="budgets.input-budget-owner-position" wire:model="budgetForm.position" disabled />
         {{-- BUDGET_ITEM_OWNER_AFFILIATION --}}
         <x-textfield lang="budgets.input-budget-owner-affiliation" wire:model="budgetForm.affiliation" disabled />
     </section>
-    <section class="grid grid-cols-2 gap-2">
+    <section class="grid grid-cols-2 gap-1">
         {{-- HEADER --}}
         <x-textfield lang="budgets.input-header" :startIcon="@svg('heroicon-o-map-pin')" wire:model="budgetForm.header" />
         {{-- SUBJECT --}}
