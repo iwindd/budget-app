@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BudgetItemExpense extends Model
+class BudgetExpense extends Model
 {
     use HasFactory;
     public $timestamps = false;
@@ -21,9 +21,9 @@ class BudgetItemExpense extends Model
         'total',
     ];
 
-    public function budgetItem()
+    public function budget()
     {
-        return $this->belongsTo(BudgetItem::class);
+        return $this->belongsTo(Budget::class);
     }
 
     public function expense() {

@@ -28,6 +28,9 @@ return [
     'table-updated_at' => "อัพเดทล่าสุด",
     'table-action' => "เครื่องมือ",
     'table-action-text' => "จัดการ",
+    'input-days-placeholder' => 'จำนวน (วัน)',
+    'input-total-placeholder' => 'จำนวนเงิน (บาท)',
+    'selectize-placeholder' => 'ระบุค่าใช้จ่าย',
     /* ALERT */
     'alert-remove' => "[expenses.message]success<5000>:ลบค่าใช้จ่าย ':label' สำเร็จแล้ว!",
     'alert-merge' => "[expenses.message]success<5000>:เปลี่ยนสถานะรวบรวมของค่าใช้จ่าย ':label' แล้ว!",

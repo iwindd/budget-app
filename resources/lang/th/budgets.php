@@ -34,11 +34,6 @@ return [
     'none-expense-create-message' => "กรุณาเพิ่มรายการค่าใช้จ่ายให้ครบถ้วน!",
     /* EXPENSE */
     'expense-header' => "รายการค่าใช้จ่าย",
-    'input-expense' => "ประเภทค่าใช้จ่าย",
-    'input-expense-placeholder' => "หากมีข้อมูลที่เลือกอยู่แล้วจะเป็นการแทนที่ข้อมูลเก่า",
-    'input-total' => "รวม/ต่อวัน",
-    'input-days' => "จำนวนวัน",
-    'input-days-placeholder' => "หากไม่ป้อนจะเป็นประเภทรวม",
     'table-expense-name' => "ชื่อรายการ",
     'table-expense-days' => "วัน",
     'table-value-expense-days' => ":day วัน",

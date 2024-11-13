@@ -29,6 +29,7 @@
 
     if ($lang){
         $label = $label ?? __($lang);
+        if ($label == $lang) $label = '';
         $langPlaceholder = "$lang-placeholder";
         $placeholder = $placeholder ?? __($langPlaceholder);
         if ($placeholder == $langPlaceholder) $placeholder = null;

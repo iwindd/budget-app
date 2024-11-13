@@ -191,6 +191,10 @@ class Budget extends Model
         return $this->hasMany(BudgetAddress::class);
     }
 
+    public function expenses() {
+        return $this->hasMany(BudgetExpense::class);
+    }
+
 /*     public function budgetItems()
     {
         return $this->hasMany(BudgetItem::class);

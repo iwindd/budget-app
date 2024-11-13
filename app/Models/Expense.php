@@ -19,16 +19,27 @@ class Expense extends Model
         'user_id',
         'label',
         'merge',
-        'default'
+        'default',
+        'static',
+        'split'
     ];
 
     protected $casts = [
         'default' => 'boolean',
-        'merge' => 'boolean'
+        'merge' => 'boolean',
+        'static' => 'boolean',
+        'split' => 'boolean',
     ];
 
     public static function deactivated() {
         return self::where('default', true)->update(['default' => false]);
+    }
+
+    public static function getStaticExpenses() {
+        return self::where([
+            ['static', true],
+            ['default', false]
+        ])->orderBy('default', 'asc')->get();
     }
 
     /**
