@@ -64,11 +64,6 @@
                     </div>
                 </div>
             </template>
-            <template x-if="expense.default">
-                <form wire:submit="onAddExpense" class="col-span-3 gap-1 grid grid-cols-4">
-
-                </form>
-            </template>
         </div>
     </template>
 
