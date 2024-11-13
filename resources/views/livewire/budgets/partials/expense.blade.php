@@ -13,9 +13,6 @@
         $errors->get('expenses.*', []),
     );
     @endphp
-    <header>
-        <h3 class="font-bold">{{ __('budgets.expense-header') }}</h3>
-    </header>
     <form wire:submit="onAddExpense" class="grid grid-cols-5 gap-1 mb-2 border-b pb-2">
         <x-textfield value="เพิ่มค่าใช้จ่ายอื่นๆ" disabled class="pl-3" />
         <x-selectize lang="expenses.selectize" :fetch="route('expenses.selectize')" wire:model="budgetExpenseForm.expense" :root="['class' => 'space-y-1 col-span-2']" create :parseInt="true"/>

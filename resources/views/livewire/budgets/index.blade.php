@@ -11,6 +11,7 @@
                 @include('livewire.budgets.partials.budget-item')
             </form>
 
+            <h3 class="font-bold">{{ __('budgets.expense-header') }}</h3>
             @include('livewire.budgets.partials.expense')
 
             <h3 class="font-bold">{{ __('address.header') }}</h3>
