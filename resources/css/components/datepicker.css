@@ -866,7 +866,7 @@ span.flatpickr-weekday {
     content: " ";
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
-    @apply absolute w-1 h-1 rounded-full block bg-black opacity-30
+    @apply absolute w-1 h-1 rounded-full block bg-black opacity-15
 }
 
 .datepicker-address .flatpickr-day.selected:not(.inRange):not(.startRange):not(.endRange) .events .event.event-pointer::after,
@@ -880,7 +880,7 @@ span.flatpickr-weekday {
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
     content: " ";
-    @apply absolute w-1 h-1 rounded-full block bg-black opacity-30
+    @apply absolute w-1 h-1 rounded-full block bg-black opacity-15
 }
 
 .event.event-decoration {

@@ -251,7 +251,7 @@
             const shouldDisable = (targetDate, useEvents, noDisablePointEvent = true) => {
                 const events = [];
                 targetDate = moment(new Date(targetDate));
-                const dayEvents = addresses.filter(a => targetDate.isBetween(a.fromDate, a.backDate, 'day', '[]') && a.index != editing)
+                const dayEvents = addresses.filter(a => targetDate.isBetween(a.fromDate, a.backDate, 'day', '[]'))
 
                 let inRange = false;
                 let pointEvent = false;
@@ -276,7 +276,7 @@
                             if (isPointEvent) pointEvent = isPointEvent;
 
                             if (targetDate.isBetween(event.fromDate, event.backDate, null, '()') && !isPointEvent) {
-                                inRange = true;
+                                inRange = event;
                                 minuteLeft = 0;
                             } else {
                                 const backDate = event.backDate.clone();
@@ -297,9 +297,10 @@
                 }
 
                 const noMoreSpace = minuteLeft - 1 <= 0;
-                const result = noDisablePointEvent ? noMoreSpace : pointEvent ? false : noMoreSpace;
+                const isEditing = inRange && inRange.index == editing
+                const result = isEditing ? false : (noDisablePointEvent ? noMoreSpace : pointEvent ? false : noMoreSpace);
 
-                if (inRange) events.push(['event event-warning event-decoration w-full']);
+                if (inRange) events.push([`event ${isEditing ? 'event-warning': 'event-primary'} event-decoration w-full`]);
                 if (useEvents) return [result, events];
                 return result;
             }
@@ -351,11 +352,12 @@
                 let disabledHover = false;
 
                 const [isDisabled, hasEvents] = shouldDisable(targetDate, true, false)
+                hasEvents.map(event => events.push(event))
                 if (isDisabled) {
-                    hasEvents.map(event => events.push(event))
                     disabledHover = true;
                 } else {
-                    addresses.filter(a => a.index != editing).map(address => {
+                    addresses.map(address => {
+                        const isEditing = address.index == editing;
                         const buffers = !address.multiple ? [address] :
                             getDatesBetween(address.fromDate, address.backDate).map(date => ({
                                 ...address,
@@ -380,14 +382,14 @@
                             if (isOneDay) {
                                 const percentageStart = timeToPercentage(fromDate)
                                 const percentageEnd = timeToPercentage(backDate)
-                                events.push([`event event-warning event-darker-both`, `
+                                events.push([`event ${isEditing ? 'event-warning' : 'event-primary'} event-darker-both`, `
                                                         left: ${percentageStart}%;
                                                         width: ${percentageEnd-percentageStart}%;
                                                     `])
                             } else {
                                 if (isStartDate) {
                                     const percentage = timeToPercentage(fromDate)
-                                    events.push([`event event-warning event-darker-start`, `
+                                    events.push([`event ${isEditing ? 'event-warning' : 'event-primary'} event-darker-start`, `
                                                             left: ${percentage.toFixed(0)}%;
                                                             width: ${100-percentage.toFixed(0)}%;
                                                         `]);
@@ -395,7 +397,7 @@
 
                                 if (isEndDate) {
                                     const percentage = timeToPercentage(backDate)
-                                    events.push([`event event-warning event-darker-end`, `
+                                    events.push([`event ${isEditing ? 'event-warning' : 'event-primary'} event-darker-end`, `
                                                             width: ${percentage}%;
                                                         `]);
                                 }
@@ -415,7 +417,7 @@
                                                 }).join('') // join the array to convert it into a single string
                                             }
 
-                                            <span class='event event-primary event-pointer '></span>
+                                            <span class='event event-success event-pointer '></span>
                                         </div>
                                     `;
             }
