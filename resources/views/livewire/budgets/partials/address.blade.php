@@ -13,7 +13,6 @@
             {{--  --}}
             addressesRaw: @entangle('addresses'),
             addressesSelectize: @entangle('addressSelectize'),
-            blacklist: [], // include stacks
             editing: null,
             calender: null,
             locales: {
@@ -45,7 +44,7 @@
                 end = moment(end);
 
                 return this.addresses.filter((a) =>
-                    a.fromDate.isBetween(start, end, null, '[]') || a.backDate.isBetween(start, end, null, '[]')
+                    (a.fromDate.isBetween(start, end, null, '[]') || a.backDate.isBetween(start, end, null, '[]')) && a.index != this.editing
                 )
             },
             getDatesBetween(startDate, endDate) {
@@ -80,42 +79,38 @@
                 return result.map(group => group.map(date => date.format('Y-M-D')));
             },
             cancelEdit() {
-                this.blacklist = this.blacklist.filter(a => a.id != this.editing.id);
                 this.editing = null;
-                this.editId = 0;
                 this.calender.setDate([], true);
             },
-            edit(id) {
-                if (!this.calender) return;
-                if (/mockup:/.test(id)) return this.cancelEdit();
-                const address = this.list.find(a => a.id == id);
-                if (address.isNew) return;
-                if (this.editing && this.editing.id == id) return this.cancelEdit();
+            edit(index) {
+                const address = this.addresses[index];
                 if (this.editing) this.cancelEdit();
+                if (!this.calender) return;
                 if (!address) return;
+                if (this.editing == index) return this.cancelEdit();
 
-                this.from_location_id = address.from_location_id;
-                this.back_location_id = address.back_location_id;
+                this.from_location_id = address.from_id;
+                this.back_location_id = address.back_id;
+                this.from_time = address.fromDate.format('HH:mm');
+                this.back_time = address.backDate.format('HH:mm');
                 this.plate = address.plate;
                 this.distance = address.distance;
-                this.editId = address.id
+                this.editing = index;
 
-                if (address.multiple) {
-                    this.blacklist.push(address);
-                    this.editing = address;
-                    this.calender.set('mode', 'multiple')
+                if (address.multiple){
                     this.calender.setDate(this.getDatesBetween(address.fromDate, address.backDate), true);
-                } else {
-                    this.blacklist.push(address);
-                    this.editing = address;
-
-                    this.calender.set('mode', 'range')
-                    this.calender.setDate([address.fromDate.format('Y-M-D'), address.backDate.format('Y-M-D')], true)
+                }else{
+                    this.calender.setDate([address.fromDate.format('Y-M-D'), address.backDate.format('Y-M-D')], true);
                 }
 
+                this.calender.set('mode', address.multiple ? 'multiple' : 'range');
                 this.checkbox = address.multiple;
             },
             submit() {
+                if (this.editing != null)
+                    this.addressesRaw = this.addressesRaw.filter((_, i) => i != this.editing);
+                    // remove old item before add
+
                 $wire.onAddAddress();
             },
             get newItems() {
@@ -124,8 +119,9 @@
                 const from_date = `${this.dates[0]} ${this.from_time}`;
                 const back_date = `${this.dates[this.dates.length - 1]} ${this.back_time}`;
 
+                const _editItem = (this.editing != null ? (this.addresses[this.editing] || {}) : {});
                 const inputData = {
-                    ...(this.editing || {}),
+                    ..._editItem,
                     multiple: this.checkbox,
                     plate: this.plate,
                     distance: this.distance,
@@ -133,7 +129,8 @@
                     back_id: this.back_location_id,
                     from_date: from_date,
                     back_date: back_date,
-                    isNew: !this.editing,
+                    isNew: this.editing == null,
+                    index: -1
                 };
 
                 if (inputData.multiple) {
@@ -201,36 +198,35 @@
                     return text;
                 }
 
-                const data = [...this.addresses, ...this.newItems];
+                const data = [...this.addresses.filter(a => a.index != this.editing), ...this.newItems];
 
-                return data.sort(this.sort).map((address) => ({
+                return data.sort(this.sort).map((address, index) => ({
                     ...address,
                     date: formatAddressDate(address),
                     timeDiff: formatAddressTimeDiff(address),
                     distanceResult: 0,
                     from: this.addressesSelectize.find(a => a.id == address.from_id)?.label,
-                    back: this.addressesSelectize.find(a => a.id == address.back_id)?.label
-                }))
+                    back: this.addressesSelectize.find(a => a.id == address.back_id)?.label,
+                    index: address.index
+                }));
             },
             get addresses() {
-                const payload = this.addressesRaw.map(address => ({
+                const payload = this.addressesRaw.map((address, index) => ({
                     ...address,
+                    index: index,
                     fromDate: moment(address.from_date),
                     backDate: moment(address.back_date)
                 }))
 
                 payload.sort(this.sort);
-
-                return payload
-                    .filter(a => !this.blacklist.find(b => b.id == a.id || (b.stack && b.stack.find(b2 => b2.id == a.id))))
-                    .map(a => ({
-                        ...a,
-                        minutes: a.multiple ?
-                            (a.backDate.diff(a.backDate.clone().set({
-                                hour: a.fromDate.hour(),
-                                minute: a.fromDate.minute()
-                            }), 'minutes') * (a.backDate.diff(a.fromDate, 'days') + 1)) : (a.backDate.diff(a.fromDate, 'minutes'))
-                    }))
+                return payload.map((a, index) => ({
+                    ...a,
+                    minutes: a.multiple ?
+                        (a.backDate.diff(a.backDate.clone().set({
+                            hour: a.fromDate.hour(),
+                            minute: a.fromDate.minute()
+                        }), 'minutes') * (a.backDate.diff(a.fromDate, 'days') + 1)) : (a.backDate.diff(a.fromDate, 'minutes'))
+                }))
             },
             get errors() {
                 if (this.dates.length <= 0) return [];
@@ -255,9 +251,7 @@
             const shouldDisable = (targetDate, useEvents, noDisablePointEvent = true) => {
                 const events = [];
                 targetDate = moment(new Date(targetDate));
-                const dayEvents = addresses.filter(a => {
-                    return targetDate.isBetween(a.fromDate, a.backDate, 'day', '[]')
-                })
+                const dayEvents = addresses.filter(a => targetDate.isBetween(a.fromDate, a.backDate, 'day', '[]') && a.index != editing)
 
                 let inRange = false;
                 let pointEvent = false;
@@ -361,7 +355,7 @@
                     hasEvents.map(event => events.push(event))
                     disabledHover = true;
                 } else {
-                    addresses.map(address => {
+                    addresses.filter(a => a.index != editing).map(address => {
                         const buffers = !address.multiple ? [address] :
                             getDatesBetween(address.fromDate, address.backDate).map(date => ({
                                 ...address,
@@ -450,7 +444,10 @@
                 const hasDifference = selectedDates.length !== newDates.length ||
                     selectedDates.some((date, index) => date !== newDates[index]);
 
-                if (hasDifference) calender.setDate(dates, false);
+                if (hasDifference) {
+                    cancelEdit();
+                    calender.setDate(dates, false);
+                }
             });
             $watch('addressesRaw', updatePointer);
             $watch('from_time', updatePointer);
@@ -526,7 +523,7 @@
             @php
                 $root = ['class' => 'col-span-2 lg:col-span-1'];
             @endphp
-            <form wire:submit="onAddAddress" class="grid grid-cols-4 lg:grid-cols-7 gap-1 pb-1 mb-2 border-b">
+            <form x-on:submit.prevent="submit" class="grid grid-cols-4 lg:grid-cols-7 gap-1 pb-1 mb-2 border-b">
                 <x-selectize :root="$root" :options="$addressSelectize" lang='address.input-from'
                     wire:model="budgetAddressForm.from_id" />
                 <x-budgets.timepicker :root="$root" lang="address.input-from-datetime"
@@ -544,7 +541,7 @@
                         class="w-full justify-center truncate">{{ __('address.add-btn') }}</x-button>
                 </div>
                 <div class="col-span-4">
-                    <template x-if="editing && editing.stack">
+                    <template x-if="editing != null">
                         <span
                             class="text-xs text-danger">หากต้องการแก้ไขข้อมูลการเดินทางบางวันให้ลบวันที่ต้องการแก้ไขและเพิ่มใหม่อีกครั้ง!</span>
                     </template>
@@ -564,13 +561,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <template x-for="(address, index) in list">
+                            <template x-for="address in list">
                                 <tr :class="{
-                                    '!bg-warning-100': editing && editing.id == address.idw,
-                                    '!bg-success-100': address.isNew && !editing,
-                                    'hover:bg-primary-50': !editing,
+                                    '!bg-warning-100': address && address.index == -1 && !address.isNew,
+                                    '!bg-success-100': address && address.index == -1 && address.isNew,
+                                    'hover:bg-primary-50': address && !address.isNew,
                                 }"
-                                    class="transition cursor-pointer" x-on:click="edit(address.id)">
+                                    class="transition cursor-pointer" x-on:click="edit(address.index)">
                                     <td class="px-6 py-2" x-html="address.plate"></td>
                                     <td class="px-6 py-2 text-end" x-text="address.from" class="text-l"></td>
                                     <td class="px-6 py-2 flex justify-center items-center">
