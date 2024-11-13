@@ -42,7 +42,7 @@ document.addEventListener('alpine:init', () => {
         }
         return {
             init,
-            isDarkMode: getTheme(),
+            isDarkMode: false,
             toggleTheme() {
                 this.isDarkMode = !this.isDarkMode
                 setTheme(this.isDarkMode)
