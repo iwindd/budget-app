@@ -1,17 +1,18 @@
 <?php
 
 return [
-    'address-header' => "รายละเอียดการเดินทาง",
+    'header' => "รายละเอียดการเดินทาง",
     'input-range' => "วันที่ไปกลับการเดินทาง",
-    'input-from' => "ออกเดินทางจาก",
+    'input-from' => "โดยออกเดินทางจาก",
     'input-from-placeholder' => "เลือกสถานที่...",
-    'input-from-datetime' => "ออกเดินทางเวลา",
+    'input-from-datetime' => "เวลา",
     'input-from-datetime-placeholder' => "เลือกเวลา...",
-    'input-back' => "กลับถึง",
+    'input-back' => "และกลับถึง",
     'input-back-placeholder' => "เลือกสถานที่...",
-    'input-back-datetime' => "กลับถึงเวลา",
+    'input-back-datetime' => "เวลา",
     'input-back-datetime-placeholder' => "เลือกเวลา...",
     'input-plate' => 'ทะเบียนรถ',
+    'input-plate-placeholder' => "ที่ใช้ในการเดินทาง",
     'input-distance' => 'ระยะทาง (กม.)',
     'input-distance-placeholder' => 'รวมระยะทาง',
     'input-round' => 'จำนวนเที่ยว (ต่อวัน)',

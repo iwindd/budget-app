@@ -5,7 +5,7 @@ namespace App\Livewire\Forms;
 use Carbon\Carbon;
 use Livewire\Form;
 
-class BudgetItemAddressForm extends Form
+class BudgetAddressForm extends Form
 {
     public $from_id, $back_id;
     public $from_date, $back_date;

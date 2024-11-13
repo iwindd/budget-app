@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Budgets;
 
-use App\Livewire\Forms\BudgetCompanionForm;
+use App\Livewire\Forms\BudgetAddressForm;
 use App\Livewire\Forms\BudgetForm;
 use App\Models\Budget;
+use App\Models\BudgetAddress;
 use App\Models\BudgetItem;
 use App\Models\BudgetItemExpense;
 use App\Models\Invitation;
@@ -17,20 +18,36 @@ use Livewire\Component;
 class BudgetPartial extends Component
 {
     public BudgetForm $budgetForm;
+    public BudgetAddressForm $budgetAddressForm;
     public $hasPermissionToManage = true;
     public $addressSelectize = [];
 
     public $companions = [];
+    public $addresses  = [];
 
     public function mount(Request $request)
     {
-        $this->budgetForm->setBudget($request->budget);
+        $this->addressSelectize = BudgetAddress::list()->toArray();
+
+        $budget = $this->budgetForm->setBudget($request->budget);
+        if ($budget->exists) {
+            $this->addresses = $budget->addresses()->get(['from_id', 'from_date', 'back_id', 'back_date', 'multiple', 'plate', 'distance'])->toArray();
+            $this->companions = $budget->companions()->pluck('user_id');
+        }
     }
 
     public function rules() {
         return [
             'companions' => ['array'],
             'companions.*' => ['integer'],
+            'addresses' => ['array'],
+            'addresses.*.from_id' => ['required', 'integer'],
+            'addresses.*.back_id' => ['required', 'integer'],
+            'addresses.*.from_date' => ['required', 'date', 'date_format:Y-m-d H:i'],
+            'addresses.*.back_date' => ['required', 'date', 'date_format:Y-m-d H:i', 'after_or_equal:addresses.*.from_date'],
+            'addresses.*.multiple' => ['required', 'boolean'],
+            'addresses.*.plate' => ['required', 'string'],
+            'addresses.*.distance' => ['required', 'integer']
         ];
     }
 
@@ -44,7 +61,6 @@ class BudgetPartial extends Component
         $validated['user_id'] = $exists ? $budget->user_id : Auth::user()->id;
         $validated['invitation_id'] = $budget->invitation ? $budget->invitation->id : Invitation::getInvitation('id')->id;
         $validated['office_id'] = $budget->office ? $budget->office->id : Office::getOffice('id')->id;
-        $validated['addresses'] = json_encode([]);
 
         // save budget
         $budget->fill($validated);
@@ -59,6 +75,10 @@ class BudgetPartial extends Component
 
         $budget->companions()->whereIn('user_id', $companionsToRemove)->delete();
         $budget->companions()->createMany($companionsToAdd->map(fn($companion) => ['user_id' => $companion])->all());
+
+        // update addresses
+        $budget->addresses()->delete();
+        $budget->addresses()->createMany($validated['addresses']);
 
         // etc
         $this->dispatch("alert", trans('budgets.alert-budget-saved'));
@@ -117,8 +137,8 @@ class BudgetPartial extends Component
     }
 
     public function onAddAddress() {
-        $validated = $this->budgetItemAddressForm->submit();
-        $payload   = Budget::ExtractAddresses($this->budgetForm->addresses);
+        $validated = $this->budgetAddressForm->submit();
+        $payload   = Budget::ExtractAddresses($this->addresses);
 
         if ($validated['multiple']){
             $stackDates = $this->splitDates($validated['dates']);
@@ -150,8 +170,8 @@ class BudgetPartial extends Component
             ] + $validated);
         }
 
-        $this->budgetItemAddressForm->clear();
-        $this->budgetForm->addresses = Budget::MinimizeAddresses($payload)->toArray();
+        $this->budgetAddressForm->clear();
+        $this->addresses = Budget::MinimizeAddresses($payload)->toArray();
     }
 
     /* COMPANION */

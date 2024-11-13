@@ -24,19 +24,10 @@ class Budget extends Model
         'date',
         'header',
         'subject',
-        'addresses',
         'user_id',
         'invitation_id',
         'office_id'
     ];
-
-    public static function getAddressList() {
-        return collect([
-            ['id' => 1, 'label' => 'บ้านพัก'],
-            ['id' => 2, 'label' => 'สำนักงาน'],
-            ['id' => 3, 'label' => 'ประเทศไทย']
-        ]);
-    }
 
     private static function getDatesBetween($fromDate, $toDate)
     {
@@ -194,6 +185,10 @@ class Budget extends Model
 
     public function companions() {
         return $this->hasMany(BudgetCompanion::class);
+    }
+
+    public function addresses() {
+        return $this->hasMany(BudgetAddress::class);
     }
 
 /*     public function budgetItems()

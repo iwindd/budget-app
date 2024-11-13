@@ -18,7 +18,7 @@ class BudgetForm extends Form
         $date,
         $header,
         $subject,
-        $addresses,
+        $addresses = [],
         $name,
         $position,
         $affiliation;
@@ -37,7 +37,7 @@ class BudgetForm extends Form
         return $budget;
     }
 
-    public function setBudget(string $serial)
+    public function setBudget(string $serial) : Budget
     {
         $budget = Budget::where('serial', $serial)->first() ?? new Budget();
         $this->budget     = $budget;
@@ -49,7 +49,7 @@ class BudgetForm extends Form
         $this->date = $budget->date;
         $this->header = $budget->header;
         $this->subject = $budget->subject;
-        $this->addresses = $budget->addresses;
+        $this->addresses = $budget->exists ? json_decode($budget->addresses) : [];
         $this->invitation = $budget->exists ? $budget->invitation->label : Invitation::getInvitation('label')->label;
         $this->office     = $budget->exists ? $budget->office->label : Office::getOffice('label')->label;
         $user       = $budget->exists ? $budget->user : Auth::user();
@@ -57,6 +57,8 @@ class BudgetForm extends Form
         $this->name        = $user->name;
         $this->position    = $user->position->label;
         $this->affiliation = $user->affiliation->label;
+
+        return $budget;
     }
 
     public function save(): Budget
@@ -88,18 +90,5 @@ class BudgetForm extends Form
             'header' => ['required', 'string'],
             'subject' => ['required', 'string'],
         ];
- /*        return [
-            'serial' => ['required'],
-            'date' => ['required'],
-            'value' => ['required', 'integer'],
-            'addresses' => ['array'],
-            'addresses.*.from_id' => ['required', 'integer'],
-            'addresses.*.back_id' => ['required', 'integer'],
-            'addresses.*.from_date' => ['required'],
-            'addresses.*.back_date' => ['required'],
-            'addresses.*.multiple' => ['boolean'],
-            'addresses.*.plate' => ['string', 'string'],
-            'addresses.*.distance' => ['required', 'integer']
-        ]; */
     }
 }
