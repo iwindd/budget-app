@@ -524,9 +524,9 @@
         </section>
         <section class="flex-grow col-span-4">
             @php
-                $root = ['class' => 'lg:col-span-1 md:col-span-2 col-span-4'];
+                $root = ['class' => 'col-span-2 lg:col-span-1'];
             @endphp
-            <form wire:submit="onAddAddress" class="grid grid-cols-7 gap-1">
+            <form wire:submit="onAddAddress" class="grid grid-cols-4 lg:grid-cols-7 gap-1 pb-1 mb-2 border-b">
                 <x-selectize :root="$root" :options="$addressSelectize" lang='address.input-from'
                     wire:model="budgetAddressForm.from_id" />
                 <x-budgets.timepicker :root="$root" lang="address.input-from-datetime"
@@ -538,7 +538,7 @@
                 <x-textfield :root="$root" lang="address.input-plate" wire:model="budgetAddressForm.plate" />
                 <x-textfield :root="$root" lang="address.input-distance"
                     wire:model="budgetAddressForm.distance" />
-                <div>
+                <div class="col-span-4 lg:col-span-1">
                     <x-form.label for="submit" :value="__('address.table-action')" />
                     <x-button type="submit" name="submit"
                         class="w-full justify-center truncate">{{ __('address.add-btn') }}</x-button>

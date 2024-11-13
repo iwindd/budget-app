@@ -14,10 +14,22 @@
     );
     @endphp
     <form wire:submit="onAddExpense" class="grid grid-cols-5 gap-1 mb-2 border-b pb-2">
-        <x-textfield value="เพิ่มค่าใช้จ่ายอื่นๆ" disabled class="pl-3" />
-        <x-selectize lang="expenses.selectize" :fetch="route('expenses.selectize')" wire:model="budgetExpenseForm.expense" :root="['class' => 'space-y-1 col-span-2']" create :parseInt="true"/>
-        <x-textfield lang="expenses.input-total" wire:model="budgetExpenseForm.total" type="number" :root="['class' => 'space-y-1 lg:col-span-1 md:col-span-5 col-span-4']" />
-        <div>
+        <x-textfield value="เพิ่มค่าใช้จ่ายอื่นๆ" disabled class="lg:pl-3 pl-0" :root="['class'=>'col-span-2 lg:col-span-1']" />
+        <x-selectize
+            lang="expenses.selectize"
+            :fetch="route('expenses.selectize')"
+            wire:model="budgetExpenseForm.expense"
+            :root="['class' => 'space-y-1 col-span-3 lg:col-span-2']"
+            create
+            :parseInt="true"
+        />
+        <x-textfield
+            lang="expenses.input-total"
+            wire:model="budgetExpenseForm.total"
+            type="number"
+            :root="['class' => 'space-y-1 col-span-3 lg:col-span-1']"
+        />
+        <div class="col-span-2 lg:col-span-1">
             <x-button type="submit" name="submit" class="w-full justify-center truncate">{{ __('budgets.add-expense-btn') }}</x-button>
         </div>
     </form>
@@ -27,7 +39,7 @@
             <div :class="{
                 'col-span-2': !expense.split,
             }">
-                <x-textfield x-bind:value="expense.label" disabled class="pl-3" />
+                <x-textfield x-bind:value="expense.label" disabled class="lg:pl-3 pl-0" />
             </div>
             <template x-if="expense.split">
                 <x-textfield lang="expenses.input-days" x-model="expenses[index].days" type="number" />
