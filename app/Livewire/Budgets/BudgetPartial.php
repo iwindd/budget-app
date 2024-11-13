@@ -216,4 +216,10 @@ class BudgetPartial extends Component
 
         $this->expenses = $payload->toArray();
     }
+
+    public function onRemoveExpense($id) {
+        $this->expenses = collect($this->expenses)
+            ->filter(fn($e) => $e['id'] != $id)
+            ->toArray();
+    }
 }

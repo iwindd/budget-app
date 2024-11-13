@@ -2,9 +2,9 @@
     class="max-w-full"
     x-data="{
         expenses: @entangle('expenses'),
-    }"
-    x-init="{
-
+        removeExpense(id){
+            $wire.onRemoveExpense(id);
+        }
     }"
 >
     @php
@@ -56,7 +56,7 @@
                         }).format(expenses[index].days * expenses[index].total)" disabled :root="['class'=>'flex-grow']" class="text-end" />
                         <template x-if="expense.merge">
                             <div>
-                                <x-button type="button" icon-only variant="danger" size="sm">
+                                <x-button x-on:click="removeExpense(expense.id)" type="button" icon-only variant="danger" size="sm">
                                     <x-heroicon-o-trash class="w-7 h-full" />
                                 </x-button>
                             </div>
