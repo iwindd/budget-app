@@ -17,7 +17,8 @@
     'defaultValue' => null,
     'create' => false,
     'multiple' => false,
-    'root' => []
+    'root' => [],
+    'selectOnClose' => false
 ])
 @php
     $model = $attributes->get('wire:model');
@@ -65,7 +66,7 @@
             tags: create,
             placeholder: @js($placeholder),
             multiple: @js($multiple),
-            selectOnClose: true,
+            selectOnClose: @js($selectOnClose),
             @if ($fetch)
                 ajax: {
                     url: @js($fetch),

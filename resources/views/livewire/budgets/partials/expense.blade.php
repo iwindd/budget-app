@@ -23,6 +23,7 @@
             create
             :parseInt="false"
             :parseCreate="true"
+            :selectOnClose="true"
         />
         <x-textfield
             lang="expenses.input-total"
