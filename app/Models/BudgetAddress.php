@@ -39,4 +39,14 @@ class BudgetAddress extends Model
     public function budget(){
         return $this->belongsTo(Budget::class);
     }
+
+    public function getFromDateAttribute($value)
+    {
+        return $value ? date('Y-n-j H:i', strtotime($value)) : null;
+    }
+
+    public function getBackDateAttribute($value)
+    {
+        return $value ? date('Y-n-j H:i', strtotime($value)) : null;
+    }
 }
