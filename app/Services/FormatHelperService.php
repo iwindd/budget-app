@@ -63,7 +63,7 @@ class FormatHelperService
         }else{
             return self::date(
                 $options['fMain'] ? $fromDate : $backDate
-            , "d $fM $fY $fT", $lang);
+            , "$fD $fM $fY $fT", $lang);
         }
 
     }
