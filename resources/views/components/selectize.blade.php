@@ -44,11 +44,9 @@
         defaultValue: @js($parseInt ? intval($defaultValue) : $defaultValue),
         value: @entangle($model),
         setValue(value) {
-            if (typeof(value) == 'object'){
-                this.value = value.map(v => +v);
-            }else{
-                this.value = (this.parseInt ? Number(value) : value);
-            }
+            if (this.parseInt) this.value = typeof(value) == 'object' ? value.map(v => +v) : +value;
+
+            this.value = value
         }
     }"
     x-init="() => {
