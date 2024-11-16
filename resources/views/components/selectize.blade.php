@@ -74,9 +74,9 @@
                     },
                 },
             @endif
-        })
-
-        selector.on('select2:select', e => setValue(selector.val()));
+        }).on('select2:select', e => {
+            setValue(selector.val())
+        });
 
         const updateOption = (raw) => {
             if (!multiple) {
