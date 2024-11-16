@@ -15,12 +15,16 @@ class BudgetExpenseForm extends Form
     private function create()
     {
         $validated = $this->validate(['expense' => ['required', 'string', 'max:255']]);
+        $existingExpense = Expense::where('id', $validated['expense'])->orWhere('label', $validated['expense'])->first();
+        if ($existingExpense) return $existingExpense;
 
-        return Expense::firstOrCreate(['label' => $validated['expense']],[
+        return Expense::create([
             'user_id' => Auth::user()->id,
             'label' => $validated['expense'],
             'merge' => true,
-            'default' => false
+            'static' => false,
+            'default' => false,
+            'split' => false
         ]);
     }
 
