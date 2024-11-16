@@ -85,6 +85,27 @@ class Budget extends Model
         });
     }
 
+    public static function getTotalHours(Budget $budget) {
+        $addresses = $budget->addresses;
+        $hours = 0;
+
+        $addresses->map(function($address) use (&$hours){
+            $from = Carbon::parse($address->from_date);
+            $back = Carbon::parse($address->back_date);
+
+            if ($address->multiple){
+                $days = $back->diffInDays($back);
+                $back = $from->clone()->setTimeFromTimeString($back->toTimeString());
+
+                $hours += ($back->diffInHours($from) * ($days <= 0 ? 1 : $days));
+            }else{
+                $hours += $back->diffInHours($from);
+            }
+        });
+
+        return $hours;
+    }
+
     /**
      * Get the user that created
      */

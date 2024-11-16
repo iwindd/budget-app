@@ -16,12 +16,6 @@ class ExportBudgetController extends Controller
 {
     public function document(Budget $budget)
     {
-/*         $budgetFromBack = BudgetItem::getFromBack($budgetItem);
-
-        $fromDate = Carbon::parse($budgetFromBack['from']);
-        $backDate = Carbon::parse($budgetFromBack['back']);
- */
-
         $pdf = Pdf::loadView('exports.document.index', [
             'serial' => $budget->serial,
             'date' => $budget->date,
@@ -40,8 +34,7 @@ class ExportBudgetController extends Controller
             'subject' => $budget->subject,
             'addresses' => $budget->addresses,
             'locations' => BudgetAddress::list(),
-            'days' => 1,
-            'hours' => 0,
+            'hours' => Budget::getTotalHours($budget),
             'expenses' => $budget->expenses()
                 ->whereHas('expense', function($query) {
                     $query->where('merge', false);

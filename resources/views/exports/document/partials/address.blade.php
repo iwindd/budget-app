@@ -29,9 +29,9 @@
     <table class="w-6">
         <tr>
             <td class="fit">{{ __('exports.document-days-total') }}</td>
-            <td class="under"><span>{{ $format->number($days) }}</span></td>
+            <td class="under"><span>{{ $format->number(floor($hours / 24)) }}</span></td>
             <td class="fit">{{ __('exports.document-days-day') }}</td>
-            <td class="under"><span>{{ $format->number($hours - $days * 24) }}</span></td>
+            <td class="under"><span>{{ $format->number($hours % 24) }}</span></td>
             <td class="fit">{{ __('exports.document-days-hour') }}</td>
         </tr>
     </table>
