@@ -56,14 +56,14 @@ class Expense extends Model
         return Expense::where('default', true)->firstOrFail();
     }
 
-    public static function createDefaultBudgetItemExpense(BudgetItem $budgetItem) : BudgetItemExpense {
+    public static function createDefaultBudgetItemExpense(Budget $budget) : BudgetExpense {
         $default = self::getDefault();
-        $budgetItemExpense = new BudgetItemExpense();
+        $budgetItemExpense = new BudgetExpense();
         $budgetItemExpense->fill([
-            'budget_item_id' => $budgetItem->id,
+            'budget_id' => $budget->id,
             'expense_id' => $default->id,
             'days' => null,
-            'total' => $budgetItem->budgetItemExpenses
+            'total' => $budget->expenses
                 ->filter(function ($budgetItemExpense) {
                     return $budgetItemExpense->expense->merge == true;
                 })

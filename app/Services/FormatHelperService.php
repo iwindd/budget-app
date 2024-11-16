@@ -27,6 +27,47 @@ class FormatHelperService
         return $carbonDate->translatedFormat($customFormat);
     }
 
+    public static function dateAddress($start, $end, $multiple = false, $options = [], $lang = 'th') {
+        Carbon::setLocale($lang);
+        $fromDate = Carbon::parse($start);
+        $backDate = Carbon::parse($end);
+        $isMultiple = !$fromDate->isSameDay($backDate) && $multiple;
+        $isSameMonth = $fromDate->isSameMonth($backDate);
+        $isSameYear = $fromDate->isSameYear($backDate);
+
+        $dP = $options['Pd'] ?? '';
+        $mP = $options['Pm'] ?? '';
+        $yP = $options['Py'] ?? '';
+        $tP = $options['Pt'] ?? '';
+        $fM = $isSameMonth ? "$mP F" : "M";
+        $fD = "$dP d";
+        $fY = "$yP Y";
+        $fT = "$tP H:i";
+
+        if ($options['fMain']){
+            $backDate->setTimeFromTimeString($fromDate->toTimeString());
+        }else{
+            $fromDate->setTimeFromTimeString($backDate->toTimeString());
+        }
+
+        if ($isMultiple){
+            $format = "$fD";
+
+            if (!$isSameMonth) $format = "$fD $fM";
+            if (!$isSameYear) $format = "$fD $fM ";
+
+            $_fromDate = self::date($fromDate, $format, $lang);
+            $_backDate = self::date($backDate, "d $fM $fY $fT", $lang);
+
+            return "$_fromDate - $_backDate";
+        }else{
+            return self::date(
+                $options['fMain'] ? $fromDate : $backDate
+            , "d $fM $fY $fT", $lang);
+        }
+
+    }
+
     public static function dateDiffHumans($date, $lang = 'th') {
         Carbon::setLocale($lang);
         return Carbon::parse($date)->diffForHumans();
