@@ -711,8 +711,13 @@
             @endphp
             <form x-on:submit.prevent="submit" class="grid grid-cols-4 lg:grid-cols-7 gap-1 pb-1 mb-2 border-b">
                 <section>
-                    <x-selectize :root="$root" :options="$addressSelectize" lang='address.input-from'
-                    wire:model="budgetAddressForm.from_id" />
+                    <x-selectize
+                        :root="$root"
+                        :options="$addressSelectize"
+                        lang='address.input-from'
+                        wire:model="budgetAddressForm.from_id"
+                        :selectOnClose="true"
+                    />
                     <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['from_id']"></span>
                 </section>
                 <section>
@@ -721,8 +726,13 @@
                     <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['from_time']"></span>
                 </section>
                 <section>
-                    <x-selectize :root="$root" :options="$addressSelectize" lang='address.input-back'
-                    wire:model="budgetAddressForm.back_id" />
+                    <x-selectize
+                        :root="$root"
+                        :options="$addressSelectize"
+                        lang='address.input-back'
+                        wire:model="budgetAddressForm.back_id"
+                        :selectOnClose="true"
+                    />
                     <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['back_id']"></span>
                 </section>
                 <section>
