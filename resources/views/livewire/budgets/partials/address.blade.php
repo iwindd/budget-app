@@ -10,9 +10,11 @@
             plate: @entangle('budgetAddressForm.plate'),
             distance: @entangle('budgetAddressForm.distance'),
             checkbox: @entangle('budgetAddressForm.multiple'),
-            {{--  --}}
-            addressesRaw: @entangle('addresses'),
             addressesSelectize: @entangle('addressSelectize'),
+            addressesRaw: [],
+            addressesMinimized: @entangle('addresses'),
+            extractIndex: {},
+            errorList: {},
             editing: null,
             calender: null,
             locales: {
@@ -23,7 +25,7 @@
                 ['table-time-day-format']: @js(__('address.table-time-day-format')),
             },
             sort(a, b) {
-                return a.fromDate.isBefore(b.fromDate) ? -1 : a.fromDate.isAfter(b.fromDate) ? 1 : 0;
+                return moment(a.from_date).isBefore(b.from_date) ? -1 : moment(a.from_date).isAfter(b.from_date) ? 1 : 0;
             },
             timeToPercentage(time) {
                 const totalMinutesInDay = 24 * 60;
@@ -36,16 +38,67 @@
 
                 return percentage;
             },
-            hasEvent(pointDate) {
-                return this.addresses.find((address) => moment(pointDate).isBetween(address.fromDate, address.backDate, null, '[]'))
-            },
-            getEventsBetween(start, end) {
-                start = moment(start);
-                end = moment(end);
+            hasEvent(point) {
+                point = moment(point);
 
-                return this.addresses.filter((a) =>
-                    (a.fromDate.isBetween(start, end, null, '[]') || a.backDate.isBetween(start, end, null, '[]')) && a.index != this.editing
+                return this.addressesRaw.find(a =>
+                    point.isBetween(a.from_date, a.back_date, null, '[]')
                 )
+            },
+            getEventsBetween(from, back, bag, noEditing) {
+                const pool = (bag || this.addressesRaw);
+                const editingItem = this.addressesMinimized[this.editing];
+                return pool.filter(a => {
+                    if (noEditing && editingItem){
+                        if (
+                            a.plate     == editingItem.plate     &&
+                            a.distance  == editingItem.distance  &&
+                            a.from_id   == editingItem.from_id   &&
+                            a.back_id   == editingItem.back_id
+                        ){
+                            if (editingItem.multiple) {
+                                const [from, back] = [moment(a.from_date), moment(a.back_date)];
+                                const [from2, back2] = [moment(editingItem.from_date), moment(editingItem.back_date)];
+
+                                if (
+                                    from.hour() == from2.hour() &&
+                                    back.hour() == back2.hour() &&
+                                    from.minute() == from2.minute() &&
+                                    back.minute() == back2.minute() &&
+                                    from.isBetween(from2, back2, undefined, '[]') &&
+                                    back.isBetween(from2, back2, undefined, '[]')
+                                ){
+                                    return false;
+                                }
+                            }else{
+                                if (a.from_date == editingItem.from_date && a.back_date == editingItem.back_date){
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+
+                    return this.isEventBetween(a, from, back);
+                });
+            },
+            isEventBetween(address, from, back){
+                const startDate = moment(from);
+                const endDate = moment(back);
+                const addressStart = moment(address.from_date);
+                const addressEnd = moment(address.back_date);
+
+                return (
+                    addressStart.isBetween(startDate, endDate, null, '[]') || // Address starts within the range
+                    addressEnd.isBetween(startDate, endDate, null, '[]') ||   // Address ends within the range
+                    startDate.isBetween(addressStart, addressEnd, null, '[]') || // Range starts within the address
+                    endDate.isBetween(addressStart, addressEnd, null, '[]')   // Range ends within the address
+                );
+            },
+            getEventsIn(date, noEditing){
+                const from = moment(date).set({hour: 0, minute: 0});
+                const back = from.clone().set({hour: 23, minute: 59});
+
+                return this.getEventsBetween(from, back, undefined, noEditing)
             },
             getDatesBetween(startDate, endDate) {
                 startDate = moment(startDate);
@@ -58,6 +111,80 @@
                     now.add(1, 'days');
                 }
                 return dates;
+            },
+            minimizeAddresses(raw) {
+                const payload = [];
+                const data = raw.sort(this.sort);
+
+                let skipped = new Set();
+
+                data.forEach((address, index) => {
+                    if (skipped.has(index)) return;
+
+                    let fromDate = moment(address.from_date);
+                    let backDate = moment(address.back_date);
+                    let stack = [];
+                    const sortedData = data.sort(this.sort).slice(index + 1);
+
+                    for (let i = 0; i < sortedData.length; i++) {
+                        const nextAddress = sortedData[i];
+
+                        if (
+                            fromDate.clone().add(i + 1, 'days').isSame(moment(nextAddress.from_date), 'day') &&
+                            backDate.clone().add(i + 1, 'days').isSame(moment(nextAddress.back_date), 'day') &&
+                            address.plate === nextAddress.plate &&
+                            address.distance === nextAddress.distance &&
+                            address.multiple === nextAddress.multiple
+                        ) {
+                            skipped.add(index + i + 1);
+                            stack.push(nextAddress);
+                        } else {
+                            break;
+                        }
+                    }
+                    payload.push({
+                        ...address,
+                        back_date: stack.length ? stack[stack.length - 1].back_date : address.back_date, // Last back_date if stacked
+                        multiple: stack.length > 0,
+                    });
+                });
+
+                return payload.sort(this.sort);
+            },
+            extractAddress(address){
+                const output = [];
+                const fromDate = moment(address.from_date);
+                const backDate = moment(address.back_date);
+
+                if (address.multiple) {
+                    this.getDatesBetween(fromDate, backDate).forEach(date => {
+                        output.push({
+                            ...address,
+                            from_date: moment(date).set({
+                                hour: fromDate.hour(),
+                                minute: fromDate.minute()
+                            }).format('YYYY-MM-DD HH:mm'),
+                            back_date: moment(date).set({
+                                hour: backDate.hour(),
+                                minute: backDate.minute()
+                            }).format('YYYY-MM-DD HH:mm')
+                        });
+                    });
+                } else {
+                    output.push(address);
+                }
+
+                return output;
+            },
+            action(address){
+                if (address?.ri == undefined) return;
+                const [from, back] = [moment(address.from_date), moment(address.back_Date)];
+
+                if (!from.isSame(back, 'day') && address.multiple ){
+                    this.extractIndex = {[address.ri]: true}
+                }
+
+                return this.edit(address)
             },
             splitDates(dates) {
                 const momentDates = dates.map(date => moment(date));
@@ -78,161 +205,255 @@
                 if (tempGroup.length) result.push(tempGroup);
                 return result.map(group => group.map(date => date.format('Y-M-D')));
             },
-            cancelEdit() {
+            cancelEdit(){
                 this.editing = null;
-                this.calender.setDate([], true);
+                this.extractIndex = {};
+                this.dates = [];
             },
-            edit(index) {
-                const address = this.addresses[index];
-                if (this.editing) this.cancelEdit();
-                if (!this.calender) return;
-                if (!address) return;
-                if (this.editing == index) return this.cancelEdit();
+            edit(address) {
+                if (this.editing || !this.calender || !address || address?.ri == undefined  || this.editing == address.ri ) return this.cancelEdit();
+                const [from, back] = [moment(address.from_date), moment(address.back_date)];
 
                 this.from_location_id = address.from_id;
                 this.back_location_id = address.back_id;
-                this.from_time = address.fromDate.format('HH:mm');
-                this.back_time = address.backDate.format('HH:mm');
+                this.from_time = from.format('HH:mm');
+                this.back_time = back.format('HH:mm');
                 this.plate = address.plate;
                 this.distance = address.distance;
-                this.editing = index;
+                this.editing = address.ri;
 
                 if (address.multiple){
-                    this.calender.setDate(this.getDatesBetween(address.fromDate, address.backDate), true);
+                    this.calender.setDate(this.getDatesBetween(from, back), true);
                 }else{
-                    this.calender.setDate([address.fromDate.format('Y-M-D'), address.backDate.format('Y-M-D')], true);
+                    this.calender.setDate([from.format('Y-M-D'), back.format('Y-M-D')], true);
                 }
 
-                this.calender.set('mode', address.multiple ? 'multiple' : 'range');
-                this.checkbox = address.multiple;
+                const isMultiple = address.multiple || from.isSame(back, 'day') ? true: false;
+
+                this.calender.set('mode', isMultiple ? 'multiple' : 'range');
+                this.checkbox = isMultiple;
             },
-            submit() {
-                if (this.editing != null)
-                    this.addressesRaw = this.addressesRaw.filter((_, i) => i != this.editing);
-                    // remove old item before add
-
-                $wire.onAddAddress();
+            onError(field, label){
+                this.errorList[field] = label;
             },
-            removeEdit(){
-                if (this.editing == null) return;
+            validate(){
+                this.errorList = {}
+                if (this.dates.length <= 0) this.onError('dates', 'วันที่ไม่ถูกต้อง!');
+                if (this.errors.length > 0) this.onError('dates', 'มีการเดินทางในช่วงเวลาดังกล่าวอยู่แล้ว!');
+                if (!(+this.distance) || (+this.distance <= 0)) this.onError('distance', 'ระยะทางไม่ถูกต้อง!');
+                if (!this.plate) this.onError('plate', 'ทะเบียนรถไม่ถูกต้อง!');
+                if (!this.from_location_id) this.onError('from_id', 'ไม่พบสถานที่ออกเดินทาง!');
+                if (!this.back_location_id) this.onError('back_id', 'ไม่พบสถานที่กลับถึง!');
+                if (!this.from_time) this.onError('from_time', 'เวลาออกเดินทางไม่ถูกต้อง!');
+                if (!this.back_time) this.onError('back_time', 'เวลากลับถึงไม่ถูกต้อง!');
 
-                this.addressesRaw = this.addressesRaw.filter((_, i) => i != this.editing);
-                this.cancelEdit();
+                return Object.keys(this.errorList).length > 0;
             },
-            get newItems() {
-                if (this.dates.length <= 0) return [];
-                const payload = [];
-                const from_date = `${this.dates[0]} ${this.from_time}`;
-                const back_date = `${this.dates[this.dates.length - 1]} ${this.back_time}`;
+            submit()  {
+                const hasError = this.validate();
+                if (hasError) return;
+                let payload = []
+                const editingItem = this.addressesMinimized[this.editing];
+                const pool = !editingItem ? this.addressesRaw : this.addressesRaw.filter((a) => {
+                    if (
+                        editingItem &&
+                        a.plate     == editingItem.plate     &&
+                        a.distance  == editingItem.distance  &&
+                        a.from_id   == editingItem.from_id   &&
+                        a.back_id   == editingItem.back_id
+                    ) {
+                        if (editingItem.multiple) {
+                            const [from, back] = [moment(a.from_date), moment(a.back_date)];
+                            const [from2, back2] = [moment(editingItem.from_date), moment(editingItem.back_date)];
 
-                const _editItem = (this.editing != null ? (this.addresses[this.editing] || {}) : {});
-                const inputData = {
-                    ..._editItem,
-                    multiple: this.checkbox,
-                    plate: this.plate,
-                    distance: this.distance,
-                    from_id: this.from_location_id,
-                    back_id: this.back_location_id,
-                    from_date: from_date,
-                    back_date: back_date,
-                    isNew: this.editing == null,
-                    index: -1
-                };
-
-                if (inputData.multiple) {
-                    this.splitDates(this.dates).map(stack => {
-                        const from_date = `${stack[0]} ${this.from_time}`;
-                        const back_date = `${stack[stack.length-1]} ${this.back_time}`;
-
-                        payload.push({
-                            ...inputData,
-                            from_date: from_date,
-                            back_date: back_date,
-                        })
-                    })
-                } else {
-                    payload.push(inputData);
-                }
-
-                return payload.map(a => ({
-                    ...a,
-                    fromDate: moment(a.from_date),
-                    backDate: moment(a.back_date),
-                }));
-            },
-            get list() {
-                const formatAddressDate = (address) => {
-                    let localeKey = 'table-date-value';
-                    let start = '';
-                    let end = '';
-
-                    if (address.multiple && address.backDate.diff(address.fromDate, 'day') > 0) {
-                        const lastDayInStack = address.backDate;
-                        const isSameMonth = address.fromDate.isSame(lastDayInStack, 'month');
-                        const isSameYear = address.fromDate.isSame(lastDayInStack, 'year');
-                        let format = 'Do';
-                        localeKey = 'table-date-value:stack';
-
-                        lastDayInStack.set({
-                            hour: address.fromDate.hour(),
-                            minute: address.fromDate.minute()
-                        })
-
-                        if (!isSameMonth) format = 'Do MMM';
-                        if (!isSameYear) format = 'll';
-                        start = address.fromDate.format(format) + ' - ' + lastDayInStack.format('lll')
-                        end = address.fromDate.format(format) + ' - ' + lastDayInStack.format('lll')
-                    } else {
-                        start = address.fromDate.format('lll')
-                        end = address.backDate.format('lll')
+                            if (
+                                from.hour() == from2.hour() &&
+                                back.hour() == back2.hour() &&
+                                from.minute() == from2.minute() &&
+                                back.minute() == back2.minute() &&
+                                from.isBetween(from2, back2, undefined, '[]') &&
+                                back.isBetween(from2, back2, undefined, '[]')
+                            ){
+                                return false;
+                            }
+                        }else{
+                            if (a.from_date == editingItem.from_date && a.back_date == editingItem.back_date){
+                                return false;
+                            }
+                        }
                     }
 
-                    return this.locales[localeKey]
-                        .replace(':start', start)
-                        .replace(':end', end);
+                    return true;
+                })
+                const object  = {
+                    from_id: this.from_location_id, back_id: this.back_location_id,
+                    plate: this.plate, distance: this.distance,
+                    from_time: this.from_time, back_time: this.back_time,
+                    multiple: this.checkbox, dates: this.dates
                 }
 
-                const formatAddressTimeDiff = (address) => {
-                    const DAY_MINUTES = 24 * 60
-                    const days = Math.floor(address.minutes / DAY_MINUTES);
-                    const hours = (address.minutes % DAY_MINUTES) / 60;
-                    let text = '';
-
-                    if (days > 0) text += this.locales['table-time-day-format'].replace(':d', days) + ' ';
-                    if (hours > 0) text += this.locales['table-time-hr-format'].replace(':hr', hours % 1 === 0 ? hours.toFixed(0) : hours.toFixed(1));
-
-                    return text;
+                const addEvent = (f, b) => {
+                    payload.push({
+                        ...object,
+                        from_date: f.format('Y-M-D HH:mm'),
+                        back_date: b.format('Y-M-D HH:mm'),
+                        multiple: f.isSame(b, 'day') ? true : object.multiple
+                    })
                 }
 
-                const data = [...this.addresses.filter(a => a.index != this.editing), ...this.newItems];
+                if (object.multiple){
+                    this.splitDates(object.dates) .map(dates => dates.map(date=> {
+                        const f = moment(date+' '+object.from_time);
+                        const b = moment(date+' '+object.back_time);
 
-                return data.sort(this.sort).map((address, index) => ({
-                    ...address,
-                    date: formatAddressDate(address),
-                    timeDiff: formatAddressTimeDiff(address),
-                    distanceResult: 0,
-                    from: this.addressesSelectize.find(a => a.id == address.from_id)?.label,
-                    back: this.addressesSelectize.find(a => a.id == address.back_id)?.label,
-                    index: address.index
-                }));
+                        addEvent(f, b)
+                    }))
+                }else{
+                    const f = moment(object.dates[0]+' '+object.from_time);
+                    const b = moment(object.dates[1]+' '+object.back_time);
+
+                    addEvent(f, b)
+                }
+
+                payload =  Object.values(
+                    [...pool, ...payload].reduce((acc, item) => {
+                        const key = `${item.from_date}-${item.back_date}`; // Unique identifier
+                        if (!acc[key]) {
+                            acc[key] = item; // Add to accumulator if not already present
+                        }
+                        return acc;
+                    }, {})
+                );
+
+                this.addressesRaw = payload;
+                this.addressesMinimized = this.minimizeAddresses(payload);
+                this.dates = [];
+                this.extractIndex = {};
+                this.calender.redraw();
+                this.cancelEdit();
             },
-            get addresses() {
-                const payload = this.addressesRaw.map((address, index) => ({
-                    ...address,
-                    index: index,
-                    fromDate: moment(address.from_date),
-                    backDate: moment(address.back_date)
-                }))
+            getLocationLabel(locationId){
+                return this.addressesSelectize.find(a => a.id == locationId)?.label || '-'
+            },
+            formatAddressDate(from, back, multiple) {
+                if (!from || !back) return;
+                let [localeKey, start, end] = ['table-date-value', '', ''];
+                const [fromDate, backDate] = [moment(from), moment(back)];
+                const isMultiple = !fromDate.isSame(backDate, 'day') && multiple;
 
-                payload.sort(this.sort);
-                return payload.map((a, index) => ({
-                    ...a,
-                    minutes: a.multiple ?
-                        (a.backDate.diff(a.backDate.clone().set({
-                            hour: a.fromDate.hour(),
-                            minute: a.fromDate.minute()
-                        }), 'minutes') * (a.backDate.diff(a.fromDate, 'days') + 1)) : (a.backDate.diff(a.fromDate, 'minutes'))
-                }))
+                if (isMultiple){
+                    const lastDayInStack = backDate;
+                    const isSameMonth = fromDate.isSame(lastDayInStack, 'month');
+                    const isSameYear = fromDate.isSame(lastDayInStack, 'year');
+                    let format = 'Do';
+                    localeKey = 'table-date-value:stack';
+
+                    lastDayInStack.set({
+                        hour: fromDate.hour(),
+                        minute: fromDate.minute()
+                    })
+
+                    if (!isSameMonth) format = 'Do MMM';
+                    if (!isSameYear) format = 'll';
+                    start = fromDate.format(format) + ' - ' + lastDayInStack.format('lll')
+                    end = fromDate.format(format) + ' - ' + lastDayInStack.format('lll')
+                }else{
+                    start = fromDate.format('lll')
+                    end = backDate.format('lll')
+                }
+
+                return this.locales[localeKey]
+                    .replace(':start', start)
+                    .replace(':end', end);
+            },
+            formatAddressTimeDiff(address) {
+                if (!address) return;
+                const DAY_MINUTES = 24 * 60
+                const days = Math.floor(address.minutes / DAY_MINUTES);
+                const hours = (address.minutes % DAY_MINUTES) / 60;
+                let text = '';
+
+                if (days > 0) text += this.locales['table-time-day-format'].replace(':d', days) + ' ';
+                if (hours > 0) text += this.locales['table-time-hr-format'].replace(':hr', hours % 1 === 0 ? hours.toFixed(0) : hours.toFixed(1));
+
+                return text;
+            },
+            get list() {
+                const formatting = this.addressesMinimized.map((a, i) => ({...a, ri: i}))
+                let data = formatting.filter((a, i) => !this.extractIndex[i] && a.ri != this.editing);
+                const preview = [];
+
+                // extract
+                formatting.filter((_, i) => this.extractIndex[i]).map((address) => {
+                    if (address.multiple){
+                        this.extractAddress(address).map((a) => {
+                            if (a.ri != this.editing) data.push(a);
+                        })
+                    }
+                })
+
+                // preview
+                if (this.dates.length > 0){
+                    const obj = {
+                        from_id: this.from_location_id,
+                        back_id: this.back_location__id,
+                        plate: this.plate,
+                        distance: this.distance,
+                        from_time: this.from_time,
+                        back_time: this.back_time,
+                        multiple: this.checkbox,
+                        dates: this.dates,
+                    }
+
+                    const addPreview = (obj) => {
+                        const [from, back] = [
+                            moment(obj.dates[0] + ' ' + obj.from_time),
+                            moment(obj.dates[obj.dates.length-1] + ' ' + obj.back_time)
+                        ]
+
+                        let classList = 'bg-success-200/25';
+
+                        if (this.getEventsBetween(from, back).length > 0){
+                            const selected = this.dates.find(date => {
+                                return moment(obj.from_date).isSame(date, 'day');
+                            });
+
+                            classList = selected ? 'bg-warning-200/25' : 'bg-danger-200/25'
+                        }
+
+                        preview.push({
+                            ...obj,
+                            from_date: from.format('Y-M-D HH:mm'),
+                            back_date: back.format('Y-M-D HH:mm'),
+                            classList: 'bg-success-200/25'
+                        })
+                    }
+
+                    if (obj.multiple){
+                        obj.dates.map(date => addPreview({...obj, dates: [date]}))
+                    }else{
+                        addPreview(obj)
+                    }
+
+                    data.map(a => {
+                        if (a.editing) {
+                            const found = obj.dates.find((date) => {
+                                return moment(date).isBetween(a.from_date, a.back_date, null, '[]')
+                            })
+
+                            if (found) {
+                                return {
+                                    ...a,
+                                    classList: 'bg-danger-200/25'
+                                }
+                            }
+                        }
+
+                        return a;
+                    })
+                }
+
+                return [...data, ...preview].sort(this.sort);
             },
             get errors() {
                 if (this.dates.length <= 0) return [];
@@ -240,77 +461,20 @@
                     const fromDate = moment(this.dates[0] + ' ' + this.from_time, 'Y-M-D HH:mm');
                     const backDate = moment(this.dates[this.dates.length - 1] + ' ' + this.back_time, 'Y-M-D HH:mm');
 
-                    return this.getEventsBetween(fromDate, backDate);
+                    return this.getEventsBetween(fromDate, backDate, undefined, true);
                 } else {
                     const events = this.dates.flatMap(date => {
                         const fromDate = moment(`${date} ${this.from_time}`, 'Y-M-D HH:mm');
                         const backDate = moment(`${date} ${this.back_time}`, 'Y-M-D HH:mm');
 
-                        return this.getEventsBetween(fromDate, backDate);
+                        return this.getEventsBetween(fromDate, backDate, undefined, true);
                     });
 
                     return events;
                 }
-            },
+            }
         }"
         x-init="
-            const shouldDisable = (targetDate, useEvents, noDisablePointEvent = true) => {
-                const events = [];
-                targetDate = moment(new Date(targetDate));
-                const dayEvents = addresses.filter(a => targetDate.isBetween(a.fromDate, a.backDate, 'day', '[]'))
-
-                let inRange = false;
-                let pointEvent = false;
-                let minuteLeft = 24 * 60;
-
-                if (dayEvents.length > 0) {
-                    dayEvents.map(event => {
-                        if (event.multiple) {
-                            const fromDate = targetDate.clone().set({
-                                hour: event.fromDate.hour(),
-                                minute: event.fromDate.minute()
-                            });
-
-                            const backDate = targetDate.clone().set({
-                                hour: event.backDate.hour(),
-                                minute: event.backDate.minute()
-                            })
-
-                            minuteLeft -= (backDate.diff(fromDate, 'minute'));
-                        } else {
-                            const isPointEvent = targetDate.isSame(event.fromDate, 'day') || targetDate.isSame(event.backDate, 'day')
-                            if (isPointEvent) pointEvent = isPointEvent;
-
-                            if (targetDate.isBetween(event.fromDate, event.backDate, null, '()') && !isPointEvent) {
-                                inRange = event;
-                                minuteLeft = 0;
-                            } else {
-                                const backDate = event.backDate.clone();
-                                if (!backDate.isSame(event.fromDate, 'day')) {
-                                    backDate.set({
-                                        'year': event.fromDate.year(),
-                                        'month': event.fromDate.month(),
-                                        'date': event.fromDate.date(),
-                                        'hour': 23,
-                                        'minute': 59
-                                    });
-                                }
-
-                                minuteLeft -= backDate.diff(event.fromDate, 'minutes')
-                            }
-                        }
-                    })
-                }
-
-                const noMoreSpace = minuteLeft - 1 <= 0;
-                const isEditing = inRange && inRange.index == editing
-                const result = isEditing ? false : (noDisablePointEvent ? noMoreSpace : pointEvent ? false : noMoreSpace);
-
-                if (inRange) events.push([`event ${isEditing ? 'event-warning': 'event-primary'} event-decoration w-full`]);
-                if (useEvents) return [result, events];
-                return result;
-            }
-
             const updatePointer = () => {
                 const percentageFrom = timeToPercentage(from_time);
                 const percentageBack = timeToPercentage(back_time)
@@ -350,84 +514,6 @@
                 if (calender) calender.redraw();
             }
 
-            const createEvents = (element, elementDate) => {
-                const targetDate = moment(elementDate);
-                const events = [];
-                let hoverStartPercentage = 50;
-                let hoverEndPercentage = 50;
-                let disabledHover = false;
-
-                const [isDisabled, hasEvents] = shouldDisable(targetDate, true, false)
-                hasEvents.map(event => events.push(event))
-                if (isDisabled) {
-                    disabledHover = true;
-                } else {
-                    addresses.map(address => {
-                        const isEditing = address.index == editing;
-                        const buffers = !address.multiple ? [address] :
-                            getDatesBetween(address.fromDate, address.backDate).map(date => ({
-                                ...address,
-                                fromDate: moment(date).set({
-                                    'hour': address.fromDate.hour(),
-                                    'minute': address.fromDate.minute()
-                                }),
-                                backDate: moment(date).set({
-                                    'hour': address.backDate.hour(),
-                                    'minute': address.backDate.minute()
-                                }),
-                            }));
-
-                        buffers.map((b) => {
-                            const fromDate = b.fromDate;
-                            const backDate = b.backDate;
-
-                            const isStartDate = fromDate.isSame(targetDate, 'day');
-                            const isEndDate = backDate.isSame(targetDate, 'day');
-                            const isOneDay = isStartDate && isEndDate;
-
-                            if (isOneDay) {
-                                const percentageStart = timeToPercentage(fromDate)
-                                const percentageEnd = timeToPercentage(backDate)
-                                events.push([`event ${isEditing ? 'event-warning' : 'event-primary'} event-darker-both`, `
-                                                        left: ${percentageStart}%;
-                                                        width: ${percentageEnd-percentageStart}%;
-                                                    `])
-                            } else {
-                                if (isStartDate) {
-                                    const percentage = timeToPercentage(fromDate)
-                                    events.push([`event ${isEditing ? 'event-warning' : 'event-primary'} event-darker-start`, `
-                                                            left: ${percentage.toFixed(0)}%;
-                                                            width: ${100-percentage.toFixed(0)}%;
-                                                        `]);
-                                }
-
-                                if (isEndDate) {
-                                    const percentage = timeToPercentage(backDate)
-                                    events.push([`event ${isEditing ? 'event-warning' : 'event-primary'} event-darker-end`, `
-                                                            width: ${percentage}%;
-                                                        `]);
-                                }
-                            }
-                        })
-
-
-
-                    })
-                }
-
-                element.innerHTML += `
-                                        <div class='events'>
-                                            ${
-                                                events.map((event) => {
-                                                        return `<span class='${event[0]} event-standard' style='${event[1]}'></span>`;
-                                                }).join('') // join the array to convert it into a single string
-                                            }
-
-                                            <span class='event event-success event-pointer '></span>
-                                        </div>
-                                    `;
-            }
-
             let index = 0;
             calender = flatpickr($refs.datepicker, {
                 inline: true,
@@ -441,9 +527,101 @@
                 },
                 formatDate: (date) => moment(date).format('Y-M-D'),
                 parseDate: (datestr) => moment(datestr, 'Y-M-D', true).toDate(),
-                disable: [shouldDisable],
-                onDayCreate: (dObj, dStr, fp, dayElem) => createEvents(dayElem, dayElem.dateObj)
+                disable: [(dateStr)=>{
+                    const date = moment(dateStr);
+                    const events = getEventsIn(date, true);
+                    let minutesLeft = 24 * 60;
+
+                    events.map(e=> {
+                        const [from, back] = [moment(e.from_date), moment(e.back_date)];
+
+                        if (from.isSame(back, 'day')) return minutesLeft -= back.diff(from, 'minutes');
+
+                        const [isStart, isEnd] = [date.isSame(from, 'day'), date.isSame(back, 'day')]
+                        if (!isStart && !isEnd) minutesLeft = 0;
+                        if (isStart) minutesLeft -= from.clone().set({hour: 23,minute: 59}).diff(from, 'minutes');
+                        if (isEnd) minutesLeft -= back.diff(back.clone().set({hour: 0,minute: 0}), 'minutes');
+                    })
+
+                    return minutesLeft - 1 <= 0;
+                }],
+                onDayCreate: (dObj, dStr, fp, element) => {
+                    const date = moment(element.dateObj);
+                    const events = getEventsIn(date, true);
+
+                    events.map(e=> {
+                        const [from, back] = [moment(e.from_date), moment(e.back_date)];
+
+                        if (from.isSame(back, 'day')) { // #1: หากเป็นวันเดียวจบ
+                            const startAt = timeToPercentage(from);
+                            const endAt = timeToPercentage(back)-startAt;
+                            return events.push([`event event-primary event-darker-both`, `
+                                left: ${startAt}%;
+                                width: ${endAt}%;
+                            `]);
+                        }
+
+                        const [isStart, isEnd] = [date.isSame(from, 'day'), date.isSame(back, 'day')]
+                        if (!isStart && !isEnd) {
+                            const startAt = timeToPercentage(from);
+                            return events.push([`event event-primary`, `width: 100%;`]);
+                        }
+
+                        if (isStart) {
+                            const startAt = timeToPercentage(from);
+                            return events.push([`event event-primary event-darker-start`, `
+                                left: ${startAt}%;
+                                width: ${100-startAt}%;
+                            `]);
+                        }
+
+                        if (isEnd) {
+                            const endAt = timeToPercentage(back);
+                            return events.push([`event event-primary event-darker-end`, `width: ${endAt}%;`]);
+                        }
+                    })
+
+                    element.innerHTML += `
+                        <div class='events'>
+                            ${
+                                events.map((event) => {
+                                        return `<span class='${event[0]} event-standard' style='${event[1]}'></span>`;
+                                }).join('') // join the array to convert it into a single string
+                            }
+
+                            <span class='event event-success event-pointer '></span>
+                        </div>
+                    `;
+                }
             });
+
+            if (addressesMinimized.length > 0){
+                const extract = [];
+                addressesMinimized.sort(sort).forEach(address => {
+                    const fromDate = moment(address.from_date);
+                    const backDate = moment(address.back_date);
+
+                    if (address.multiple) {
+                        getDatesBetween(fromDate, backDate).forEach(date => {
+                            extract.push({
+                                ...address,
+                                from_date: moment(date).set({
+                                    hour: fromDate.hour(),
+                                    minute: fromDate.minute(),
+                                }).format('YYYY-MM-DD HH:mm'),
+                                back_date: moment(date).set({
+                                    hour: backDate.hour(),
+                                    minute: backDate.minute(),
+                                }).format('YYYY-MM-DD HH:mm'),
+                            });
+                        });
+                    } else {
+                        extract.push(address);
+                    }
+                });
+                addressesRaw = extract.sort(sort);
+                calender.redraw();
+            }
 
             $watch('dates', (dates) => {
                 if (!calender) return;
@@ -453,11 +631,9 @@
                     selectedDates.some((date, index) => date !== newDates[index]);
 
                 if (hasDifference) {
-                    cancelEdit();
                     calender.setDate(dates, false);
                 }
             });
-            $watch('addressesRaw', updatePointer);
             $watch('from_time', updatePointer);
             $watch('back_time', updatePointer);
             $watch('checkbox', (isMultiple) => {
@@ -509,6 +685,8 @@
                         <x-form.error :messages="$error" />
                     @endforeach
 
+                    <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['dates']"></span>
+
                     <ul class='text-sm space-y-1 '>
                         <template x-if="errors.length > 0">
                             <li>{{ __('address.busy-table') }}</li>
@@ -516,8 +694,8 @@
                         <template x-for="address in errors">
                             <li class="space-x-1 "
                                 x-html='(locales["table-date-value"]
-                                .replace(":start", address.fromDate.format("lll"))
-                                .replace(":end", address.backDate.format("lll"))
+                                .replace(":start", moment(address.from_date).format("lll"))
+                                .replace(":end", moment(address.back_date).format("lll"))
                             )'>
                             </li>
                         </template>
@@ -532,17 +710,36 @@
                 $root = ['class' => 'col-span-2 lg:col-span-1'];
             @endphp
             <form x-on:submit.prevent="submit" class="grid grid-cols-4 lg:grid-cols-7 gap-1 pb-1 mb-2 border-b">
-                <x-selectize :root="$root" :options="$addressSelectize" lang='address.input-from'
+                <section>
+                    <x-selectize :root="$root" :options="$addressSelectize" lang='address.input-from'
                     wire:model="budgetAddressForm.from_id" />
-                <x-budgets.timepicker :root="$root" lang="address.input-from-datetime"
+                    <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['from_id']"></span>
+                </section>
+                <section>
+                    <x-budgets.timepicker :root="$root" lang="address.input-from-datetime"
                     wire:model="budgetAddressForm.from_time" />
-                <x-selectize :root="$root" :options="$addressSelectize" lang='address.input-back'
+                    <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['from_time']"></span>
+                </section>
+                <section>
+                    <x-selectize :root="$root" :options="$addressSelectize" lang='address.input-back'
                     wire:model="budgetAddressForm.back_id" />
-                <x-budgets.timepicker :root="$root" lang="address.input-back-datetime"
+                    <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['back_id']"></span>
+                </section>
+                <section>
+                    <x-budgets.timepicker :root="$root" lang="address.input-back-datetime"
                     wire:model="budgetAddressForm.back_time" />
-                <x-textfield :root="$root" lang="address.input-plate" wire:model="budgetAddressForm.plate" />
-                <x-textfield :root="$root" lang="address.input-distance"
+                    <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['back_time']"></span>
+                </section>
+                <section>
+                    <x-textfield :root="$root" lang="address.input-plate" wire:model="budgetAddressForm.plate" />
+                    <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['plate']"></span>
+                </section>
+                <section>
+                    <x-textfield :root="$root" lang="address.input-distance"
                     wire:model="budgetAddressForm.distance" />
+                    <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['distance']"></span>
+                </section>
+
                 <div class="col-span-4 lg:col-span-1">
                     <x-form.label for="submit" :value="__('address.table-action')" />
                     <x-button type="submit" name="submit"
@@ -561,8 +758,6 @@
                         <span class="text-xs text-danger">หากต้องการแก้ไขข้อมูลการเดินทางบางวันให้ลบวันที่ต้องการแก้ไขและเพิ่มใหม่อีกครั้ง!</span>
                     </template>
                 </div>
-
-
             </form>
             <section>
                 <section class="relative overflow-x-auto border-none mt-2">
@@ -578,20 +773,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <template x-for="address in list">
-                                <tr :class="{
-                                    '!bg-warning-100': address && address.index == -1 && !address.isNew,
-                                    '!bg-success-100': address && address.index == -1 && address.isNew,
-                                    'hover:bg-primary-50': address && !address.isNew,
-                                }"
-                                    class="transition cursor-pointer" x-on:click="edit(address.index)">
-                                    <td class="px-6 py-2" x-html="address.plate"></td>
-                                    <td class="px-6 py-2 text-end" x-text="address.from" class="text-l"></td>
+                            <template x-for="(address, index) in list" :key="index">
+                                <tr
+                                    class="transition cursor-pointer"
+                                    x-on:click="action(address)"
+                                    :class="address?.classList || ''"
+                                >
+
+                                    <td class="px-6 py-2" x-text="address.plate"></td>
+                                    <td class="px-6 py-2 text-end" x-text="getLocationLabel(address.from_id)"></td>
+
                                     <td class="px-6 py-2 flex justify-center items-center">
-                                        <div class="flex justify-between h-full w-full" x-html="address.date"></div>
+                                        <div class="flex justify-between h-full w-full" x-html="formatAddressDate(address.from_date, address.back_date, address.multiple)"></div>
                                     </td>
-                                    <td class="px-6 py-2 text-center" x-text="address.back"></td>
-                                    <td class="text-end" x-text="address.timeDiff"></td>
+
+                                    <td class="px-6 py-2 text-center" x-text="getLocationLabel(address.back_id)"></td>
+                                    <td class="text-end" x-text="address.minutes"></td>
                                 </tr>
                             </template>
                         </tbody>

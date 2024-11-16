@@ -21,6 +21,10 @@ class BudgetAddress extends Model
         'distance',
     ];
 
+    protected $casts = [
+        'multiple' => 'boolean',
+    ];
+
     public static function list() {
         return collect([
             ['id' => 1, 'label' => 'บ้านพัก'],
