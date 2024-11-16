@@ -5,13 +5,41 @@
     cursor: text;
     position: relative;
 
-    @apply border-gray-400 rounded-md px-2 py-2 dark:border-gray-600 dark:text-gray-300 dark:bg-dark-eval-1;
+    @apply border-gray-400 rounded-md dark:border-gray-600 dark:text-gray-300 dark:bg-dark-eval-1;
 }
 
 .select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection{
     height: 42px;
+    @apply py-2 px-0;
 }
 
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
     @apply bg-primary text-white;
+}
+
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1px;
+    width: 20px;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+    box-sizing: border-box;
+    border: none;
+    font-size: 100%;
+    margin-top: 0px;
+    margin-left: 0px;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    resize: none;
+    vertical-align: bottom;
+    overflow: hidden;
+    word-break: keep-all;
+    line-height: 1em;
 }
