@@ -669,6 +669,8 @@
             $addressError = array_merge(
                 $errors->get('budgetAddressForm.dates', []),
                 $errors->get('budgetAddressForm.dates.*', []),
+                $errors->get('addresses', []),
+                $errors->get('addresses.*', []),
             );
         @endphp
         <section class="w-[310]">
