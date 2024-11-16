@@ -3,6 +3,7 @@
     'display' => 'label',
     'value' => 'id',
     'parseInt' => true,
+    'parseCreate' => false,
     'debounce' => 250,
     'fetch' => null, // route
     'name' => null,
@@ -39,23 +40,32 @@
     x-data="{
         model: @js($model),
         parseInt: @js($parseInt),
+        parseCreate: @js($parseCreate),
         fetch: @js($fetch),
         multiple: @js($multiple),
+        create: @js($create),
         defaultValue: @js($parseInt ? intval($defaultValue) : $defaultValue),
         value: @entangle($model),
-        setValue(value) {
-            if (this.parseInt) this.value = typeof(value) == 'object' ? value.map(v => +v) : +value;
-
-            this.value = value
+        setValue(value, isCreate) {
+            if (this.parseInt) value = typeof(value) == 'object' ? value.map(v => +v) : +value;
+            if (isCreate && this.parseCreate && this.create){
+                this.value = JSON.stringify({
+                    create: true,
+                    value: value
+                });
+            }else{
+                this.value = value
+            }
         }
     }"
     x-init="() => {
         const selector = $($refs.select);
         selector.select2({
             width: '100%',
+            tags: create,
             placeholder: @js($placeholder),
-            tags: @js($create),
             multiple: @js($multiple),
+            selectOnClose: true,
             @if ($fetch)
                 ajax: {
                     url: @js($fetch),
@@ -74,25 +84,49 @@
                     },
                 },
             @endif
+            @if($create)
+                createTag: function (params) {
+                    var term = $.trim(params.term);
+                    if (term === '') return null;
+
+                    return {
+                        id: term,
+                        text: term,
+                        create: true
+                    }
+                }
+            @endif
         }).on('select2:select', e => {
-            setValue(selector.val())
+            setValue(selector.val(), e.params?.data?.create)
         });
 
         const updateOption = (raw) => {
             if (!multiple) {
                 const value = String(raw);
                 if (raw != null && !selector.find(`option[value='${value}']`).length && fetch){
+                    let findValue = value;
+
+                    try {
+                        const isNew = JSON.parse(findValue);
+                        findValue = isNew.value;
+
+                        return
+                    } catch (e) {
+                        findValue = value;
+                    }
+
+                    findValue = $.trim(findValue);
+                    if (findValue === '') return null;
+
                     $.ajax({
                         type: 'GET',
-                        url: fetch + '&find=' + value
+                        url: fetch + '&find=' + findValue
                     }).then(function (data) {
                         selector.append(new Option(data[@js($display)], @js($value), false, true)).trigger('change');
                     });
                 }else{
                     selector.val(value).trigger('change')
                 }
-            }else{
-                console.log(raw);
             }
         }
 
