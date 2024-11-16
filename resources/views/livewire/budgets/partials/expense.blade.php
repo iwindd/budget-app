@@ -21,7 +21,7 @@
             wire:model="budgetExpenseForm.expense"
             :root="['class' => 'space-y-1 col-span-3 lg:col-span-2']"
             create
-            :parseInt="true"
+            :parseInt="false"
         />
         <x-textfield
             lang="expenses.input-total"
