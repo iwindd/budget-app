@@ -22,6 +22,7 @@
             :root="['class' => 'space-y-1 col-span-3 lg:col-span-2']"
             create
             :parseInt="false"
+            :parseCreate="true"
         />
         <x-textfield
             lang="expenses.input-total"

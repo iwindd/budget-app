@@ -14,7 +14,13 @@ class BudgetExpenseForm extends Form
 
     private function create()
     {
-        $validated = $this->validate(['expense' => ['required', 'string', 'max:255']]);
+        try {
+            $this->expense = json_decode($this->expense)->value;
+        } catch (\Throwable $th) {
+            $this->reset('expense');
+        }
+
+        $validated = $this->validate(['expense' => ['required', 'string', 'min:6', 'max:255']]);
         $existingExpense = Expense::where('id', $validated['expense'])->orWhere('label', $validated['expense'])->first();
         if ($existingExpense) return $existingExpense;
 
@@ -29,8 +35,10 @@ class BudgetExpenseForm extends Form
     }
 
     public function submit(){
-        if (is_string($this->expense)) {
-            $this->expense = $this->create()->id;
+        if (!is_numeric($this->expense) && json_validate($this->expense)) {
+            $created = $this->create();
+
+            if ($created) $this->expense = $created->id;
         }
 
         $validated = $this->validate([
