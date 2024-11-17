@@ -839,9 +839,9 @@
                         <tbody>
                             <template x-for="(address, index) in list" :key="index">
                                 <tr
-                                    class="transition cursor-pointer"
+                                    class=" cursor-pointer"
                                     x-on:click="action(address)"
-                                    :class="address?.classList || ''"
+                                    :class="address?.classList || 'hover:bg-primary-200/25'"
                                 >
 
                                     <td class="px-6 py-2" x-text="address.plate"></td>
