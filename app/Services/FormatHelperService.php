@@ -21,8 +21,15 @@ class FormatHelperService
     {
         Carbon::setLocale($lang);
         $carbonDate = Carbon::parse($date);
-        $buddhistYear = $carbonDate->year + 543;
-        $customFormat = str_replace('Y', $buddhistYear, $format);
+        if (strpos($format, 'y') !== false) {
+            // แปลงปีคริสต์ศักราช (ค.ศ.) เป็นปีพุทธศักราช (พ.ศ.) แบบย่อ
+            $buddhistYearShort = ($carbonDate->year + 543) % 100; // เหลือแค่ 2 หลักท้าย
+            $customFormat = str_replace('y', $buddhistYearShort, $format);
+        } else {
+            // กรณีใช้ 'Y' เป็นปีแบบเต็ม พ.ศ.
+            $buddhistYearFull = $carbonDate->year + 543;
+            $customFormat = str_replace('Y', $buddhistYearFull, $format);
+        }
 
         return $carbonDate->translatedFormat($customFormat);
     }
