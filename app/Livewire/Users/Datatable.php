@@ -29,7 +29,7 @@ class Datatable extends DataTableComponent
     {
         return User::query()
             ->join('affiliations', 'affiliations.id', '=', 'users.affiliation_id')
-            ->selectRaw('(select count(*) from `budget_items` where `users`.`id` = `budget_items`.`user_id`) as `budgetitems_count`')
+            ->selectRaw('(select count(*) from `budgets` where `users`.`id` = `budgets`.`user_id`) as `budgetitems_count`')
             ->selectRaw('(select count(*) from `expenses` where `users`.`id` = `expenses`.`user_id`) as `expenses_count`');
     }
 
