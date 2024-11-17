@@ -21,6 +21,7 @@
                 ['table-date-value']: @js(__('address.table-date-value')),
                 ['table-date-value:stack']: @js(__('address.table-date-value:stack')),
                 ['table-distance-value']: @js(__('address.table-distance-value')),
+                ['table-total-value']: @js(__('address.table-total-value')),
                 ['table-time-hr-format']: @js(__('address.table-time-hr-format')),
                 ['table-time-day-format']: @js(__('address.table-time-day-format')),
             },
@@ -404,6 +405,28 @@
                 if (hours > 0) text += this.locales['table-time-hr-format'].replace(':hr', hours % 1 === 0 ? hours.toFixed(0) : hours.toFixed(1));
 
                 return text;
+            },
+            formatAddressDistance(address){
+                let round = 1;
+
+                if (address.multiple){
+                    round *= moment(address.back_date).diff(address.from_date, 'day')+1;
+                }
+
+                return this.locales['table-distance-value']
+                    .replace(':distance', (address.distance*round).toLocaleString())
+                    .replace(':round', round.toLocaleString())
+            },
+            formatAddressTotal(address){
+                let round = 1;
+
+                if (address.multiple){
+                    round *= moment(address.back_date).diff(address.from_date, 'day')+1;
+                }
+
+                const distance = address.distance * round
+                return this.locales['table-total-value']
+                    .replace(':total', (distance * 4).toLocaleString())
             },
             get list() {
                 const formatting = this.addressesMinimized.map((a, i) => ({...a, ri: i}))
@@ -809,6 +832,8 @@
                                 <th class="px-6 py-3 flex-grow flex justify-between">{!! __('address.table-date') !!}</th>
                                 <th class="px-6 py-3 w-[10%] text-center">{{ __('address.table-back-label') }}</th>
                                 <th class="px-6 py-3 w-[10%] text-end">{{ __('address.table-time') }}</th>
+                                <th class="px-6 py-3 w-[10%] text-end">{{ __('address.table-distance') }}</th>
+                                <th class="px-6 py-3 w-[10%] text-end">{{ __('address.table-total') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -828,6 +853,8 @@
 
                                     <td class="px-6 py-2 text-center" x-text="getLocationLabel(address.back_id)"></td>
                                     <td class="text-end" x-text="formatAddressTimeDiff(address.from_date, address.back_date, address.multiple)"></td>
+                                    <td class="text-end" x-text="formatAddressDistance(address)">
+                                    <td class="text-end" x-text="formatAddressTotal(address)">
                                 </tr>
                             </template>
                         </tbody>
