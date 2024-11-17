@@ -11,10 +11,4 @@ class BudgetAdminController extends Controller
     public function index(){
         return view('admin.budgets.index');
     }
-
-    public function show(Budget $budget) {
-        return view('user.budgets.create.index', [
-            'serial' => $budget->serial
-        ]);
-    }
 }
