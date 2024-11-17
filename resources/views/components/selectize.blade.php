@@ -101,7 +101,9 @@
             @endif
         }).on('select2:select', e => {
             setValue(selector.val(), e.params?.data?.create)
-        });
+        }).on('select2:unselect', e => {
+            setValue(selector.val())
+        }); 
 
         const updateOption = (raw) => {
             console.log('update', model, raw)
