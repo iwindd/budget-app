@@ -32,10 +32,12 @@
         <x-selectize
             :disabled="!$hasPermissionToManage"
             :fetch="route('companions.selectize')"
+            :options="$budgetForm->companions"
             lang='budgets.input-companion'
             wire:model="companions"
             display="name"
             multiple
+            defaultByOptions
         />
     </section>
 </section>

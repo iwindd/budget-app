@@ -23,7 +23,8 @@ class BudgetForm extends Form
         $position,
         $affiliation;
     public $invitation,
-        $office;
+        $office,
+        $companions; // เอาไว้ init selectize
 
     public function setBudget(Budget $budget) : Budget
     {
@@ -45,6 +46,17 @@ class BudgetForm extends Form
         $this->position    = $user->position->label;
         $this->affiliation = $user->affiliation->label;
 
+        $this->companions = $budget->companions()
+            ->with('user')
+            ->get()
+            ->map(function ($companion) {
+                return [
+                    'name' => $companion->user->name,
+                    'id' => $companion->user->id,
+                    'selected'=> true
+                ];
+            })
+            ->toArray();
         return $budget;
     }
 

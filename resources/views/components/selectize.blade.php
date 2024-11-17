@@ -18,7 +18,8 @@
     'create' => false,
     'multiple' => false,
     'root' => [],
-    'selectOnClose' => false
+    'selectOnClose' => false,
+    'defaultByOptions' => false
 ])
 @php
     $model = $attributes->get('wire:model');
@@ -44,6 +45,7 @@
         parseCreate: @js($parseCreate),
         fetch: @js($fetch),
         multiple: @js($multiple),
+        options: @js($options),
         create: @js($create),
         defaultValue: @js($parseInt ? intval($defaultValue) : $defaultValue),
         value: @entangle($model),
@@ -102,6 +104,7 @@
         });
 
         const updateOption = (raw) => {
+            console.log('update', model, raw)
             if (!multiple) {
                 const value = String(raw);
                 if (raw != null && !selector.find(`option[value='${value}']`).length && fetch){
@@ -131,9 +134,19 @@
             }
         }
 
-        const currentValue = defaultValue ? defaultValue : selector.select2('data')[0]?.id;
-        if (currentValue) updateOption(currentValue);
-        if (currentValue) setValue(currentValue);
+        @if (!$defaultByOptions)
+            const currentValue = defaultValue ? defaultValue : selector.select2('data')[0]?.id;
+            if (currentValue) updateOption(currentValue);
+            if (currentValue) setValue(currentValue);
+        @else
+            const selected = [];
+
+            options.map(op => {
+                if (op.selected) selected.push(op.id)
+            })
+
+            selector.val(selected).trigger('change')
+        @endif
 
         $watch('value', updateOption);
     }"
