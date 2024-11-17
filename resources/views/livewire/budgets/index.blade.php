@@ -18,11 +18,11 @@
             @include('livewire.budgets.partials.address')
 
             <div class="max-w-full space-y-2">
-                <x-alert key="budget.message"/>
-
                 <section class="max-w-full col-span-2 flex justify-end">
                     <x-button type="submit" form="budget-form" variant="success">บันทึกใบเบิก</x-button>
                 </section>
+
+                <x-alert key="budget.message"/>
             </div>
         </div>
     </div>
