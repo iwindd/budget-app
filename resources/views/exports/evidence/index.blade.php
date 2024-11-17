@@ -48,10 +48,6 @@
 </head>
 
 <body>
-    @php
-        $expenses_total = 0;
-    @endphp
-
     @include('exports.evidence.partials.header')
     @include('exports.evidence.partials.content')
     @include('exports.evidence.partials.footer')

@@ -4,7 +4,7 @@
         <table class="push-left w-8">
             <tr>
                 <td class="fit">{{ __('exports.evidence-total-money') }}</td>
-                <td class="under"><span>{{$format->bahtText($expenses_total)}}</span></td>
+                <td class="under"><span>{{$format->bahtText($value)}}</span></td>
             </tr>
         </table>
         <table class="text-sm-all" style="overflow: hidden;">

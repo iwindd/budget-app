@@ -67,18 +67,25 @@ class ExportBudgetController extends Controller
             ->where('merge', false)
             ->where('default', false)
             ->get(['id', 'label', 'merge']);
+        $expenses->push(Expense::getDefault(['id', 'label', 'merge', 'default']));
 
-        $expenses->push(Expense::getDefault());
+        $users = $budget->companions;
+        $owner = new BudgetCompanion();
+        $owner->user_id = $budget->user_id;
+        $owner->budget_id = $budget->id;
+        $users->prepend($owner);
 
         $pdf = PDF::loadView('exports.evidence.index', [
             'office' => $budget->office->label,
             'province' => Factory::province()->find($budget->office->province)['name_th'],
             'name' => $budget->user->name,
             'position' => $budget->user->position->label,
-            'listExpenses' => $expenses,
-            'items' => $budget->budgetItems,
+            'value' => $budget->value,
+            'expenses' => $expenses,
+            'budgetExpenses' => $budget->expenses,
+            'users' => $users,
             'serial' => $budget->serial,
-            'date' => $budget->date
+            'date' => $budget->finish_at
         ]);
         $pdf->set_paper('a4', 'landscape');
         return $pdf->stream();

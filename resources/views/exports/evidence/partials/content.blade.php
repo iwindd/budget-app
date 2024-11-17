@@ -5,20 +5,20 @@
                 <th rowspan="2">{!! __('exports.evidence-table-number') !!}</th>
                 <th class="w-2" rowspan="2">{{ __('exports.evidence-table-name') }}</th>
                 <th class="w-1" rowspan="2">{{ __('exports.evidence-table-position') }}</th>
-                <th colspan="{{$listExpenses->count()}}">{{ __('exports.evidence-table-expenses') }}</th>
+                <th colspan="{{$expenses->count()}}">{{ __('exports.evidence-table-expenses') }}</th>
                 <th style="width: 5%;" rowspan="2">{{ __('exports.evidence-table-total') }}</th>
                 <th class="w-1" rowspan="2">{{ __('exports.evidence-table-signature') }}</th>
                 <th class="w-1" rowspan="2">{{ __('exports.evidence-table-date') }}</th>
                 <th class="w-1" rowspan="2">{{ __('exports.evidence-table-note') }}</th>
             </tr>
             <tr>
-                @foreach ($listExpenses as $item)
+                @foreach ($expenses as $item)
                     <th>{{$item->label}}</th>
                 @endforeach
             </tr>
         </thead>
         <tbody>
-            @foreach ($items as $index => $item)
+            @foreach ($users as $index => $item)
                 @php
                     $expense_total = 0;
                 @endphp
@@ -26,19 +26,18 @@
                     <td>{{$index+1}}</td>
                     <td>{{$item->user->name}}</td>
                     <td>{{$item->user->position->label}}</td>
-                    @foreach ($listExpenses as $expense)
+                    @foreach ($expenses as $expense)
                         @php
-                            $budgetItemExpenses = $item->budgetItemExpenses;
                             $expense_items = !$expense->default ? (
-                                $budgetItemExpenses->where('expense_id', $expense->id)
+                                $budgetExpenses->where('expense_id', $expense->id)
                             ): (
-                                $budgetItemExpenses->filter(function($item) {
+                                $budgetExpenses->filter(function($item) {
                                     return $item->expense->merge || $item->expense->default;
                                 })
                             );
                             $expense_sum = $expense_items->sum(function ($expense_item) {
                                 return $expense_item->total * ($expense_item->days ?? 1);
-                            });
+                            }) / $users->count();
                             $expense_total += $expense_sum;
                         @endphp
                         <td>
@@ -53,30 +52,26 @@
             @endforeach
             <tr>
                 <th colspan="3">{{__('exports.evidence-table-total-all')}}</th>
-                @foreach ($listExpenses as $expense)
+                @php
+                    $expenses_total = 0;
+                @endphp
+                @foreach ($expenses as $expense)
                     @php
-                        $expense_total = 0;
+                        $expense_items = !$expense->default ? (
+                            $budgetExpenses->where('expense_id', $expense->id)
+                        ): (
+                            $budgetExpenses->filter(function($item) {
+                                return $item->expense->merge || $item->expense->default;
+                            })
+                        );
+                        $expense_sum = $expense_items->sum(function ($expense_item) {
+                            return $expense_item->total * ($expense_item->days ?? 1);
+                        });
+                        $expenses_total += $expense_sum;
                     @endphp
-                    @foreach ($items as $item)
-                        @php
-                            $budgetItemExpenses = $item->budgetItemExpenses;
-                            $expense_items = !$expense->default ? (
-                                $budgetItemExpenses->where('expense_id', $expense->id)
-                            ): (
-                                $budgetItemExpenses->filter(function($item) {
-                                    return $item->expense->merge || $item->expense->default;
-                                })
-                            );
-
-                            $expense_total += $expense_items->sum(function ($expense_item) {
-                                return $expense_item->total * ($expense_item->days ?? 1);
-                            });
-                        @endphp
-                    @endforeach
-                    @php
-                        $expenses_total += $expense_total;
-                    @endphp
-                    <th>{{$format->number($expense_total)}}</th>
+                    <td>
+                        {{$format->number($expense_sum)}}
+                    </td>
                 @endforeach
                 <th>{{$format->number($expenses_total)}}</th>
                 <td colspan="3">
