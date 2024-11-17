@@ -18,9 +18,11 @@
             @include('livewire.budgets.partials.address')
 
             <div class="max-w-full space-y-2">
-                <section class="max-w-full col-span-2 flex justify-end">
-                    <x-button type="submit" form="budget-form" variant="success">บันทึกใบเบิก</x-button>
-                </section>
+                @if ($hasPermissionToManage)
+                    <section class="max-w-full col-span-2 flex justify-end">
+                        <x-button type="submit" form="budget-form" variant="success">บันทึกใบเบิก</x-button>
+                    </section>
+                @endif
 
                 <x-alert key="budget.message"/>
             </div>

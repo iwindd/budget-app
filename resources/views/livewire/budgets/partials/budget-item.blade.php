@@ -6,11 +6,11 @@
 >
     {{-- ORDER --}}
     <section class="md:col-span-1 col-span-2">
-        <x-textfield lang="budgets.input-order_id" :startIcon="@svg('heroicon-o-paper-clip')" wire:model="budgetForm.order" />
+        <x-textfield :disabled="!$hasPermissionToManage" lang="budgets.input-order_id" :startIcon="@svg('heroicon-o-paper-clip')" wire:model="budgetForm.order" />
     </section>
     {{-- DATE --}}
     <section class="md:col-span-1 col-span-2">
-        <x-datepicker lang="budgets.input-order_at" :startIcon="@svg('heroicon-o-calendar')" x-bind:min="budget_date"  wire:model="budgetForm.date" type="date" />
+        <x-datepicker :disabled="!$hasPermissionToManage" lang="budgets.input-order_at" :startIcon="@svg('heroicon-o-calendar')" x-bind:min="budget_date"  wire:model="budgetForm.date" type="date" />
     </section>
     {{-- BUDGET_ITEM_OWNER_NAME --}}
     <section>
@@ -24,12 +24,13 @@
     </section>
     <section class="grid grid-cols-2 gap-1 col-span-2 lg:col-span-1">
         {{-- SUBJECT --}}
-        <x-textfield lang="budgets.input-subject" :startIcon="@svg('heroicon-o-book-open')" wire:model="budgetForm.subject" />
+        <x-textfield :disabled="!$hasPermissionToManage" lang="budgets.input-subject" :startIcon="@svg('heroicon-o-book-open')" wire:model="budgetForm.subject" />
         {{-- HEADER --}}
-        <x-textfield lang="budgets.input-header" :startIcon="@svg('heroicon-o-map-pin')" wire:model="budgetForm.header" />
+        <x-textfield :disabled="!$hasPermissionToManage" lang="budgets.input-header" :startIcon="@svg('heroicon-o-map-pin')" wire:model="budgetForm.header" />
     </section>
     <section class="lg:col-span-1 col-span-2">
         <x-selectize
+            :disabled="!$hasPermissionToManage"
             :fetch="route('companions.selectize')"
             lang='budgets.input-companion'
             wire:model="companions"

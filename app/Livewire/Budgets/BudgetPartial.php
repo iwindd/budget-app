@@ -23,7 +23,7 @@ class BudgetPartial extends Component
     public BudgetAddressForm $budgetAddressForm;
     public BudgetExpenseForm $budgetExpenseForm;
 
-    public $hasPermissionToManage = true;
+    public $hasPermissionToManage = false;
     public $addressSelectize = [];
 
     public $companions = [];
@@ -47,6 +47,8 @@ class BudgetPartial extends Component
                 ] + $expense->expense->toArray();
             });
         }
+
+        $this->hasPermissionToManage = !$budget->exists || $budget->user_id == Auth::user()->id;
 
         $staticExpenses->map(function($expense) use (&$payloadExpenses){
             if (!$payloadExpenses->firstWhere('id', $expense['id'])){
@@ -82,6 +84,7 @@ class BudgetPartial extends Component
 
     public function save()
     {
+        if (!$this->hasPermissionToManage) return false;
         $this->addresses = collect($this->addresses)->map(fn ($address) =>[
             'from_date' => Carbon::parse($address['from_date'])->format('Y-m-d H:i'),
             'back_date' => Carbon::parse($address['back_date'])->format('Y-m-d H:i')
@@ -166,6 +169,7 @@ class BudgetPartial extends Component
 
     /* EXPENSE */
     public function onAddExpense() {
+        if (!$this->hasPermissionToManage) return false;
         $validated = $this->budgetExpenseForm->submit();
         $expense   = Expense::find($validated['expense_id']);
 
@@ -189,6 +193,8 @@ class BudgetPartial extends Component
     }
 
     public function onRemoveExpense($id) {
+        if (!$this->hasPermissionToManage) return false;
+
         $this->expenses = collect($this->expenses)
             ->filter(fn($e) => $e['id'] != $id)
             ->toArray();
