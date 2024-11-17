@@ -9,27 +9,41 @@ use App\Models\BudgetItem;
 use App\Models\BudgetItemTravel;
 use App\Models\Expense;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 use PA\ProvinceTh\Factory;
 
 class ExportBudgetController extends Controller
 {
-    public function document(Budget $budget)
+    public function document(Request $request, Budget $budget)
     {
+        $user = $budget->user;
+        $owner = $budget->user;
+        $companions = null;
+        $companions = $budget->companions()->where('user_id', '!=', $request->get('of'))->get();
+        $of = $budget->companions()->where('user_id', $request->get('of'))->first();
+
+        if ($of){
+            $fakeCompanion = new BudgetCompanion();
+            $fakeCompanion->user_id = $user->id;
+            $fakeCompanion->budget_id = $budget->id;
+            $companions->push($fakeCompanion);
+            $user = $of->user;
+        }
+
         $pdf = Pdf::loadView('exports.document.index', [
             'serial' => $budget->serial,
             'date' => $budget->date,
-            'owner' => $budget->user->name,
-            'name' => $budget->user->name,
+            'owner' => $owner->name,
+            'name' => $user->name,
             'value' => $budget->value,
             'office' => $budget->office->label,
             'invitation' => $budget->invitation->label,
             'order' => $budget->order,
             'order_at' => $budget->date,
-            'position' => $budget->user->position->label,
-            'owner_position' => $budget->user->position->label,
-            'affiliation' => $budget->user->affiliation->label,
-            'companions' => $budget->companions()->with('user')->where('user_id', '!=', $budget->user_id)->get(),
+            'position' => $user->position->label,
+            'owner_position' => $user->position->label,
+            'affiliation' => $user->affiliation->label,
+            'companions' => $companions,
             'header' => $budget->header,
             'subject' => $budget->subject,
             'addresses' => $budget->addresses,
