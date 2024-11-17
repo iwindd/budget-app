@@ -23,9 +23,13 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('budgets.export.document', ['budget' => request()->budget])">
-                            {{ __('exports.export-document-btn') }}
-                        </x-dropdown-link>
+                        @foreach ($documents as $document)
+                            <x-dropdown-link 
+                                :href="route('budgets.export.document', ['budget' => request()->budget, 'of' => $document['id']])"
+                            >
+                                {{ __('exports.export-document-btn', ['name' => $document['name']]) }}
+                            </x-dropdown-link>
+                        @endforeach
                     </x-slot>
                 </x-dropdown>
             </div>

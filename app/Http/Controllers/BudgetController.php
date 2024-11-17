@@ -69,8 +69,12 @@ class BudgetController extends Controller
      * Display the specified resource.
      */
     public function show(Budget $budget) {
+        $documents = $budget->companions->map(fn ($c) => ['id' => $c->user_id, 'name' => $c->user->name]);
+        $documents->prepend(['id' => $budget->user_id, 'name' => $budget->user->name]);
+
         return view('user.budgets.create.index', [
-            'serial' => $budget->serial
+            'serial' => $budget->serial,
+            'documents' => $documents
         ]);
     }
 

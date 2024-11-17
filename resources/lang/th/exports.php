@@ -3,7 +3,7 @@
 return [
     /* MAIN */
     'export-dropdown-btn' => "พิมพ์",
-    'export-document-btn' => "ใบเบิกค่าใช้จ่ายในการเดินทางไปราชการ",
+    'export-document-btn' => "ใบเบิกค่าใช้จ่ายในการเดินทางไปราชการของ :name",
     'export-evidence-btn' => "หลักฐานการจ่ายเงินค่าใช่จ่ายในการเดินทางไปราชการ",
     'export-certificate-btn' => "ใบรับรองแทนใบเสร็จรับเงิน",
     'export-travel-btn' => "รายละเอียดการเดินทางไปราชการ",
