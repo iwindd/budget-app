@@ -355,35 +355,49 @@
                 const isMultiple = !fromDate.isSame(backDate, 'day') && multiple;
 
                 if (isMultiple){
-                    const lastDayInStack = backDate;
-                    const isSameMonth = fromDate.isSame(lastDayInStack, 'month');
-                    const isSameYear = fromDate.isSame(lastDayInStack, 'year');
+                    const isSameMonth = fromDate.isSame(backDate, 'month');
+                    const isSameYear = fromDate.isSame(backDate, 'year');
                     let format = 'Do';
                     localeKey = 'table-date-value:stack';
 
-                    lastDayInStack.set({
+                    const timeOfFrom = {
                         hour: fromDate.hour(),
                         minute: fromDate.minute()
-                    })
+                    };
 
                     if (!isSameMonth) format = 'Do MMM';
                     if (!isSameYear) format = 'll';
-                    start = fromDate.format(format) + ' - ' + lastDayInStack.format('lll')
-                    end = fromDate.format(format) + ' - ' + lastDayInStack.format('lll')
+                    start = fromDate.format(format) + ' - ' + backDate.clone().set(timeOfFrom).format('lll')
+                    end = fromDate.format(format) + ' - ' + backDate.format('lll')
+
                 }else{
                     start = fromDate.format('lll')
                     end = backDate.format('lll')
+                    minutes = backDate.diff(fromDate, 'minute')
                 }
 
                 return this.locales[localeKey]
                     .replace(':start', start)
                     .replace(':end', end);
             },
-            formatAddressTimeDiff(address) {
-                if (!address) return;
+            formatAddressTimeDiff(from, back, multiple) {
+                if (!from || !back) return console.log('not found');
+                const [fromDate, backDate] = [moment(from), moment(back)];
+                let minutes = 0;
+
+                if (multiple){
+                    let days = backDate.diff(fromDate, 'day')+1;
+                    minutes = fromDate.clone().set({
+                        hour: backDate.hour(),
+                        minute: backDate.minute()
+                    }).diff(fromDate, 'minute') * days;
+                }else{
+                    minutes = backDate.diff(fromDate, 'minute')
+                }
+                
                 const DAY_MINUTES = 24 * 60
-                const days = Math.floor(address.minutes / DAY_MINUTES);
-                const hours = (address.minutes % DAY_MINUTES) / 60;
+                const days = Math.floor(minutes / DAY_MINUTES);
+                const hours = (minutes % DAY_MINUTES) / 60;
                 let text = '';
 
                 if (days > 0) text += this.locales['table-time-day-format'].replace(':d', days) + ' ';
@@ -813,7 +827,7 @@
                                     </td>
 
                                     <td class="px-6 py-2 text-center" x-text="getLocationLabel(address.back_id)"></td>
-                                    <td class="text-end" x-text="address.minutes"></td>
+                                    <td class="text-end" x-text="formatAddressTimeDiff(address.from_date, address.back_date, address.multiple)"></td>
                                 </tr>
                             </template>
                         </tbody>
