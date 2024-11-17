@@ -82,6 +82,10 @@ class BudgetPartial extends Component
 
     public function save()
     {
+        $this->addresses = collect($this->addresses)->map(fn ($address) =>[
+            'from_date' => Carbon::parse($address['from_date'])->format('Y-m-d H:i'),
+            'back_date' => Carbon::parse($address['back_date'])->format('Y-m-d H:i')
+        ] + $address)->toArray();
         $validated = $this->validate();
         $budget = $this->budgetForm->budget;
         $exists = $budget->exists;
