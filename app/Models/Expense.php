@@ -52,8 +52,8 @@ class Expense extends Model
         return $expense->update(['default' => true]);
     }
 
-    public static function getDefault() {
-        return Expense::where('default', true)->firstOrFail();
+    public static function getDefault($fields = '*') {
+        return Expense::where('default', true)->firstOrFail($fields);
     }
 
     public static function createDefaultBudgetItemExpense(Budget $budget) : BudgetExpense {
