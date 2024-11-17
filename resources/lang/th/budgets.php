@@ -64,6 +64,7 @@ return [
     'admin-add-dialog-header' => "ใบเบิกเงิน",
     /* ALERT "[bagName]variant<duration>:message" - bagName, duration is optional */
     'alert-budget-saved' => "[budget.message]success<3000>:บันทึกใบเบิกแล้ว!",
+    'alert-budget-error' => "[budget.message]danger<3000>:ไม่สามารถบันทึกได้ กรุณาลองใหม่อีกครั้งภายหลัง!",
     'alert-companion-add' => "[budget.message]success<2000>:เพิ่มผู้ร่วมเดินทางแล้ว!",
     'alert-companion-remove' => "[budget.message]success<2000>:ลบผู้ร่วมเดินทางแล้ว!",
 ];

@@ -85,10 +85,42 @@ class BudgetPartial extends Component
         $this->addresses = collect($this->addresses)->map(fn ($address) =>[
             'from_date' => Carbon::parse($address['from_date'])->format('Y-m-d H:i'),
             'back_date' => Carbon::parse($address['back_date'])->format('Y-m-d H:i')
-        ] + $address)->toArray();
+        ] + $address)->sortBy('from_date')->toArray();
         $this->budgetAddressForm->clear();
         $this->budgetExpenseForm->clear();
         $validated = $this->validate();
+
+        // validation etc
+        Carbon::setLocale('th');
+        $lastEvent        = Carbon::parse(collect($validated['addresses'])->last()['back_date']);
+        $lastEventRange   = $lastEvent->clone()->addMonth();
+        $finish_at        = Carbon::parse($validated['finish_at']);
+        $hasCustomError   = false;
+
+        if (!$finish_at->between($lastEvent, $lastEventRange)){
+            $lastEventFormatted = $lastEvent->translatedFormat('j M y H:i');
+            $lastEventRangeFormatted = $lastEventRange->translatedFormat('j M y H:i');
+
+            $this->addError('budgetForm.finish_at', "ลงวันที่จำเป็นต้องอยู่ระหว่างหลังการสิ้นสุดการเดินทาง 30 วัน หรือระหว่าง {$lastEventFormatted} - {$lastEventRangeFormatted}");
+            $hasCustomError = true;
+        }
+
+        $totalAmount = collect($validated['expenses'])->map(function ($expense) {
+            return $expense['split'] && $expense['days'] ? $expense['total'] * $expense['days'] : $expense['total'];
+        })->sum();
+
+        if ($validated['value'] < $totalAmount){
+            $formatTotal = number_format($totalAmount);
+            $this->addError('budgetForm.value', "จำนวนเงินที่ต้องการเบิกน้อยกว่ารายการค่าใช้จ่ายทั้งหมดซึ่งมีมูลค่า {$formatTotal}บาท");
+            $hasCustomError = true;
+        }
+        
+        if ($hasCustomError) {
+            $this->dispatch("alert", trans('budgets.alert-budget-error'));
+            return false;
+        }
+
+        // etc
         $budget = $this->budgetForm->budget;
         $exists = $budget->exists;
 
