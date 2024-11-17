@@ -210,6 +210,14 @@
                 this.extractIndex = {};
                 this.dates = [];
             },
+            removeEdit(){
+                if (this.editing == null) return;
+                const payload = this.rawWithoutAddress(this.editing);
+
+                this.cancelEdit();
+                this.addressesRaw = payload;
+                this.addressesMinimized = this.minimizeAddresses(payload)
+            },
             rawWithoutAddress(ri){
                 const target = this.addressesMinimized[ri];
                 if (!target) return;
