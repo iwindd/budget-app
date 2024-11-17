@@ -28,6 +28,10 @@ class BudgetPartial extends Component
     public $addresses  = [];
     public $expenses   = [];
 
+    public $client_name,
+            $client_position,
+            $client_affiliation;
+
     public function mount(Request $request)
     {
         $budget = $request->budget;
@@ -48,6 +52,28 @@ class BudgetPartial extends Component
         }
 
         $this->hasPermissionToManage = !$budget->exists || $budget->user_id == Auth::user()->id || Auth::user()->role == 'admin';
+
+        if ($this->hasPermissionToManage){
+            $this->client_name = $budget->user->name;
+            $this->client_position = $budget->user->position->label;
+            $this->client_affiliation = $budget->user->affiliation->label;
+        }else{
+            /** @var User $user */
+            $user = Auth::user();
+
+            $this->client_name = $user->name;
+            $this->client_position = $user->position->label;
+            $this->client_affiliation = $user->affiliation->label;
+            $companionPayload = collect($this->budgetForm->companions)->filter(fn($c) => $c['id'] != $user->id);
+            $companionPayload->prepend([
+                'id' => $user->id,
+                'name' => $user->name,
+                'selected' => true,
+                'owner' => true
+            ]);
+
+            $this->budgetForm->companions = $companionPayload->toArray();
+        }
 
         $staticExpenses->map(function($expense) use (&$payloadExpenses){
             if (!$payloadExpenses->firstWhere('id', $expense['id'])){

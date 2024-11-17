@@ -14,13 +14,13 @@
     </section>
     {{-- BUDGET_ITEM_OWNER_NAME --}}
     <section>
-        <x-textfield lang="budgets.input-budget-owner-name" wire:model="budgetForm.name" disabled />
+        <x-textfield lang="budgets.input-budget-owner-name" wire:model="client_name" disabled />
     </section>
     <section class="grid grid-cols-2 gap-1">
         {{-- BUDGET_ITEM_OWNER_POSITION --}}
-        <x-textfield lang="budgets.input-budget-owner-position" wire:model="budgetForm.position" disabled />
+        <x-textfield lang="budgets.input-budget-owner-position" wire:model="client_position" disabled />
         {{-- BUDGET_ITEM_OWNER_AFFILIATION --}}
-        <x-textfield lang="budgets.input-budget-owner-affiliation" wire:model="budgetForm.affiliation" disabled />
+        <x-textfield lang="budgets.input-budget-owner-affiliation" wire:model="client_affiliation" disabled />
     </section>
     <section class="grid grid-cols-2 gap-1 col-span-2 lg:col-span-1">
         {{-- SUBJECT --}}
