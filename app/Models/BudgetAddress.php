@@ -49,4 +49,16 @@ class BudgetAddress extends Model
     {
         return $value ? date('Y-n-j H:i', strtotime($value)) : null;
     }
+
+    public function getFromLabelAttribute()
+    {
+        $label = self::list()->firstWhere('id', $this->from_id)['label'] ?? null;
+        return $label;
+    }
+
+    public function getBackLabelAttribute()
+    {
+        $label = self::list()->firstWhere('id', $this->back_id)['label'] ?? null;
+        return $label;
+    }
 }
