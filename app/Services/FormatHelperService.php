@@ -30,7 +30,7 @@ class FormatHelperService
             $buddhistYearFull = $carbonDate->year + 543;
             $customFormat = str_replace('Y', $buddhistYearFull, $format);
         }
-
+    
         return $carbonDate->translatedFormat($customFormat);
     }
 
@@ -42,16 +42,27 @@ class FormatHelperService
         $isSameMonth = $fromDate->isSameMonth($backDate);
         $isSameYear = $fromDate->isSameYear($backDate);
 
-        $dP = $options['Pd'] ?? '';
-        $mP = $options['Pm'] ?? '';
-        $yP = $options['Py'] ?? '';
-        $tP = $options['Pt'] ?? '';
-        $fM = $isSameMonth ? "$mP F" : "M";
-        $fD = "$dP d";
-        $fY = "$yP Y";
-        $fT = "$tP H:i";
+        // P = prefix, D = disable
+        $Pd = $options['Pd'] ?? '';
+        $Pm = $options['Pm'] ?? '';
+        $Py = $options['Py'] ?? '';
+        $Pt = $options['Pt'] ?? '';
+        $Dt = $options['Dt'] ?? false;
+        // format
+        $M = $isSameMonth && !(isset($options['M']) && $options['M'] === true) ? "F" : "M";
+        $D = isset($options['j']) && $options['j'] === true ? "j" : "d";
+        $Y = isset($options['y']) && $options['y'] === true ? "y" : "Y";
+        $T = "H:i";
 
-        if ($options['fMain']){
+        $fM = "$Pm $M";
+        $fD = "$Pd $D";
+        $fY = "$Py $Y";
+        $fT = !$Dt ? "$Pt $T" : '';
+        $dash = $options['-'] ?? " - ";
+        // from Main
+        $fMain = isset($options['fMain']) ? $options['fMain'] : true;
+
+        if ($fMain){
             $backDate->setTimeFromTimeString($fromDate->toTimeString());
         }else{
             $fromDate->setTimeFromTimeString($backDate->toTimeString());
@@ -64,14 +75,15 @@ class FormatHelperService
             if (!$isSameYear) $format = "$fD $fM ";
 
             $_fromDate = self::date($fromDate, $format, $lang);
-            $_backDate = self::date($backDate, "d $fM $fY $fT", $lang);
+            $_backDate = self::date($backDate, "$D $fM $fY $fT", $lang);
 
-            return "$_fromDate - $_backDate";
+            return "$_fromDate$dash$_backDate";
         }else{
             return self::date(
-                $options['fMain'] ? $fromDate : $backDate
+                $fMain ? $fromDate : $backDate
             , "$fD $fM $fY $fT", $lang);
         }
+    }
 
     public static function dayDiff($date1, $date2, $absolute = true) {
         return Carbon::parse($date1)->diffInDays(Carbon::parse($date2), $absolute);
