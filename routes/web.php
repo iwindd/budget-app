@@ -41,10 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/selectize/locations', [LocationController::class, 'locations'])->name('locations.selectize');
     Route::get('/selectize/expenses', [ExpenseController::class, 'expenses'])->name('expenses.selectize');
 
-    Route::get('/budgets/{budget:serial}/document', [ExportBudgetController::class, 'document'])->name('budgets.export.document');
-    Route::get('/budgets/{budget:serial}/evidence', [ExportBudgetController::class, 'evidence'])->name('budgets.export.evidence');
-    Route::get('/budgets/{budget:serial}/certificate', [ExportBudgetController::class, 'certificate'])->name('budgets.export.certificate');
-    Route::get('/budgets/{budget:serial}/travel', [ExportBudgetController::class, 'travel'])->name('budgets.export.travel');
+    Route::get('/budgets/{budget}/document', [ExportBudgetController::class, 'document'])->name('budgets.export.document');
+    Route::get('/budgets/{budget}/evidence', [ExportBudgetController::class, 'evidence'])->name('budgets.export.evidence');
+    Route::get('/budgets/{budget}/certificate', [ExportBudgetController::class, 'certificate'])->name('budgets.export.certificate');
+    Route::get('/budgets/{budget}/travel', [ExportBudgetController::class, 'travel'])->name('budgets.export.travel');
 });
 
 /* USER ROUTES */
