@@ -39,12 +39,12 @@ class BudgetExpenseForm extends Form
     }
 
     public function submit(){
-        if (!is_numeric($this->expense) && json_validate($this->expense)) {
+        if (!is_numeric($this->expense) && is_string($this->expense) && json_validate($this->expense)) {
             $created = $this->create();
 
             if ($created) $this->expense = $created->id;
         }
-
+        
         $validated = $this->validate([
             'expense' => ['required', 'integer', 'exists:expenses,id'],
             'total' => ['required', 'integer', 'min:0'],
