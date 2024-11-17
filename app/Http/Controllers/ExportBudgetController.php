@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Budget;
 use App\Models\BudgetAddress;
 use App\Models\BudgetCompanion;
-use App\Models\BudgetItem;
-use App\Models\BudgetItemTravel;
 use App\Models\Expense;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -104,17 +102,17 @@ class ExportBudgetController extends Controller
         return $pdf->stream();
     }
 
-    public function travel(Budget $budget, BudgetItem $budgetItem) {
-        $budgetItemTravel = BudgetItemTravel::where("budget_item_id", $budgetItem->id)->firstOrFail();
+    public function travel(Budget $budget) {
+        $addresses = $budget->addresses;
         $pdf = PDF::loadView('exports.travel.index', [
-            'office' => $budget->office->label,
+            'invitation' => $budget->invitation->label,
             'province' => Factory::province()->find($budget->office->province)['name_th'],
-            'name' => $budgetItem->user->name,
-            'position' => $budgetItem->user->position->label,
-            'start' => $budgetItemTravel->start,
-            'end' => $budgetItemTravel->end,
-            'n' => $budgetItemTravel->n,
-            'rows' => $budgetItemTravel->budgetItemTravelItems
+            'name' => $budget->user->name,
+            'position' => $budget->user->position->label,
+            'start' =>  $addresses->first()->from_date,
+            'end' => $addresses->last()->back_date,
+            'header' => $budget->header,
+            'addresses' => $addresses
         ]);
         $pdf->set_paper('a4', 'landscape');
 

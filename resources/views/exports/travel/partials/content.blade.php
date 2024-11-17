@@ -3,11 +3,11 @@
         <thead>
             <tr>
                 <th rowspan="2">{{ __('exports.travel-table-order') }}</th>
-                <th class="w-1" rowspan="2">{{ __('exports.travel-table-plate') }}</th>
-                <th class="w-1" colspan="2">{{ __('exports.travel-table-travel') }}</th>
-                <th class="w-1" rowspan="2">{{ __('exports.travel-table-vehicle-user') }}</th>
-                <th class="w-1" rowspan="2">{{ __('exports.travel-table-place') }}</th>
-                <th class="w-1" colspan="2">{{ __('exports.travel-table-back') }}</th>
+                <th rowspan="2">{{ __('exports.travel-table-plate') }}</th>
+                <th colspan="2">{{ __('exports.travel-table-travel') }}</th>
+                <th rowspan="2">{{ __('exports.travel-table-vehicle-user') }}</th>
+                <th rowspan="2">{{ __('exports.travel-table-place') }}</th>
+                <th colspan="2">{{ __('exports.travel-table-back') }}</th>
                 <th rowspan="2">{!! __('exports.travel-table-distance') !!}</th>
                 <th rowspan="2">{{ __('exports.travel-table-round') }}</th>
                 <th rowspan="2">{{ __('exports.travel-table-total-distance') }}</th>
@@ -21,18 +21,23 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($rows as $index => $row)
+            @foreach ($addresses as $i => $address)
+                @php
+                    $round = $address->multiple ? ($format->dayDiff($address->back_date, $address->from_date)+1)*2:2;
+                @endphp
                 <tr>
-                    <td>{{$index+1}}</td>
-                    <td>{{$row->plate}}</td>
-                    <td colspan="2">{{$format->date($row->start, "d F Y H:i")}}</td>
-                    <td>{{$row->driver}}</td>
-                    <td>{{$row->location}}</td>
-                    <td colspan="2">{{$format->date($row->end, "d F Y H:i")}}</td>
-                    <td>{{$format->number($row->distance)}}</td>
-                    <td>{{$format->number($row->round)}}</td>
-                    <td>{{$format->number($row->distance * $row->round)}}</td>
-                    <td>{{$format->number(($row->distance * $row->round)*4)}}</td>
+                    <td>{{$i+1}}</td>
+                    <td>{{$address->plate}}</td>
+                    <td>{{$format->date($address->from_date, "j M y")}}</td>
+                    <td>{{$format->date($address->from_date, "H:i")}}</td>
+                    <td>{{$name}}</td>
+                    <td>{{$header}}</td>
+                    <td>{{$format->date($address->back_date, "j M y")}}</td>
+                    <td>{{$format->date($address->back_date, "H:i")}}</td>
+                    <td>{{$format->number($address->distance)}}กม.</td>
+                    <td>{{$format->number($round)}} เที่ยว</td>
+                    <td>{{$format->number($address->distance * $round)}}กม.</td>
+                    <td>{{$format->number($address->distance * $round * 4)}}กม.</td>
                 </tr>
             @endforeach
         </tbody>
