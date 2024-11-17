@@ -84,10 +84,10 @@ class Expense extends Model
     }
 
     /**
-     * Get the budget item expenses
+     * Get the budget expenses
     */
-    public function budgetItemExpenses()
+    public function budgetExpenses()
     {
-        return $this->hasMany(BudgetItemExpense::class);
+        return $this->hasMany(BudgetExpense::class);
     }
 }
