@@ -66,6 +66,8 @@ class FormatHelperService
             , "$fD $fM $fY $fT", $lang);
         }
 
+    public static function dayDiff($date1, $date2, $absolute = true) {
+        return Carbon::parse($date1)->diffInDays(Carbon::parse($date2), $absolute);
     }
 
     public static function dateDiffHumans($date, $lang = 'th') {
