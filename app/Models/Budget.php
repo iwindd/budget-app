@@ -129,7 +129,7 @@ class Budget extends Model
     }
 
     public function addresses() {
-        return $this->hasMany(BudgetAddress::class);
+        return $this->hasMany(BudgetAddress::class)->orderBy('from_date');;
     }
 
     public function expenses() {
