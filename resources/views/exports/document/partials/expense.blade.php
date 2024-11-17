@@ -2,12 +2,12 @@
     <table>
         <tr>
             <td class="fit indent">
-                {{ __('exports.document-expense-header', [
-                    'value' =>
-                        $companions->count() > 0
-                            ? __('exports.document-expense-header-companion')
-                            : __('exports.document-expense-header-user'),
-                ]) }}
+                {{ __('exports.document-expense-header') }}
+
+                [{!!$companions->count() <= 0 ? '<i style="font-family: DejaVu Sans, sans-serif; font-size: 10px;">✔</i>': ' '!!}] {{__('exports.document-expense-header-user')}}
+                [{!!$companions->count() > 0 ? '<i style="font-family: DejaVu Sans, sans-serif; font-size: 10px;">✔</i>': ' '!!}] {{__('exports.document-expense-header-companion')}}
+
+                ดังนี้
             </td>
         </tr>
     </table>
