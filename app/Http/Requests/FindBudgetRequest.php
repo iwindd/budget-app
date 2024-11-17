@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\BudgetRelevant;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FindBudgetRequest extends FormRequest
@@ -23,7 +24,7 @@ class FindBudgetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'serial' => ['required', 'string', 'max:255'],
+            'serial' => ['required', 'string', 'max:255', new BudgetRelevant],
         ];
     }
 }
