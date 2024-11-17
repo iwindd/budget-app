@@ -210,6 +210,42 @@
                 this.extractIndex = {};
                 this.dates = [];
             },
+            rawWithoutAddress(ri){
+                const target = this.addressesMinimized[ri];
+                if (!target) return;
+
+                return this.addressesRaw.filter((a) => {
+                    if (
+                        target &&
+                        a.plate     == target.plate     &&
+                        a.distance  == target.distance  &&
+                        a.from_id   == target.from_id   &&
+                        a.back_id   == target.back_id
+                    ) {
+                        if (target.multiple) {
+                            const [from, back] = [moment(a.from_date), moment(a.back_date)];
+                            const [from2, back2] = [moment(target.from_date), moment(target.back_date)];
+
+                            if (
+                                from.hour() == from2.hour() &&
+                                back.hour() == back2.hour() &&
+                                from.minute() == from2.minute() &&
+                                back.minute() == back2.minute() &&
+                                from.isBetween(from2, back2, undefined, '[]') &&
+                                back.isBetween(from2, back2, undefined, '[]')
+                            ){
+                                return false;
+                            }
+                        }else{
+                            if (a.from_date == target.from_date && a.back_date == target.back_date){
+                                return false;
+                            }
+                        }
+                    }
+
+                    return true;
+                })
+            },
             edit(address) {
                 if (this.editing || !this.calender || !address || address?.ri == undefined  || this.editing == address.ri ) return this.cancelEdit();
                 const [from, back] = [moment(address.from_date), moment(address.back_date)];
@@ -253,38 +289,7 @@
                 const hasError = this.validate();
                 if (hasError) return;
                 let payload = []
-                const editingItem = this.addressesMinimized[this.editing];
-                const pool = !editingItem ? this.addressesRaw : this.addressesRaw.filter((a) => {
-                    if (
-                        editingItem &&
-                        a.plate     == editingItem.plate     &&
-                        a.distance  == editingItem.distance  &&
-                        a.from_id   == editingItem.from_id   &&
-                        a.back_id   == editingItem.back_id
-                    ) {
-                        if (editingItem.multiple) {
-                            const [from, back] = [moment(a.from_date), moment(a.back_date)];
-                            const [from2, back2] = [moment(editingItem.from_date), moment(editingItem.back_date)];
-
-                            if (
-                                from.hour() == from2.hour() &&
-                                back.hour() == back2.hour() &&
-                                from.minute() == from2.minute() &&
-                                back.minute() == back2.minute() &&
-                                from.isBetween(from2, back2, undefined, '[]') &&
-                                back.isBetween(from2, back2, undefined, '[]')
-                            ){
-                                return false;
-                            }
-                        }else{
-                            if (a.from_date == editingItem.from_date && a.back_date == editingItem.back_date){
-                                return false;
-                            }
-                        }
-                    }
-
-                    return true;
-                })
+                const pool = this.editing == null ? this.addressesRaw : this.rawWithoutAddress(this.editing);
                 const object  = {
                     from_id: this.from_location_id, back_id: this.back_location_id,
                     plate: this.plate, distance: this.distance,
