@@ -7,7 +7,6 @@
                 <div class="space-y-2">
                     <x-textfield
                         :startIcon="@svg('heroicon-o-hashtag')"
-                        :disabled="$infoStep"
                         wire:model="serial"
                         lang="budgets.input-serial"
                     />
@@ -21,38 +20,15 @@
                         display="name"
                     />
                 </div>
-
-                @if ($infoStep)
-                    <div class="grid grid-cols-2 gap-2">
-                        <x-textfield
-                            :startIcon="@svg('heroicon-o-calendar')"
-                            wire:model="budgetForm.date"
-                            lang="budgets.input-date"
-                            type="date"
-                        />
-                        <x-textfield
-                            :startIcon="@svg('heroicon-o-banknotes')"
-                            :placeholder="__('budgets.input-value-placeholder')"
-                            wire:model="budgetForm.value"
-                            lang="budgets.input-value-minimize"
-                        />
-                    </div>
-                @endif
             </section>
 
             <div class="mt-6 flex justify-end">
-                @if ($infoStep)
-                    <x-button type="button" variant="secondary" class="mr-auto" wire:click="clear">
-                        {{ __('budgets.dialog-back-btn') }}
-                    </x-button>
-                @endif
-
                 <x-button type="button" variant="secondary" x-on:click="$dispatch('close')">
                     {{ __('budgets.dialog-cancel-btn') }}
                 </x-button>
 
                 <x-button variant="primary" type="submit" class="ml-3">
-                    {{ __('budgets.dialog-confirm-btn') }}
+                    {{ __('budgets.add-btn') }}
                 </x-button>
             </div>
         </form>

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight ">
-                {{ __('budgets.create-heading', ['serial' => request()->budget]) }}
+                {{ __('budgets.create-heading', ['serial' => $serial]) }}
             </h2>
             <div>
                 <x-dropdown align="right" width="96">

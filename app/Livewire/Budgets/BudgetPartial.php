@@ -7,8 +7,6 @@ use App\Livewire\Forms\BudgetExpenseForm;
 use App\Livewire\Forms\BudgetForm;
 use App\Models\Budget;
 use App\Models\BudgetAddress;
-use App\Models\BudgetItem;
-use App\Models\BudgetItemExpense;
 use App\Models\Expense;
 use App\Models\Invitation;
 use App\Models\Office;
@@ -32,10 +30,11 @@ class BudgetPartial extends Component
 
     public function mount(Request $request)
     {
+        $budget = $request->budget;
         $this->addressSelectize = BudgetAddress::list()->toArray();
         $staticExpenses    = Expense::getStaticExpenses();
         $payloadExpenses = collect([]);
-        $budget = $this->budgetForm->setBudget($request->budget);
+        $this->budgetForm->setBudget($budget);
 
         if ($budget->exists) {
             $this->addresses = $budget->addresses()->get(['from_id', 'from_date', 'back_id', 'back_date', 'multiple', 'plate', 'distance'])->toArray();
@@ -48,7 +47,7 @@ class BudgetPartial extends Component
             });
         }
 
-        $this->hasPermissionToManage = !$budget->exists || $budget->user_id == Auth::user()->id;
+        $this->hasPermissionToManage = !$budget->exists || $budget->user_id == Auth::user()->id || Auth::user()->role == 'admin';
 
         $staticExpenses->map(function($expense) use (&$payloadExpenses){
             if (!$payloadExpenses->firstWhere('id', $expense['id'])){

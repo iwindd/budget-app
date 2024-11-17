@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FindBudgetRequest;
 use App\Models\Budget;
 use App\Models\BudgetItemTravel;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -24,7 +23,25 @@ class BudgetController extends Controller
      */
     public function find(FindBudgetRequest $request)
     {
-        return Redirect::route("budgets.show", ['budget' => $request->validated()['serial']]);
+        $serial = $request->validated()['serial'];
+        $budget = Budget::where([
+            ['user_id', Auth::user()->id],
+            ['serial', $serial]
+        ])->first('id');
+
+        if (!$budget){
+            $budgets = Budget::where('serial', $serial)->get(['user_id', 'id']);
+
+            foreach ($budgets as $payload) {
+                if ($payload->companions()->where('user_id', Auth::user()->id)->exists()){
+                    $budget = $payload;
+                    break;
+                }
+            }
+        }
+
+        if (!$budget) return Redirect::route("budgets");
+        return Redirect::route("budgets.show", ['budget' => $budget->id]);
     }
 
     public function getBudgetItem(String $serial) {
@@ -51,11 +68,9 @@ class BudgetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
-    {
+    public function show(Budget $budget) {
         return view('user.budgets.create.index', [
-            'budgetItemId' => $this->getBudgetItem($request->budget),
-            'budgetItemTravelId' => $this->getBudgetItemTravel($request->budget)
+            'serial' => $budget->serial
         ]);
     }
 

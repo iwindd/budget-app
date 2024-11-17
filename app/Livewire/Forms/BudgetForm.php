@@ -25,24 +25,11 @@ class BudgetForm extends Form
     public $invitation,
         $office;
 
-    public function parseBudget(String $serial): Budget
+    public function setBudget(Budget $budget) : Budget
     {
-        $budget = Budget::where('serial', $serial)->first() ?? new Budget();
-        if ($budget->exists) return $budget;
-        /* FILL NEW BUDGET */
-        $budget->serial        = $serial;
-        $budget->user_id       = Auth::user()->id;
-        $budget->office_id     = Office::getOffice('id')->id;
-        $budget->invitation_id = Invitation::getInvitation('id')->id;
-        return $budget;
-    }
-
-    public function setBudget(string $serial) : Budget
-    {
-        $budget = Budget::where('serial', $serial)->first() ?? new Budget();
         $this->budget     = $budget;
 
-        $this->serial = $serial;
+        $this->serial = $budget->serial;
         $this->finish_at = $budget->finish_at;
         $this->value = $budget->value;
         $this->order = $budget->order;

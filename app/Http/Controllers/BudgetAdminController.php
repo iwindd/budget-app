@@ -8,19 +8,13 @@ use Illuminate\Http\Request;
 
 class BudgetAdminController extends Controller
 {
-    public function index()
-    {
+    public function index(){
         return view('admin.budgets.index');
     }
 
-    public function show(Request $request) {
-        $budget = Budget::where('serial', $request->budget)->firstOrFail();
-        $budgetItem = $budget->budgetItems()->findOrFail($request->budgetItem);
-        $travel = $budgetItem->budgetItemTravel;
-
+    public function show(Budget $budget) {
         return view('user.budgets.create.index', [
-            'budgetItemId' => BudgetItem::isHasData($budgetItem) ? $budgetItem->id : 0,
-            'budgetItemTravelId' => $travel->id ?? 0
+            'serial' => $budget->serial
         ]);
     }
 }

@@ -4,6 +4,8 @@ namespace App\Livewire\BudgetsAdmin;
 
 use App\Livewire\Forms\BudgetForm;
 use App\Models\Budget;
+use App\Models\Invitation;
+use App\Models\Office;
 use App\Rules\UserRole;
 use Livewire\Component;
 
@@ -70,12 +72,20 @@ class Dialog extends Component
 
     public function submit()
     {
-        $validated = $this->validate(['serial' => $this->budgetForm->rules()['serial']]);
-        $budget = $this->budgetForm->parseBudget($validated['serial']);
+        $validated = $this->validate([
+            'serial' => $this->budgetForm->rules()['serial'],
+            'user_id' => ['required', 'exists:users,id']
+        ]);
 
-        return $budget->exists ?
-            $this->search($budget) :
-            $this->create($budget);
+        $budget = Budget::where($validated)->first();
+        
+        if (!$budget){
+            $validated['invitation_id'] = Invitation::getInvitation(['id'])->id;
+            $validated['office_id'] = Office::getOffice(['id'])->id;
+            $budget = Budget::create($validated);
+        }
+
+        $this->redirectRoute('budgets.show.admin', ['budget' => $budget->id]);
     }
 
     public function render()
