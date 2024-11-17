@@ -2,6 +2,7 @@
 
 namespace App\Livewire\AdminBudgetItem;
 
+use App\Models\Budget;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\BudgetItem;
@@ -10,7 +11,7 @@ use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 
 class Datatable extends DataTableComponent
 {
-    protected $model = BudgetItem::class;
+    protected $model = Budget::class;
     protected $formatter;
 
     public function __construct()
@@ -21,18 +22,14 @@ class Datatable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
-        $this->addAdditionalSelects(['budget_items.subject as subject']);
+        $this->addAdditionalSelects(['budgets.id as id']);
+        $this->addAdditionalSelects(['budgets.subject as subject']);
     }
 
     public function columns(): array
     {
         return [
-            Column::make(trans('budgetitems.table-hasData'), 'id')
-                ->format(fn ($val) => trans('budgetitems.table-hasData-'.(
-                    BudgetItem::isHasData(BudgetItem::find($val)) ? 'true' : 'false'
-                )))
-                ->html(),
-            Column::make(trans('budgetitems.table-serial'), "budget.serial")
+            Column::make(trans('budgetitems.table-serial'), "serial")
                 ->sortable(),
             Column::make(trans('budgetitems.table-subject'), "header")
                 ->sortable()
@@ -40,7 +37,7 @@ class Datatable extends DataTableComponent
             Column::make(trans('budgetitems.table-owner'), "user.name")
                 ->format(fn($value) => $this->formatter->userName($value))
                 ->sortable(),
-            Column::make(trans('budgetitems.table-value'), "budget.value")
+            Column::make(trans('budgetitems.table-value'), "value")
                 ->format(fn ($value) => $this->formatter->number($value))
                 ->sortable(),
             Column::make(trans('budgetitems.table-date'), "date")
@@ -56,8 +53,7 @@ class Datatable extends DataTableComponent
                             'label' => trans('budgetitems.action-edit'),
                             'attributes' => [
                                 'href' => route('budgets.show.admin', [
-                                    'budget' => $row['budget.serial'],
-                                    'budgetItem' => $row->id
+                                    'budget' => $row->id,
                                 ])
                             ]
                         ],

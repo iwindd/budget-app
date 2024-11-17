@@ -123,11 +123,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Budget::class);
     }
-
-    /**
-     * Get budget items
-     */
-    public function budgetItems()  {
-        return $this->hasMany(BudgetItem::class);
-    }
 }
