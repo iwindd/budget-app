@@ -34,6 +34,10 @@ class BudgetExpenseForm extends Form
         ]);
     }
 
+    public function clear() {
+        $this->reset();
+    }
+
     public function submit(){
         if (!is_numeric($this->expense) && json_validate($this->expense)) {
             $created = $this->create();
