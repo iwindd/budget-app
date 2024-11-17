@@ -23,7 +23,7 @@ class Datatable extends DataTableComponent
     {
         $this->setPrimaryKey('id');
         $this->addAdditionalSelects(['budgets.id as id']);
-        $this->addAdditionalSelects(['budgets.subject as subject']);
+     /*    $this->addAdditionalSelects(['budgets.subject as subject']); */
     }
 
     public function columns(): array
@@ -31,9 +31,10 @@ class Datatable extends DataTableComponent
         return [
             Column::make(trans('budgetitems.table-serial'), "serial")
                 ->sortable(),
-            Column::make(trans('budgetitems.table-subject'), "header")
-                ->sortable()
-                ->format(fn ($val, $row) => "{$val}/{$row->subject}"),
+            Column::make(trans('budgetitems.table-header'), "header")
+                ->sortable(),
+            Column::make(trans('budgetitems.table-subject'), "subject")
+                ->sortable(),
             Column::make(trans('budgetitems.table-owner'), "user.name")
                 ->format(fn($value) => $this->formatter->userName($value))
                 ->sortable(),

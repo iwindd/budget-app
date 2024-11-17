@@ -46,9 +46,10 @@ class Datatable extends DataTableComponent
         return [
             Column::make(trans('budgetitems.table-serial'), "serial")
                 ->sortable(),
-            Column::make(trans('budgetitems.table-subject'), "header")
-                ->sortable()
-                ->format(fn ($val, $row) => "{$val}/{$row->subject}"),
+            Column::make(trans('budgetitems.table-header'), "header")
+                ->sortable(),
+            Column::make(trans('budgetitems.table-subject'), "subject")
+                ->sortable(),
             Column::make(trans('budgetitems.table-date'), "date")
                 ->sortable()
                 ->format(fn ($val) => $this->formatter->date($val)),
