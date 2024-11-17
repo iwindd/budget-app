@@ -107,7 +107,7 @@
                 const now = startDate, dates = [];
 
                 while (now.isBefore(endDate) || now.isSame(endDate)) {
-                    dates.push(now.format('Y-M-D'));
+                    dates.push(now.format('Y-MM-DD'));
                     now.add(1, 'days');
                 }
                 return dates;
@@ -203,7 +203,7 @@
                 }
 
                 if (tempGroup.length) result.push(tempGroup);
-                return result.map(group => group.map(date => date.format('Y-M-D')));
+                return result.map(group => group.map(date => date.format('Y-MM-DD')));
             },
             cancelEdit(){
                 this.editing = null;
@@ -225,7 +225,7 @@
                 if (address.multiple){
                     this.calender.setDate(this.getDatesBetween(from, back), true);
                 }else{
-                    this.calender.setDate([from.format('Y-M-D'), back.format('Y-M-D')], true);
+                    this.calender.setDate([from.format('Y-MM-DD'), back.format('Y-MM-DD')], true);
                 }
 
                 const isMultiple = address.multiple || from.isSame(back, 'day') ? true: false;
@@ -295,8 +295,8 @@
                 const addEvent = (f, b) => {
                     payload.push({
                         ...object,
-                        from_date: f.format('Y-M-D HH:mm'),
-                        back_date: b.format('Y-M-D HH:mm'),
+                        from_date: f.format('Y-MM-DD HH:mm'),
+                        back_date: b.format('Y-MM-DD HH:mm'),
                         multiple: f.isSame(b, 'day') ? true : object.multiple
                     })
                 }
@@ -423,8 +423,8 @@
 
                         preview.push({
                             ...obj,
-                            from_date: from.format('Y-M-D HH:mm'),
-                            back_date: back.format('Y-M-D HH:mm'),
+                            from_date: from.format('Y-MM-DD HH:mm'),
+                            back_date: back.format('Y-MM-DD HH:mm'),
                             classList: 'bg-success-200/25'
                         })
                     }
@@ -458,14 +458,14 @@
             get errors() {
                 if (this.dates.length <= 0) return [];
                 if (!this.checkbox) {
-                    const fromDate = moment(this.dates[0] + ' ' + this.from_time, 'Y-M-D HH:mm');
-                    const backDate = moment(this.dates[this.dates.length - 1] + ' ' + this.back_time, 'Y-M-D HH:mm');
+                    const fromDate = moment(this.dates[0] + ' ' + this.from_time, 'Y-MM-DD HH:mm');
+                    const backDate = moment(this.dates[this.dates.length - 1] + ' ' + this.back_time, 'Y-MM-DD HH:mm');
 
                     return this.getEventsBetween(fromDate, backDate, undefined, true);
                 } else {
                     const events = this.dates.flatMap(date => {
-                        const fromDate = moment(`${date} ${this.from_time}`, 'Y-M-D HH:mm');
-                        const backDate = moment(`${date} ${this.back_time}`, 'Y-M-D HH:mm');
+                        const fromDate = moment(`${date} ${this.from_time}`, 'Y-MM-DD HH:mm');
+                        const backDate = moment(`${date} ${this.back_time}`, 'Y-MM-DD HH:mm');
 
                         return this.getEventsBetween(fromDate, backDate, undefined, true);
                     });
@@ -490,8 +490,8 @@
 
                 const $inRangePicker = $(`.datepicker-address .flatpickr-day.selected .event.event-pointer, .datepicker-address .flatpickr-day.inRange .event.event-pointer`)
                 if (!checkbox) {
-                    const fromDate = moment(dates[0] + ' ' + from_time, 'Y-M-D HH:mm');
-                    const backDate = moment(dates[1] + ' ' + back_time, 'Y-M-D HH:mm');
+                    const fromDate = moment(dates[0] + ' ' + from_time, 'Y-MM-DD HH:mm');
+                    const backDate = moment(dates[1] + ' ' + back_time, 'Y-MM-DD HH:mm');
 
                     if (fromDate && backDate && (hasEvent(fromDate) || hasEvent(backDate))) {
                         $inRangePicker.removeClass('event-primary').addClass('event-danger')
@@ -500,8 +500,8 @@
                     }
                 } else {
                     const isOverlap = dates.find(date => {
-                        return hasEvent(moment(date + ' ' + from_time, 'Y-M-D HH:mm')) ||
-                            hasEvent(moment(date + ' ' + back_time, 'Y-M-D HH:mm'))
+                        return hasEvent(moment(date + ' ' + from_time, 'Y-MM-DD HH:mm')) ||
+                            hasEvent(moment(date + ' ' + back_time, 'Y-MM-DD HH:mm'))
                     })
 
                     if (isOverlap) {
@@ -518,15 +518,15 @@
             calender = flatpickr($refs.datepicker, {
                 inline: true,
                 mode: checkbox ? 'multiple' : 'range',
-                dateFormat: 'Y-M-D',
+                dateFormat: 'Y-MM-DD',
                 onChange: (newDates) => {
                     dates = newDates.sort((a, b) => {
-                        return moment(a, 'Y-M-D').toDate() - moment(b, 'Y-M-D').toDate();
-                    }).map(date => moment(date).format('Y-M-D'));
+                        return moment(a, 'Y-MM-DD').toDate() - moment(b, 'Y-MM-DD').toDate();
+                    }).map(date => moment(date).format('Y-MM-DD'));
                     updatePointer()
                 },
-                formatDate: (date) => moment(date).format('Y-M-D'),
-                parseDate: (datestr) => moment(datestr, 'Y-M-D', true).toDate(),
+                formatDate: (date) => moment(date).format('Y-MM-DD'),
+                parseDate: (datestr) => moment(datestr, 'Y-MM-DD', true).toDate(),
                 disable: [(dateStr)=>{
                     const date = moment(dateStr);
                     const events = getEventsIn(date, true);
@@ -625,8 +625,8 @@
 
             $watch('dates', (dates) => {
                 if (!calender) return;
-                const selectedDates = calender.selectedDates.map(date => moment(date).format('Y-M-D'));
-                const newDates = dates.map(date => moment(date).format('Y-M-D'));
+                const selectedDates = calender.selectedDates.map(date => moment(date).format('Y-MM-DD'));
+                const newDates = dates.map(date => moment(date).format('Y-MM-DD'));
                 const hasDifference = selectedDates.length !== newDates.length ||
                     selectedDates.some((date, index) => date !== newDates[index]);
 
