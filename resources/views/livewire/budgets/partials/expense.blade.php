@@ -55,7 +55,7 @@
                             style: 'currency',
                             currency: 'THB',
                             minimumFractionDigits: 2,
-                        }).format(expenses[index].days * expenses[index].total)" disabled :root="['class'=>'flex-grow']" class="text-end" />
+                        }).format((expense.split ? expenses[index].days : 1) * expenses[index].total)" disabled :root="['class'=>'flex-grow']" class="text-end" />
                         <template x-if="expense.merge">
                             <div>
                                 <x-button x-on:click="removeExpense(expense.id)" type="button" icon-only variant="danger" size="sm">
