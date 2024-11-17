@@ -38,11 +38,11 @@
             </table>
         @endforeach
     @endif
-    <table>
-        <tr>
-            <td class="fit">{{ __('exports.document-subject') }}</td>
-            <td class="under"><span>{{ $header }} / {{ $subject }}</span></td>
-            <td class="fit">{{ __('exports.document-subject-suffix') }}</td>
-        </tr>
-    </table>
+    <p>
+        {{ __('exports.document-subject') }}
+        <span style="padding: 0 0.5em;">
+            {{ $header }} / {{ $subject }}
+        </span>
+        {{ __('exports.document-subject-suffix') }}
+    </p>
 </section>
