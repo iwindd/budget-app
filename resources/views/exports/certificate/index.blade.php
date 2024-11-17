@@ -50,7 +50,6 @@
 <body>
     @include('exports.certificate.partials.header')
     @include('exports.certificate.partials.content')
-    @include('exports.certificate.partials.footer')
 </body>
 
 </html>

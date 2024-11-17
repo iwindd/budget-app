@@ -2,13 +2,13 @@
     <table>
         <tr>
             <td class="fit indent">{{ __('exports.certificate-total-text') }}</td>
-            <td class="under" colspan="3"><span>{{ $format->bahtText($total) }}</span></td>
+            <td class="under" colspan="3"><span>{{$format->bahtText($sum)}}</span></td>
         </tr>
         <tr>
             <td class="fit text-right">{{ __('exports.certificate-name') }}</td>
-            <td class="under"><span></span></td>
+            <td class="under"><span>{{$name}}</span></td>
             <td class="fit">{{ __('exports.certificate-position') }}</td>
-            <td class="under"><span></span></td>
+            <td class="under"><span>{{$position}}</span></td>
         </tr>
     </table>
     <table>
@@ -35,7 +35,7 @@
         </tr>
         <tr>
             <td class="fit text-right"></td>
-            <td class="under" colspan="2"><span></span></td>
+            <td class="under" colspan="2"><span>{{$position}}</span></td>
         </tr>
     </table>
 </section>

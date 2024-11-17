@@ -2,29 +2,72 @@
     <table class="table">
         <thead>
             <tr>
-                <th class="w-2" style="height: 2em;">{{ __('exports.certificate-table-date') }}</th>
+                <th class="w-1" style="height: 2em;">{{ __('exports.certificate-table-date') }}</th>
                 <th class="w-4">{{ __('exports.certificate-table-detail') }}</th>
-                <th class="w-2">{{ __('exports.certificate-table-value') }}</th>
-                <th class="w-2">{{ __('exports.certificate-table-note') }}</th>
+                <th class="w-1">{{ __('exports.certificate-table-value') }}</th>
+                <th class="w-1">{{ __('exports.certificate-table-note') }}</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($expenses as $expense)
+            <tr>
+                <td >{{-- EMPTY --}}</td>
+                <td class="text-left" style="text-align: left; padding: 0.3em;">
+                    {{$subject}} ออกเดินทางไป {{$header}} 
+                </td>
+                <td>{{-- EMPTY --}}</td>
+                <td>{{-- EMPTY --}}</td>
+            </tr>
+            @php
+                $sum = 0;
+            @endphp
+            @foreach ($addresses as $address)
                 <tr>
-                    <td class="fit" style="height: 1.5em;"></td>
-                    <td class="fit">{{ $expense->expense->label }}</td>
-                    <td class="fit">{{ $format->number($expense->total * ($expense->days ?? 1)) }}</td>
-                    <td class="fit"></td>
+                    <td style="padding: 0.2em; vertical-align: top;">
+                        <p>{{
+                            $format->dateAddress($address->from_date, $address->back_date, $address->multiple, [
+                                'M' => true,
+                                'y' => true,
+                                'j' => true,
+                                'Dt' => true, 
+                            ])
+                        }}</p>
+                        {{$address->multiple ? 'ทุกวันจนถึง': 'จนถึง'}}
+                        <p>{{
+                            $format->dateAddress($address->from_date, $address->back_date, $address->multiple, [
+                                'M' => true,
+                                'y' => true,
+                                'j' => true,
+                                'Dt' => true,
+                                'fMain' => false
+                            ])
+                        }}</p>
+                    </td>
+                    @php
+                        $round = $address->multiple ? ($format->dayDiff($address->back_date, $address->from_date)+1)*2:2;
+                        $total = ($address->distance * $round) * 4;
+                        $sum  += $total;
+                    @endphp
+                    <td style="text-align: left; padding: 0.2em; vertical-align: top;">
+                        <p>
+                            - ค่าน้ำมันเชื้อเพลิง {{$name}} โดยรถทะเบียน {{$address->plate}} เดินทางจาก {{$address->from_label}} เวลา {{$format->date($address->from_date, 'H:i')}}น. ไป {{$header}} และกลับถึง {{$address->back_label}}  เวลา {{$format->date($address->back_date, 'H:i')}}น.
+                        </p>
+                        <span>({{$format->number($address->distance)}}กม. x 4บาท x {{$round}}เที่ยว รวมเป็นเงิน {{
+                            $format->number($total, 2)
+                        }}บาท)</span>
+                    </td>
+                    <td style="padding: 0.2em; vertical-align: top;">{{$format->number($total, 2)}}</td>
+                    <td></td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="2" style="height: 2em; vertical-align: middle;">
-                    {{ __('exports.certificate-table-total') }}</th>
-                <th class="fit" style="vertical-align: middle;">{{ $format->number($total) }}</th>
-                <th class="fit"></th>
+                <th></th>
+                <th>{{$format->bahtText($sum)}}</th>
+                <th>{{$format->number($sum)}}</th>
+                <th></th>
             </tr>
         </tfoot>
     </table>
 </section>
+@include('exports.certificate.partials.footer')

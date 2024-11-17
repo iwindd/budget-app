@@ -91,12 +91,14 @@ class ExportBudgetController extends Controller
         return $pdf->stream();
     }
 
-    public function certificate(Budget $budget, BudgetItem $budgetItem) {
+    public function certificate(Budget $budget) {
         $pdf = PDF::loadView('exports.certificate.index', [
             'office' => $budget->office->label,
-            'expenses' => $budgetItem->budgetItemExpenses()->with('expense')->orderBy('days', 'desc')->get(),
-            'total' => BudgetItem::getBudgetExpenseTotal($budgetItem),
-            'name' => $budgetItem->user->name,
+            'name' => $budget->user->name,
+            'position' => $budget->user->position->label,
+            'header' => $budget->header,
+            'addresses' => $budget->addresses,
+            'subject' => $budget->subject
         ]);
 
         return $pdf->stream();
