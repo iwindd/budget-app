@@ -5,7 +5,7 @@
 
 <div
     class="relative"
-    x-data="{ open: @json($active) }"
+    x-data="{ open: $persist(@json($active)) }"
 >
     <x-sidebar.link
         collapsible
