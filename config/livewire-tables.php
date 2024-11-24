@@ -13,7 +13,7 @@ return [
     /**
      * Cache Rappasoft Frontend Assets
      */
-    'cache_assets' => false,
+    'cache_assets' => true,
 
     /**
      * Enable or Disable automatic injection of core assets
@@ -33,7 +33,7 @@ return [
     /**
      * Customise Script & Styles Paths
      */
-    'script_base_path' => '/rappasoft/laravel-livewire-tables',
+    'script_base_path' => '/datatable',
 
     /**
      * Filter Default Configuration Options
