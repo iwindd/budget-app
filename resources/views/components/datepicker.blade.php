@@ -1,5 +1,6 @@
 @props([
     'disabled' => false,
+    'placeholder' => null,
     'id' => null,
     'name' => null,
     'startIcon' => null,
@@ -28,6 +29,10 @@
         $langHelper = "$lang-helper";
         $helper = $helper ?? __($langHelper);
         if ($helper == $langHelper) $helper = null;
+
+        $langPlaceholder = "$lang-placeholder";
+        $placeholder = $placeholder ?? __($langPlaceholder);
+        if ($placeholder == $langPlaceholder) $placeholder = null;
     }
 
     $wrapper['class'] = ($wrapper['class'] ?? ''). "
@@ -84,6 +89,7 @@
             <input
                 x-ref="input"
                 {!!$attributes->merge([
+                    'placeholder' => $placeholder,
                     'disabled' => $disabled,
                     'id' => $id,
                     'name' => $name,
