@@ -37,6 +37,8 @@
         $placeholder = $placeholder ?? __($langPlaceholder);
         if ($placeholder == $langPlaceholder) $placeholder = null;
     }
+
+    $root['class'] = ($root['class'] ?? ''). ($error ? ' select-invalid' : '') ;
 @endphp
 <section
     x-data="{
@@ -103,7 +105,7 @@
             setValue(selector.val(), e.params?.data?.create)
         }).on('select2:unselect', e => {
             setValue(selector.val())
-        }); 
+        });
 
         const updateOption = (raw) => {
             console.log('update', model, raw)

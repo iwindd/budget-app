@@ -8,6 +8,12 @@
     @apply border-gray-400 rounded-md dark:border-gray-600 dark:text-gray-300 dark:bg-dark-eval-1;
 }
 
+.select-invalid .select2-container--default .select2-selection--multiple,
+.select-invalid .select2-container--default .select2-selection{
+    @apply border-danger dark:border-danger
+}
+
+
 .select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection{
     height: 42px;
     @apply py-2 px-0;
