@@ -48,6 +48,7 @@
                 <x-textfield
                     lang="expenses.input-days"
                     :disabled="!$hasPermissionToManage"
+                    :startIcon="@svg('heroicon-o-calendar-days')"
                     wire:model="expenses.{{$index}}.days"
                     type="number"
                 />
@@ -57,6 +58,7 @@
                     <x-textfield
                         lang="expenses.input-total"
                         :disabled="!$hasPermissionToManage"
+                        :startIcon="@svg('heroicon-o-banknotes')"
                         wire:model="expenses.{{$index}}.total"
                         type="number"
                     />
