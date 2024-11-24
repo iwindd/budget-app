@@ -5,7 +5,7 @@
                 lang="expenses.selectize"
                 :fetch="route('expenses.selectize')"
                 wire:model="budgetExpenseForm.expense"
-                :root="['class' => 'space-y-1 col-span-4 lg:col-span-3']"
+                :root="['class' => 'space-y-1 col-span-5 lg:col-span-3']"
                 create
                 :parseInt="false"
                 :parseCreate="true"
