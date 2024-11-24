@@ -43,15 +43,7 @@
 
 <section {{ $attributes->only('root')->merge($root) }}>
     @if ($label)
-        <label
-            for="{{$id}}"
-            class="
-                block font-medium text-sm
-                {{$error ? 'text-danger' : 'text-gray-700 dark:text-gray-300'}}
-            "
-        >
-            {{ $label }}
-        </label>
+        <x-form.label :for="$id" :value="$label" :class="$error ? '!text-danger' : ''"/>
     @endif
     <section
         {!!
@@ -85,21 +77,8 @@
     </section>
 
     @if ($error)
-        <ul class="block font-medium text-xs text-danger">
-            @foreach ((array) $error as $message)
-                <li>{{ $message }}</li>
-            @endforeach
-        </ul>
-    @else
-        @if ($helper)
-            <label
-                class="
-                    block font-medium text-xs
-                    {{$error ? 'text-danger' : 'text-gray-700 dark:text-gray-300'}}
-                "
-            >
-                {{ $helper }}
-            </label>
-        @endif
+        <x-form.errors :messages="$error"/>
+    @elseif ($helper)
+        <x-form.helper :for="$id" :value="$helper" :class="$error ? '!text-danger' : ''"/>
     @endif
 </section>
