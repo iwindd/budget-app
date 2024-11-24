@@ -1,19 +1,4 @@
-<div
-    class="max-w-full"
-    x-data="{
-        expenses: @entangle('expenses'),
-        removeExpense(id){
-            $wire.onRemoveExpense(id);
-        }
-    }"
->
-    @php
-    $expenseError = array_merge(
-        $errors->get('expenses', []),
-        $errors->get('expenses.*', []),
-    );
-    @endphp
-
+<div class="max-w-full">
     @if ($hasPermissionToManage)
         <form wire:submit="onAddExpense" class="grid grid-cols-5 gap-1 mb-2 border-b pb-2">
             <x-textfield value="เพิ่มค่าใช้จ่ายอื่นๆ" disabled class="lg:pl-3 pl-0" :root="['class'=>'col-span-2 lg:col-span-1']" />
@@ -39,44 +24,60 @@
         </form>
     @endif
 
-    <template x-for="(expense, index) in expenses">
-        <div class="grid grid-cols-4 gap-1">
-            <div :class="{
-                'col-span-2': !expense.split,
-            }">
-                <x-textfield x-bind:value="expense.label" disabled class="lg:pl-3 pl-0" />
+    @foreach ($expenses as $index => $expense)
+        <div
+            class="grid grid-cols-4 gap-1"
+            wire:key="{{$expense['id']}}"
+            x-data="{
+                days: @entangle("expenses.$index.days"),
+                total: @entangle("expenses.$index.total"),
+                split: @js($expense['split']),
+                get sum(){
+                    return new Intl.NumberFormat('th-TH', {
+                        style: 'currency',
+                        currency: 'THB',
+                        minimumFractionDigits: 2,
+                    }).format((this.split ? this.days : 1) * this.total);
+                }
+            }"
+        >
+            <div class="{{!$expense['split'] ? "col-span-2" : ""}}">
+                <x-textfield :value="$expense['label']" disabled class="lg:pl-3 pl-0" />
             </div>
-            <template x-if="expense.split">
-                <x-textfield lang="expenses.input-days" :disabled="!$hasPermissionToManage" x-model="expenses[index].days" type="number" />
-            </template>
-            <template x-if="!expense.default">
+            @if ($expense['split'])
+                <x-textfield
+                    lang="expenses.input-days"
+                    :disabled="!$hasPermissionToManage"
+                    wire:model="expenses.{{$index}}.days"
+                    type="number"
+                />
+            @endif
+            @if (!$expense['default'])
                 <div class="col-span-2 gap-1 grid grid-cols-2">
-                    <x-textfield lang="expenses.input-total" :disabled="!$hasPermissionToManage" x-model="expenses[index].total" type="number" />
+                    <x-textfield
+                        lang="expenses.input-total"
+                        :disabled="!$hasPermissionToManage"
+                        wire:model="expenses.{{$index}}.total"
+                        type="number"
+                    />
 
                     <div class="flex gap-1 w-full h-full">
-                        <x-textfield x-bind:value="new Intl.NumberFormat('th-TH', {
-                            style: 'currency',
-                            currency: 'THB',
-                            minimumFractionDigits: 2,
-                        }).format((expense.split ? expenses[index].days : 1) * expenses[index].total)" disabled :root="['class'=>'flex-grow']" class="text-end" />
-                        @if ($hasPermissionToManage)
-                            <template x-if="expense.merge">
-                                <div>
-                                    <x-button x-on:click="removeExpense(expense.id)" type="button" icon-only variant="danger" size="sm">
-                                        <x-heroicon-o-trash class="w-7 h-full" />
-                                    </x-button>
-                                </div>
-                            </template>  
+                        <x-textfield
+                            disabled
+                            x-bind:value="sum"
+                            :root="['class'=>'flex-grow']"
+                            class="text-end"
+                        />
+                        @if ($expense['merge'] && $hasPermissionToManage)
+                            <div>
+                                <x-button wire:click="onRemoveExpense({{$expense['id']}})" type="button" icon-only variant="danger" size="sm">
+                                    <x-heroicon-o-trash class="w-7 h-full" />
+                                </x-button>
+                            </div>
                         @endif
                     </div>
                 </div>
-            </template>
+            @endif
         </div>
-    </template>
-
-    <section>
-        @foreach ($expenseError as $error)
-            <x-form.error :messages="$error" />
-        @endforeach
-    </section>
+    @endforeach
 </div>
