@@ -45,14 +45,6 @@
             errorList: {},
             editing: @entangle('addressEditing'),
             calender: null,
-            locales: {
-                ['table-date-value']: @js(__('address.table-date-value')),
-                ['table-date-value:stack']: @js(__('address.table-date-value:stack')),
-                ['table-distance-value']: @js(__('address.table-distance-value')),
-                ['table-total-value']: @js(__('address.table-total-value')),
-                ['table-time-hr-format']: @js(__('address.table-time-hr-format')),
-                ['table-time-day-format']: @js(__('address.table-time-day-format')),
-            },
             sort(a, b) {
                 return moment(a.from_date).isBefore(b.from_date) ? -1 : moment(a.from_date).isAfter(b.from_date) ? 1 : 0;
             },
@@ -247,88 +239,6 @@
                 if (!this.back_time) this.onError('back_time', 'เวลากลับถึงไม่ถูกต้อง!');
 
                 return Object.keys(this.errorList).length > 0;
-            },
-            getLocationLabel(locationId){
-                return this.addressesSelectize.find(a => a.id == locationId)?.label || '-'
-            },
-            formatAddressDate(from, back, multiple) {
-                if (!from || !back) return;
-                let [localeKey, start, end] = ['table-date-value', '', ''];
-                const [fromDate, backDate] = [moment(from), moment(back)];
-                const isMultiple = !fromDate.isSame(backDate, 'day') && multiple;
-
-                if (isMultiple){
-                    const isSameMonth = fromDate.isSame(backDate, 'month');
-                    const isSameYear = fromDate.isSame(backDate, 'year');
-                    let format = 'Do';
-                    localeKey = 'table-date-value:stack';
-
-                    const timeOfFrom = {
-                        hour: fromDate.hour(),
-                        minute: fromDate.minute()
-                    };
-
-                    if (!isSameMonth) format = 'Do MMM';
-                    if (!isSameYear) format = 'll';
-                    start = fromDate.format(format) + ' - ' + backDate.clone().set(timeOfFrom).format('lll')
-                    end = fromDate.format(format) + ' - ' + backDate.format('lll')
-
-                }else{
-                    start = fromDate.format('lll')
-                    end = backDate.format('lll')
-                    minutes = backDate.diff(fromDate, 'minute')
-                }
-
-                return this.locales[localeKey]
-                    .replace(':start', start)
-                    .replace(':end', end);
-            },
-            formatAddressTimeDiff(from, back, multiple) {
-                if (!from || !back) return console.log('not found');
-                const [fromDate, backDate] = [moment(from), moment(back)];
-                let minutes = 0;
-
-                if (multiple){
-                    let days = backDate.diff(fromDate, 'day')+1;
-                    minutes = fromDate.clone().set({
-                        hour: backDate.hour(),
-                        minute: backDate.minute()
-                    }).diff(fromDate, 'minute') * days;
-                }else{
-                    minutes = backDate.diff(fromDate, 'minute')
-                }
-
-                const DAY_MINUTES = 24 * 60
-                const days = Math.floor(minutes / DAY_MINUTES);
-                const hours = (minutes % DAY_MINUTES) / 60;
-                let text = '';
-
-                if (days > 0) text += this.locales['table-time-day-format'].replace(':d', days) + ' ';
-                if (hours > 0) text += this.locales['table-time-hr-format'].replace(':hr', hours % 1 === 0 ? hours.toFixed(0) : hours.toFixed(1));
-
-                return text;
-            },
-            formatAddressDistance(address){
-                let round = 1;
-
-                if (address.multiple){
-                    round *= moment(address.back_date).diff(address.from_date, 'day')+1;
-                }
-
-                return this.locales['table-distance-value']
-                    .replace(':distance', (address.distance*round).toLocaleString())
-                    .replace(':round', round.toLocaleString())
-            },
-            formatAddressTotal(address){
-                let round = 1;
-
-                if (address.multiple){
-                    round *= moment(address.back_date).diff(address.from_date, 'day')+1;
-                }
-
-                const distance = address.distance * round
-                return this.locales['table-total-value']
-                    .replace(':total', (distance * 4).toLocaleString())
             },
             get list() {
                 const formatting = this.addressesMinimized.map((a, i) => ({...a, ri: i}))
@@ -627,11 +537,12 @@
                                 <li>{{ __('address.busy-table') }}</li>
                             </template>
                             <template x-for="address in errors">
-                                <li class="space-x-1 "
-                                    x-html='(locales["table-date-value"]
-                                    .replace(":start", moment(address.from_date).format("lll"))
-                                    .replace(":end", moment(address.back_date).format("lll"))
-                                )'>
+                                <li class="space-x-1"
+                                    x-html="(
+                                        @js(__('address.table-date-value'))
+                                        .replace(':start', moment(address.from_date).format('lll'))
+                                        .replace(':end', moment(address.back_date).format('lll'))
+                                    )">
                                 </li>
                             </template>
                         </ul>
@@ -708,7 +619,100 @@
                 </form>
             @endif
 
-            <section>
+            <section
+                x-data="{
+                    locales: {
+                        ['table-date-value']: @js(__('address.table-date-value')),
+                        ['table-date-value:stack']: @js(__('address.table-date-value:stack')),
+                        ['table-distance-value']: @js(__('address.table-distance-value')),
+                        ['table-total-value']: @js(__('address.table-total-value')),
+                        ['table-time-hr-format']: @js(__('address.table-time-hr-format')),
+                        ['table-time-day-format']: @js(__('address.table-time-day-format')),
+                    },
+                    formatAddressDate(from, back, multiple) {
+                        if (!from || !back) return;
+                        let [localeKey, start, end] = ['table-date-value', '', ''];
+                        const [fromDate, backDate] = [moment(from), moment(back)];
+                        const isMultiple = !fromDate.isSame(backDate, 'day') && multiple;
+
+                        if (isMultiple){
+                            const isSameMonth = fromDate.isSame(backDate, 'month');
+                            const isSameYear = fromDate.isSame(backDate, 'year');
+                            let format = 'Do';
+                            localeKey = 'table-date-value:stack';
+
+                            const timeOfFrom = {
+                                hour: fromDate.hour(),
+                                minute: fromDate.minute()
+                            };
+
+                            if (!isSameMonth) format = 'Do MMM';
+                            if (!isSameYear) format = 'll';
+                            start = fromDate.format(format) + ' - ' + backDate.clone().set(timeOfFrom).format('lll')
+                            end = fromDate.format(format) + ' - ' + backDate.format('lll')
+
+                        }else{
+                            start = fromDate.format('lll')
+                            end = backDate.format('lll')
+                            minutes = backDate.diff(fromDate, 'minute')
+                        }
+
+                        return this.locales[localeKey]
+                            .replace(':start', start)
+                            .replace(':end', end);
+                    },
+                    formatAddressTimeDiff(from, back, multiple) {
+                        if (!from || !back) return console.log('not found');
+                        const [fromDate, backDate] = [moment(from), moment(back)];
+                        let minutes = 0;
+
+                        if (multiple){
+                            let days = backDate.diff(fromDate, 'day')+1;
+                            minutes = fromDate.clone().set({
+                                hour: backDate.hour(),
+                                minute: backDate.minute()
+                            }).diff(fromDate, 'minute') * days;
+                        }else{
+                            minutes = backDate.diff(fromDate, 'minute')
+                        }
+
+                        const DAY_MINUTES = 24 * 60
+                        const days = Math.floor(minutes / DAY_MINUTES);
+                        const hours = (minutes % DAY_MINUTES) / 60;
+                        let text = '';
+
+                        if (days > 0) text += this.locales['table-time-day-format'].replace(':d', days) + ' ';
+                        if (hours > 0) text += this.locales['table-time-hr-format'].replace(':hr', hours % 1 === 0 ? hours.toFixed(0) : hours.toFixed(1));
+
+                        return text;
+                    },
+                    formatAddressDistance(address){
+                        let round = 1;
+
+                        if (address.multiple){
+                            round *= moment(address.back_date).diff(address.from_date, 'day')+1;
+                        }
+
+                        return this.locales['table-distance-value']
+                            .replace(':distance', (address.distance*round).toLocaleString())
+                            .replace(':round', round.toLocaleString())
+                    },
+                    formatAddressTotal(address){
+                        let round = 1;
+
+                        if (address.multiple){
+                            round *= moment(address.back_date).diff(address.from_date, 'day')+1;
+                        }
+
+                        const distance = address.distance * round
+                        return this.locales['table-total-value']
+                            .replace(':total', (distance * 4).toLocaleString())
+                    },
+                    getLocationLabel(locationId){
+                        return this.addressesSelectize.find(a => a.id == locationId)?.label || '-'
+                    },
+                }"
+            >
                 <section class="relative overflow-x-auto border-none mt-2">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit border-none">
                         <thead
