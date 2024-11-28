@@ -23,6 +23,7 @@ class BudgetPartial extends Component
 
     public $hasPermissionToManage = false;
     public $addressSelectize = [];
+    public $addressEditing = null;
 
     public $companions = [];
     public $addresses  = [];
@@ -142,7 +143,7 @@ class BudgetPartial extends Component
             $this->addError('budgetForm.value', "จำนวนเงินที่ต้องการเบิกน้อยกว่ารายการค่าใช้จ่ายทั้งหมดซึ่งมีมูลค่า {$formatTotal}บาท");
             $hasCustomError = true;
         }
-        
+
         if ($hasCustomError) {
             $this->dispatch("alert", trans('budgets.alert-budget-error'));
             return false;
@@ -190,6 +191,45 @@ class BudgetPartial extends Component
     public function render()
     {
         return view('livewire.budgets.index');
+    }
+
+    /* ADDRESS */
+    public function onAddAddress() {
+        $raw = collect($this->addresses);
+        if ($this->addressEditing !== null) $raw->forget($this->addressEditing); // remove editing index;
+        $payload = $this->budgetAddressForm->submit();
+        $extract = $this->budgetAddressForm->extract($raw->all()); // move down
+        $from_time = $payload['from_time'];
+        $back_time = $payload['back_time'];
+
+        function addEvent($fromDate, $backDate, &$extract, $payload) {
+            $extract->push([
+                'from_date' => $fromDate->format('Y-m-d H:i'),
+                'back_date' => $backDate->format('Y-m-d H:i'),
+                'multiple'  => $fromDate->isSameDay($backDate) ? true : $payload['multiple'],
+            ] + $payload);
+        }
+
+        if ($payload['multiple']) {
+            // Handle multiple dates
+            $this->budgetAddressForm->splitDates($payload['dates'])
+                ->each(function ($dates) use ($from_time, $back_time, &$extract, $payload) {
+                    $dates->each(function ($date) use ($from_time, $back_time, &$extract, $payload) {
+                        $fromDate = Carbon::parse("{$date} {$from_time}");
+                        $backDate = Carbon::parse("{$date} {$back_time}");
+                        addEvent($fromDate, $backDate, $extract, $payload);
+                    });
+                });
+        } else {
+            // Handle range of dates
+            $dates = collect($payload['dates']);
+            $fromDate = Carbon::parse("{$dates->first()} {$from_time}");
+            $backDate = Carbon::parse("{$dates->last()} {$back_time}");
+            addEvent($fromDate, $backDate, $extract, $payload);
+        }
+
+        $minimize = $this->budgetAddressForm->minimize($extract);
+        $this->addresses = $minimize;
     }
 
     /* EXPENSE */

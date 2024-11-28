@@ -11,11 +11,39 @@
             distance: @entangle('budgetAddressForm.distance'),
             checkbox: @entangle('budgetAddressForm.multiple'),
             addressesSelectize: @entangle('addressSelectize'),
-            addressesRaw: [],
+            get addressesRaw(){
+                const extract = [];
+                this.addressesMinimized
+                    .sort(this.sort)
+                    .forEach(address => {
+                        const fromDate = moment(address.from_date);
+                        const backDate = moment(address.back_date);
+
+                        if (address.multiple) {
+                            this.getDatesBetween(fromDate, backDate).forEach(date => {
+                                extract.push({
+                                    ...address,
+                                    from_date: moment(date).set({
+                                        hour: fromDate.hour(),
+                                        minute: fromDate.minute(),
+                                    }).format('YYYY-MM-DD HH:mm'),
+                                    back_date: moment(date).set({
+                                        hour: backDate.hour(),
+                                        minute: backDate.minute(),
+                                    }).format('YYYY-MM-DD HH:mm'),
+                                });
+                            });
+                        } else {
+                            extract.push(address);
+                        }
+                    });
+
+                return extract;
+            },
             addressesMinimized: @entangle('addresses'),
             extractIndex: {},
             errorList: {},
-            editing: null,
+            editing: @entangle('addressEditing'),
             calender: null,
             locales: {
                 ['table-date-value']: @js(__('address.table-date-value')),
@@ -113,45 +141,6 @@
                 }
                 return dates;
             },
-            minimizeAddresses(raw) {
-                const payload = [];
-                const data = raw.sort(this.sort);
-
-                let skipped = new Set();
-
-                data.forEach((address, index) => {
-                    if (skipped.has(index)) return;
-
-                    let fromDate = moment(address.from_date);
-                    let backDate = moment(address.back_date);
-                    let stack = [];
-                    const sortedData = data.sort(this.sort).slice(index + 1);
-
-                    for (let i = 0; i < sortedData.length; i++) {
-                        const nextAddress = sortedData[i];
-
-                        if (
-                            fromDate.clone().add(i + 1, 'days').isSame(moment(nextAddress.from_date), 'day') &&
-                            backDate.clone().add(i + 1, 'days').isSame(moment(nextAddress.back_date), 'day') &&
-                            address.plate === nextAddress.plate &&
-                            address.distance === nextAddress.distance &&
-                            address.multiple === nextAddress.multiple
-                        ) {
-                            skipped.add(index + i + 1);
-                            stack.push(nextAddress);
-                        } else {
-                            break;
-                        }
-                    }
-                    payload.push({
-                        ...address,
-                        back_date: stack.length ? stack[stack.length - 1].back_date : address.back_date, // Last back_date if stacked
-                        multiple: stack.length > 0,
-                    });
-                });
-
-                return payload.sort(this.sort);
-            },
             extractAddress(address){
                 const output = [];
                 const fromDate = moment(address.from_date);
@@ -213,11 +202,12 @@
             },
             removeEdit(){
                 if (this.editing == null) return;
-                const payload = this.rawWithoutAddress(this.editing);
+                const payload = this.addressesMinimized;
+                console.log(payload, this.editing);
+                payload.splice(this.editing, 1);
 
                 this.cancelEdit();
-                this.addressesRaw = payload;
-                this.addressesMinimized = this.minimizeAddresses(payload)
+                this.addressesMinimized = payload;
             },
             rawWithoutAddress(ri){
                 const target = this.addressesMinimized[ri];
@@ -267,13 +257,13 @@
                 this.distance = address.distance;
                 this.editing = address.ri;
 
-                if (address.multiple){
+                const isMultiple = address.multiple || from.isSame(back, 'day') ? true: false;
+
+                if (isMultiple){
                     this.calender.setDate(this.getDatesBetween(from, back), true);
                 }else{
                     this.calender.setDate([from.format('Y-MM-DD'), back.format('Y-MM-DD')], true);
                 }
-
-                const isMultiple = address.multiple || from.isSame(back, 'day') ? true: false;
 
                 this.calender.set('mode', isMultiple ? 'multiple' : 'range');
                 this.checkbox = isMultiple;
@@ -395,7 +385,7 @@
                 }else{
                     minutes = backDate.diff(fromDate, 'minute')
                 }
-                
+
                 const DAY_MINUTES = 24 * 60
                 const days = Math.floor(minutes / DAY_MINUTES);
                 const hours = (minutes % DAY_MINUTES) / 60;
@@ -480,6 +470,7 @@
                     }
 
                     if (obj.multiple){
+                        console.log(obj.dates);
                         obj.dates.map(date => addPreview({...obj, dates: [date]}))
                     }else{
                         addPreview(obj)
@@ -645,34 +636,6 @@
                 }
             });
 
-            if (addressesMinimized.length > 0){
-                const extract = [];
-                addressesMinimized.sort(sort).forEach(address => {
-                    const fromDate = moment(address.from_date);
-                    const backDate = moment(address.back_date);
-
-                    if (address.multiple) {
-                        getDatesBetween(fromDate, backDate).forEach(date => {
-                            extract.push({
-                                ...address,
-                                from_date: moment(date).set({
-                                    hour: fromDate.hour(),
-                                    minute: fromDate.minute(),
-                                }).format('YYYY-MM-DD HH:mm'),
-                                back_date: moment(date).set({
-                                    hour: backDate.hour(),
-                                    minute: backDate.minute(),
-                                }).format('YYYY-MM-DD HH:mm'),
-                            });
-                        });
-                    } else {
-                        extract.push(address);
-                    }
-                });
-                addressesRaw = extract.sort(sort);
-                calender.redraw();
-            }
-
             $watch('dates', (dates) => {
                 if (!calender) return;
                 const selectedDates = calender.selectedDates.map(date => moment(date).format('Y-MM-DD'));
@@ -710,6 +673,13 @@
                     }
                 }
                 calender.set('mode', isMultiple ? 'multiple' : 'range')
+            })
+
+            $watch('addressesMinimized', (data) => {
+                dates = [];
+                extractIndex = {};
+                calender.redraw();
+                cancelEdit();
             })
         "
 
@@ -764,7 +734,7 @@
                 $root = ['class' => 'col-span-2 lg:col-span-1'];
             @endphp
             @if ($hasPermissionToManage)
-                <form x-on:submit.prevent="submit" class="grid grid-cols-4 lg:grid-cols-7 gap-1 pb-1 mb-2 border-b">
+                <form wire:submit="onAddAddress" class="grid grid-cols-4 lg:grid-cols-7 gap-1 pb-1 mb-2 border-b">
                     <section>
                         <x-selectize
                             :root="$root"
