@@ -195,7 +195,6 @@
             removeEdit(){
                 if (this.editing == null) return;
                 const payload = this.addressesMinimized;
-                console.log(payload, this.editing);
                 payload.splice(this.editing, 1);
 
                 this.cancelEdit();
@@ -292,7 +291,6 @@
                     }
 
                     if (obj.multiple){
-                        console.log(obj.dates);
                         obj.dates.map(date => addPreview({...obj, dates: [date]}))
                     }else{
                         addPreview(obj)
@@ -662,7 +660,7 @@
                             .replace(':end', end);
                     },
                     formatAddressTimeDiff(from, back, multiple) {
-                        if (!from || !back) return console.log('not found');
+                        if (!from || !back) return
                         const [fromDate, backDate] = [moment(from), moment(back)];
                         let minutes = 0;
 
