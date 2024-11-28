@@ -226,19 +226,6 @@
             onError(field, label){
                 this.errorList[field] = label;
             },
-            validate(){
-                this.errorList = {}
-                if (this.dates.length <= 0) this.onError('dates', 'วันที่ไม่ถูกต้อง!');
-                if (this.errors.length > 0) this.onError('dates', 'มีการเดินทางในช่วงเวลาดังกล่าวอยู่แล้ว!');
-                if (!(+this.distance) || (+this.distance <= 0)) this.onError('distance', 'ระยะทางไม่ถูกต้อง!');
-                if (!this.plate) this.onError('plate', 'ทะเบียนรถไม่ถูกต้อง!');
-                if (!this.from_location_id) this.onError('from_id', 'ไม่พบสถานที่ออกเดินทาง!');
-                if (!this.back_location_id) this.onError('back_id', 'ไม่พบสถานที่กลับถึง!');
-                if (!this.from_time) this.onError('from_time', 'เวลาออกเดินทางไม่ถูกต้อง!');
-                if (!this.back_time) this.onError('back_time', 'เวลากลับถึงไม่ถูกต้อง!');
-
-                return Object.keys(this.errorList).length > 0;
-            },
             get list() {
                 const formatting = this.addressesMinimized.map((a, i) => ({...a, ri: i}))
                 let data = formatting.filter((a, i) => !this.extractIndex[i] && a.ri != this.editing);
