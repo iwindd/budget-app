@@ -209,42 +209,6 @@
                 this.cancelEdit();
                 this.addressesMinimized = payload;
             },
-            rawWithoutAddress(ri){
-                const target = this.addressesMinimized[ri];
-                if (!target) return;
-
-                return this.addressesRaw.filter((a) => {
-                    if (
-                        target &&
-                        a.plate     == target.plate     &&
-                        a.distance  == target.distance  &&
-                        a.from_id   == target.from_id   &&
-                        a.back_id   == target.back_id
-                    ) {
-                        if (target.multiple) {
-                            const [from, back] = [moment(a.from_date), moment(a.back_date)];
-                            const [from2, back2] = [moment(target.from_date), moment(target.back_date)];
-
-                            if (
-                                from.hour() == from2.hour() &&
-                                back.hour() == back2.hour() &&
-                                from.minute() == from2.minute() &&
-                                back.minute() == back2.minute() &&
-                                from.isBetween(from2, back2, undefined, '[]') &&
-                                back.isBetween(from2, back2, undefined, '[]')
-                            ){
-                                return false;
-                            }
-                        }else{
-                            if (a.from_date == target.from_date && a.back_date == target.back_date){
-                                return false;
-                            }
-                        }
-                    }
-
-                    return true;
-                })
-            },
             edit(address) {
                 if (this.editing || !this.calender || !address || address?.ri == undefined  || this.editing == address.ri ) return this.cancelEdit();
                 const [from, back] = [moment(address.from_date), moment(address.back_date)];
@@ -283,58 +247,6 @@
                 if (!this.back_time) this.onError('back_time', 'เวลากลับถึงไม่ถูกต้อง!');
 
                 return Object.keys(this.errorList).length > 0;
-            },
-            submit()  {
-                const hasError = this.validate();
-                if (hasError) return;
-                let payload = []
-                const pool = this.editing == null ? this.addressesRaw : this.rawWithoutAddress(this.editing);
-                const object  = {
-                    from_id: this.from_location_id, back_id: this.back_location_id,
-                    plate: this.plate, distance: this.distance,
-                    from_time: this.from_time, back_time: this.back_time,
-                    multiple: this.checkbox, dates: this.dates
-                }
-
-                const addEvent = (f, b) => {
-                    payload.push({
-                        ...object,
-                        from_date: f.format('Y-MM-DD HH:mm'),
-                        back_date: b.format('Y-MM-DD HH:mm'),
-                        multiple: f.isSame(b, 'day') ? true : object.multiple
-                    })
-                }
-
-                if (object.multiple){
-                    this.splitDates(object.dates) .map(dates => dates.map(date=> {
-                        const f = moment(date+' '+object.from_time);
-                        const b = moment(date+' '+object.back_time);
-
-                        addEvent(f, b)
-                    }))
-                }else{
-                    const f = moment(object.dates[0]+' '+object.from_time);
-                    const b = moment(object.dates[1]+' '+object.back_time);
-
-                    addEvent(f, b)
-                }
-
-                payload =  Object.values(
-                    [...pool, ...payload].reduce((acc, item) => {
-                        const key = `${item.from_date}-${item.back_date}`; // Unique identifier
-                        if (!acc[key]) {
-                            acc[key] = item; // Add to accumulator if not already present
-                        }
-                        return acc;
-                    }, {})
-                );
-
-                this.addressesRaw = payload;
-                this.addressesMinimized = this.minimizeAddresses(payload);
-                this.dates = [];
-                this.extractIndex = {};
-                this.calender.redraw();
-                this.cancelEdit();
             },
             getLocationLabel(locationId){
                 return this.addressesSelectize.find(a => a.id == locationId)?.label || '-'
