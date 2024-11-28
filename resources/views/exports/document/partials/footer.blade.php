@@ -15,7 +15,7 @@
     </table>
 </section>
 {{-- ลายเซ็น 1 --}}
-<section class="w-4 push-left">
+<section class="w-4 push-left page-break" style="margin-top: 2em;">
     <table>
         <tr>
             <td class="fit text-right">{{ __('exports.document-named') }}</td>

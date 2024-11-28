@@ -44,6 +44,10 @@
         body {
             padding: 1in 1in 1in 1in;
         }
+
+        .page-break {
+            page-break-after: always;
+        }
     </style>
 </head>
 
