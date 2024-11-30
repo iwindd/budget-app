@@ -19,6 +19,7 @@ class BudgetAddress extends Model
         'multiple',
         'plate',
         'distance',
+        'show_as'
     ];
 
     protected $casts = [

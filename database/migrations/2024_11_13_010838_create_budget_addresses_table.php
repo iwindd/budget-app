@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('multiple');
             $table->string('plate');
             $table->integer('distance');
+            $table->string('show_as');
         });
     }
 

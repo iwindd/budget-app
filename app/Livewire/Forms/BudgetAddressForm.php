@@ -13,6 +13,7 @@ class BudgetAddressForm extends Form
     public $from_time = '09:00';
     public $back_time = '17:00';
     public $plate, $distance, $multiple = true;
+    public $show_as = "ค่าน้ำมันเชื้อเพลิง";
 
     public function submit() {
         $validated = $this->validate([
@@ -23,6 +24,7 @@ class BudgetAddressForm extends Form
             'from_time' => ['required', 'date_format:H:i'],
             'back_time' => ['required', 'date_format:H:i'],
             'multiple' => ['required', 'boolean'], // from client
+            'show_as' => ['required', 'string'],
             'dates' => ['array', 'required'],
             'dates.*' => ['date', 'date_format:Y-m-d']
         ]);

@@ -573,8 +573,7 @@
                     />
                     <x-textfield 
                         lang="address.input-showAs"
-                        wire:model="budgetAddressForm.showAs" 
-                        value="ค่าน้ำมันเชื้อเพลิง"
+                        wire:model="budgetAddressForm.show_as" 
                     />
                     <section>
                         <x-form.label for="submit" :value="__('address.table-action')" />
