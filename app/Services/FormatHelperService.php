@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\BudgetItem;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use PA\ProvinceTh\Factory;
 
 class FormatHelperService
@@ -41,6 +42,7 @@ class FormatHelperService
         $isMultiple = !$fromDate->isSameDay($backDate) && $multiple;
         $isSameMonth = $fromDate->isSameMonth($backDate);
         $isSameYear = $fromDate->isSameYear($backDate);
+        $noStackDate = isset($options['noStack']) && $options['noStack'];
 
         // P = prefix, D = disable
         $Pd = $options['Pd'] ?? '';
@@ -68,7 +70,7 @@ class FormatHelperService
             $fromDate->setTimeFromTimeString($backDate->toTimeString());
         }
 
-        if ($isMultiple){
+        if ($isMultiple && !$noStackDate){
             $format = "$fD";
 
             if (!$isSameMonth) $format = "$fD $fM";
@@ -78,6 +80,23 @@ class FormatHelperService
             $_backDate = self::date($backDate, "$D $fM $fY $fT", $lang);
 
             return "$_fromDate$dash$_backDate";
+        }else if ($isMultiple && $noStackDate){
+            $isDifferenceYear = $fromDate->year != $backDate->year;
+            $isDifferenceMonth = $fromDate->month != $backDate->month;
+            $fM = !$isDifferenceMonth ? "$Pm F" : 'M';
+            $period = CarbonPeriod::create($fromDate, $backDate);
+            $groupedDates = collect($period)
+                ->groupBy(fn($date) => self::date($date, $isDifferenceYear ? "$fM Y" : "$fM", $lang)) // Group by month name
+                ->map(function ($dates, $month) {
+                    $dayList = $dates->map(fn($date) => $date->format('j'))->join(', ');
+                    return "{$dayList} {$month}";
+                });
+            
+            $result = $Pd." ".$groupedDates->join(" $dash ");
+            if (!$isDifferenceYear) $result .= " ".self::date($backDate, "$fY");
+            $result .= " ". $backDate->format("$fT");
+
+            return $result;
         }else{
             return self::date(
                 $fMain ? $fromDate : $backDate
