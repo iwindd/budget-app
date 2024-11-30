@@ -20,7 +20,7 @@ class BudgetAddressForm extends Form
             'from_id' => ['required', 'integer'],
             'back_id' => ['required', 'integer'],
             'plate' => ['required', 'string'],
-            'distance' => ['required', 'integer'],
+            'distance' => ['required', 'numeric'],
             'from_time' => ['required', 'date_format:H:i'],
             'back_time' => ['required', 'date_format:H:i'],
             'multiple' => ['required', 'boolean'], // from client

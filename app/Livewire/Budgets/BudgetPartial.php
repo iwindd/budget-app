@@ -110,7 +110,7 @@ class BudgetPartial extends Component
             'addresses.*.back_date' => ['required', 'date', 'date_format:Y-m-d H:i', 'after_or_equal:addresses.*.from_date'],
             'addresses.*.multiple' => ['required', 'boolean'],
             'addresses.*.plate' => ['required', 'string'],
-            'addresses.*.distance' => ['required', 'integer'],
+            'addresses.*.distance' => ['required', 'numeric'],
             'expenses' => ['array'],
             'expenses.*.id' => ['required', 'exists:expenses,id'], 
             'expenses.*.type' => ['nullable', 'max:255'],
