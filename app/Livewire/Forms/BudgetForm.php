@@ -83,7 +83,7 @@ class BudgetForm extends Form
         return [
             'serial' => ['required', 'string'],
             'finish_at' => ['required', 'date', 'date_format:Y-m-d'],
-            'value' => ['required', 'integer', 'min:50'],
+            'value' => ['required', 'numeric', 'min:50'],
             'order' => ['required', 'string'],
             'date' => ['required', 'date', 'date_format:Y-m-d'],
             'header' => ['required', 'string'],
