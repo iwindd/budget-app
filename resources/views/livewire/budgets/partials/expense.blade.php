@@ -43,11 +43,21 @@
     @endif
 
     @foreach ($expenses as $index => $expense)
+        @php
+            $childExpense = $hasPermissionToManage && $expense['user_id'] !== $budgetForm->budget->user_id;
+            $targetIndex = !$childExpense ? $index : $expenses
+                ->search(fn($e) => 
+                    $e['id'] == $expense['id'] &&
+                    $e['user_id'] == $budgetForm->budget->user_id
+                );
+
+            $modelPrefix  = $childExpense ? "expenses.$targetIndex" : "expenses.$targetIndex";
+        @endphp
         <div
             class="grid grid-cols-5 gap-1 p-0 odd:bg-secondary-100/75 p-2 px-4 sm:px-8"
-            wire:key="{{$expense['id'].'-'.$expense['user_id']}}"
+            wire:key="{{$expense['id'].'-'.$expense['user_id'].$index}}"
             x-data="{
-                days: @entangle("expenses.$index.days"),
+                days: @entangle("$modelPrefix.days"),
                 total: @entangle("expenses.$index.total"),
                 get sum(){
                     return new Intl.NumberFormat('th-TH', {
@@ -65,20 +75,21 @@
                 disabled 
                 class="lg:pl-3 pl-0" 
             />
+
             <x-textfield
                 lang="expenses.input-type"
-                :disabled="!$hasPermissionToManage"
-                :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
+                :disabled="$childExpense"
+                :wrapper="['class'=>!$childExpense ? 'bg-white' : '']"
                 :startIcon="@svg('heroicon-o-tag')"
-                wire:model="expenses.{{$index}}.type"
-                type="number"
+                wire:model="{{$modelPrefix}}.type"
+                type="text"
             />
             <x-textfield
                 lang="expenses.input-days"
-                :disabled="!$hasPermissionToManage"
-                :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
+                :disabled="$childExpense"
+                :wrapper="['class'=>!$childExpense ? 'bg-white' : '']"
                 :startIcon="@svg('heroicon-o-calendar-days')"
-                wire:model="expenses.{{$index}}.days"
+                wire:model="{{$modelPrefix}}.days"
                 type="number"
             />
             <x-textfield

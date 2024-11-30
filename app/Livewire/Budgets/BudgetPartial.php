@@ -116,7 +116,7 @@ class BudgetPartial extends Component
             'expenses.*.id' => ['required', 'exists:expenses,id'], 
             'expenses.*.type' => ['nullable', 'max:255'],
             'expenses.*.days' => ['nullable', 'integer', 'min:1'],
-            'expenses.*.total' => ['required', 'integer', 'min:1'],
+            'expenses.*.total' => ['required', 'numeric', 'min:1'],
             'expenses.*.user_id' => ['required', 'integer', 'exists:users,id'],
         ];
     }
