@@ -34,64 +34,73 @@
         </tr>
     </table>
 </section>
-{{-- ลายเซ็น 2 --}}
+{{-- ลายเซ็น 2 --}} {{-- PAGE 2 --}}
 <section>
-    <section style="width: 35%; float: left;">
-        <p>{{ __('exports.document-text-1') }}</p>
-    </section>
-    <section style="width: 35%; float: right;">
-        <p>{{ __('exports.document-text-2') }}</p>
-    </section>
-    <span class="clearfix"></span>
-    <section style="width: 35%; float: left;">
-        <table>
-            <tr>
-                <td class="fit text-right">{{ __('exports.document-named') }}</td>
-                <td class="under"><span></span></td>
-                <td class="fit"></td>
-            </tr>
-            <tr>
-                <td class="fit text-right">(</td>
-                <td class="under"><span></span></td>
-                <td class="fit">)</td>
-            </tr>
-            <tr>
-                <td class="fit text-right">{{ __('exports.document-position') }}</td>
-                <td class="under"><span></span></td>
-                <td class="fit"></td>
-            </tr>
-            <tr>
-                <td class="fit text-right">{{ __('exports.document-date') }}</td>
-                <td class="under"><span></span></td>
-                <td class="fit"></td>
-            </tr>
-        </table>
-    </section>
-    <section style="width: 35%; float: right;">
-        <table>
-            <tr>
-                <td class="fit text-right">{{ __('exports.document-named') }}</td>
-                <td class="under"><span></span></td>
-                <td class="fit"></td>
-            </tr>
-            <tr>
-                <td class="fit text-right">(</td>
-                <td class="under"><span></span></td>
-                <td class="fit">)</td>
-            </tr>
-            <tr>
-                <td class="fit text-right">{{ __('exports.document-position') }}</td>
-                <td class="under"><span></span></td>
-                <td class="fit"></td>
-            </tr>
-            <tr>
-                <td class="fit text-right">{{ __('exports.document-date') }}</td>
-                <td class="under"><span></span></td>
-                <td class="fit"></td>
-            </tr>
-        </table>
-    </section>
-    <span class="clearfix"></span>
+    <table style="width: 100%; height: 1px; margin-bottom: -0.75em;">
+        <tr>
+            <td style="width: 100%"><hr class="dotted-hr"></td>
+            <td>ได้</td>
+        </tr>
+    </table>
+    <table style="border-collapse: collapse; margin: 0.25em 0;">
+        <tr>
+            <td style="width: 50%; border-right: 1px solid black;  vertical-align: top;">{{ __('exports.document-text-1') }}</td>
+            <td style="width: 50%; padding-left: 1em;  vertical-align: top;">{{ __('exports.document-text-2') }}</td>
+        </tr>
+        <tr>
+            <td style="border-right: 1px solid black; padding-right: 1em;">
+                <section style="width: 100%; ">
+                    <table>
+                        <tr>
+                            <td class="fit text-right">{{ __('exports.document-named') }}</td>
+                            <td class="under"><span></span></td>
+                            <td class="fit"></td>
+                        </tr>
+                        <tr>
+                            <td class="fit text-right">(</td>
+                            <td class="under"><span></span></td>
+                            <td class="fit">)</td>
+                        </tr>
+                        <tr>
+                            <td class="fit text-right">{{ __('exports.document-position') }}</td>
+                            <td class="under"><span></span></td>
+                            <td class="fit"></td>
+                        </tr>
+                        <tr>
+                            <td class="fit text-right">{{ __('exports.document-date') }}</td>
+                            <td class="under"><span></span></td>
+                            <td class="fit"></td>
+                        </tr>
+                    </table>
+                </section>
+            </td>
+            <td style="padding-left: 1em; padding-right: 1em;">
+                <table>
+                    <tr>
+                        <td class="fit text-right">{{ __('exports.document-named') }}</td>
+                        <td class="under"><span></span></td>
+                        <td class="fit"></td>
+                    </tr>
+                    <tr>
+                        <td class="fit text-right">(</td>
+                        <td class="under"><span></span></td>
+                        <td class="fit">)</td>
+                    </tr>
+                    <tr>
+                        <td class="fit text-right">{{ __('exports.document-position') }}</td>
+                        <td class="under"><span></span></td>
+                        <td class="fit"></td>
+                    </tr>
+                    <tr>
+                        <td class="fit text-right">{{ __('exports.document-date') }}</td>
+                        <td class="under"><span></span></td>
+                        <td class="fit"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <hr class="clearfix"></span>
 </section>
 {{-- สรุป & ลายเซ็น 3 --}}
 <section>

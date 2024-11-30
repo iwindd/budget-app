@@ -195,3 +195,14 @@ table.table > tbody > tr > th{
     vertical-align: top;
 }
 
+hr{
+    border: 0; /* Remove default border */
+    border-top: 1px solid #000; /* Apply a dotted top border */
+    height: 0; /* Ensure no additional height */
+    margin: 0; /* Add spacing (optional) */
+    width: 100%; /* Ensure full width */
+}
+
+.dotted-hr {
+    border-top: 1px dashed #000; /* Apply a dotted top border */
+}
