@@ -17,7 +17,7 @@
             <h3 class="font-bold px-4 sm:px-8">{{ __('address.header') }}</h3>
             @include('livewire.budgets.partials.address')
 
-            <div class="max-w-full space-y-2">
+            <div class="max-w-full space-y-2 px-4 sm:px-8">
                 @if ($hasPermissionToManage)
                     <section class="max-w-full col-span-2 flex justify-end">
                         <x-button type="submit" form="budget-form" variant="success">บันทึกใบเบิก</x-button>
@@ -28,8 +28,4 @@
             </div>
         </div>
     </div>
-{{--
-
-    @include('livewire.budgets.partials.expense')
-    @include('livewire.budgets.extras.travel') --}}
 </section>
