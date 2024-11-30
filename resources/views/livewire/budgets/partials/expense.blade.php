@@ -1,6 +1,6 @@
-<div class="max-w-full px-4 sm:px-8">
+<div class="max-w-full">
     @if ($hasPermissionToManage)
-        <form wire:submit="onAddExpense" class="grid grid-cols-5 gap-1 mb-2 border-b pb-2">
+        <form wire:submit="onAddExpense" class="grid grid-cols-5 gap-1 mb-2 border-b pb-2 px-4 sm:px-8">
             <x-selectize
                 lang="expenses.selectize"
                 :fetch="route('expenses.selectize')"
@@ -25,7 +25,7 @@
 
     @foreach ($expenses as $index => $expense)
         <div
-            class="grid grid-cols-4 gap-1 p-0"
+            class="grid grid-cols-4 gap-1 p-0 odd:bg-secondary-100/75 p-2 px-4 sm:px-8"
             wire:key="{{$expense['id']}}"
             x-data="{
                 days: @entangle("expenses.$index.days"),
@@ -47,6 +47,7 @@
                 <x-textfield
                     lang="expenses.input-days"
                     :disabled="!$hasPermissionToManage"
+                    :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
                     :startIcon="@svg('heroicon-o-calendar-days')"
                     wire:model="expenses.{{$index}}.days"
                     type="number"
@@ -57,6 +58,7 @@
                     <x-textfield
                         lang="expenses.input-total"
                         :disabled="!$hasPermissionToManage"
+                        :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
                         :startIcon="@svg('heroicon-o-banknotes')"
                         wire:model="expenses.{{$index}}.total"
                         type="number"
