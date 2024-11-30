@@ -19,7 +19,7 @@ return new class extends Migration
             $table->datetime('back_date');
             $table->boolean('multiple');
             $table->string('plate');
-            $table->integer('distance');
+            $table->decimal('distance', 8, 2);
             $table->string('show_as');
         });
     }

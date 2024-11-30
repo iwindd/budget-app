@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('serial');
             $table->date('finish_at')->default(now()); // วันที่เสร็จใบเบิก
-            $table->integer('value')->nullable();
+            $table->decimal('value', 15, 2)->nullable();
             $table->string('order')->default('');
             $table->date('date')->default(now());
             $table->string('header')->default(''); // ที่ไหน

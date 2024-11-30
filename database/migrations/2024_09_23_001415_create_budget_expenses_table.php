@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('budget_id')->constrained('budgets')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('expense_id')->constrained('expenses')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('days')->nullable();
-            $table->integer('type')->nullable();
-            $table->integer('total');
+            $table->string('type')->nullable();
+            $table->decimal('total', 15, 2);
         });
     }
 
