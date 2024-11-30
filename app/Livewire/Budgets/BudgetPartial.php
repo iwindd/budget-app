@@ -10,6 +10,7 @@ use App\Models\BudgetAddress;
 use App\Models\Expense;
 use App\Models\Invitation;
 use App\Models\Office;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,19 +38,38 @@ class BudgetPartial extends Component
     {
         $budget = $request->budget;
         $this->addressSelectize = BudgetAddress::list()->toArray();
-        $staticExpenses    = Expense::getStaticExpenses();
-        $payloadExpenses = collect([]);
+        
+        $expenses = collect([]);
         $this->budgetForm->setBudget($budget);
 
         if ($budget->exists) {
             $this->addresses = $budget->addresses()->get(['from_id', 'from_date', 'back_id', 'back_date', 'multiple', 'plate', 'distance'])->toArray();
             $this->companions = $budget->companions()->pluck('user_id');
-            $payloadExpenses = $budget->expenses()->get()->map(function ($expense) {
-                return [
-                    'days' => $expense->days,
-                    'total' => $expense->total,
-                ] + $expense->expense->toArray();
-            });
+
+            $budget->expenses()->get()->map(fn($budgetExpense) => $expenses->push([
+                'id' => $budgetExpense->expense_id,
+                'label' => $budgetExpense->expense->label,
+                'total' => $budgetExpense->total,
+                'days'  => $budgetExpense->days,
+                'type'  => $budgetExpense->type,
+                'user_id'  => $budgetExpense->user_id,
+                'user_label' => $budgetExpense->user->name
+            ]));
+
+            $exclude = $expenses->where('user_id', $budget->user->id)->pluck('id');
+
+            Expense::getStaticExpenses()
+                ->whereNotIn('id', $exclude)
+                ->get(['id', 'label'])
+                ->map(fn($expense) => $expenses->push([
+                    'id' => $expense->id,
+                    'label' => $expense->label,
+                    'total' => null,
+                    'days' => null,
+                    'type' => null,
+                    'user_id'  => $budget->user->id,
+                    'user_label' => $budget->user->name
+                ]));
         }
 
         $this->hasPermissionToManage = !$budget->exists || $budget->user_id == Auth::user()->id || Auth::user()->role == 'admin';
@@ -76,16 +96,7 @@ class BudgetPartial extends Component
             $this->budgetForm->companions = $companionPayload->toArray();
         }
 
-        $staticExpenses->map(function($expense) use (&$payloadExpenses){
-            if (!$payloadExpenses->firstWhere('id', $expense['id'])){
-                $payloadExpenses->push([
-                    'days' => $expense->split ? $expense->days : null,
-                    'total' => '',
-                ]+ $expense->toArray());
-            }
-        });
-
-        $this->expenses = $payloadExpenses->toArray();
+        $this->expenses = $expenses;
     }
 
     public function rules() {
@@ -237,13 +248,17 @@ class BudgetPartial extends Component
     public function onAddExpense() {
         if (!$this->hasPermissionToManage) return false;
         $validated = $this->budgetExpenseForm->submit();
-        $expense   = Expense::findOrFail($validated['expense_id']);
-        if ($expense->default) return;
+        $expense   = Expense::where([
+            ['id', $validated['expense_id']],
+            ['default', false]
+        ])->firstOrFail('label');
+        $owner     = null;
+        if ($validated['owner'] != null) $owner = User::findOrFail($validated['owner'], 'name');
 
         $payload = collect($this->expenses);
         $expenseIndex = $payload->search(fn($item) => 
             $item['id'] === $validated['expense_id'] &&
-            $item['owner'] === $validated['owner']
+            $item['user_id'] == $validated['owner']
         );
 
         if ($expenseIndex !== false) {
@@ -252,17 +267,25 @@ class BudgetPartial extends Component
                 return $item;
             });
         } else {
-            $payload->push(array_merge($expense->toArray(), ['days' => null, 'total' => $validated['total']]));
-        }
+            $payload->push([
+                'id' => $validated['expense_id'],
+                'label' => $expense->label,
+                'total' => $validated['total'],
+                'days'  => $validated['days'],
+                'type'  => $validated['type'],
+                'user_id'  => $validated['expense_id'],
+                'user_label' => $owner->name
+            ]);
+        }   
 
-        $this->expenses = $payload->toArray();
+        $this->expenses = $payload->sortBy('id');
     }
 
-    public function onRemoveExpense($id) {
-        if (!$this->hasPermissionToManage) return false;
+    public function onRemoveExpense($id, $userId) {
+       if (!$this->hasPermissionToManage) return false;
 
         $this->expenses = collect($this->expenses)
-            ->filter(fn($e) => $e['id'] != $id)
-            ->toArray();
+            ->filter(fn($e) => $e['id'] != $id && $e['user_id'] != $userId)
+            ->toArray(); 
     }
 }

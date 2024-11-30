@@ -44,31 +44,37 @@
 
     @foreach ($expenses as $index => $expense)
         <div
-            class="grid grid-cols-4 gap-1 p-0 odd:bg-secondary-100/75 p-2 px-4 sm:px-8"
-            wire:key="{{$expense['id']}}"
+            class="grid grid-cols-5 gap-1 p-0 odd:bg-secondary-100/75 p-2 px-4 sm:px-8"
+            wire:key="{{$expense['id'].'-'.$expense['user_id']}}"
             x-data="{
                 days: @entangle("expenses.$index.days"),
                 total: @entangle("expenses.$index.total"),
-                split: @js($expense['split']),
                 get sum(){
                     return new Intl.NumberFormat('th-TH', {
                         style: 'currency',
                         currency: 'THB',
                         minimumFractionDigits: 2,
-                    }).format((this.split ? this.days : 1) * this.total);
+                    }).format((this.days : 1) * this.total);
                 }
             }"
         >
-            <div class="{{!$expense['split'] ? "col-span-2" : ""}}">
-                <x-textfield 
-                    lang="expenses.input-label" 
-                    :helper="$expense['owner']['label']"
-                    :value="$expense['label']" 
-                    disabled 
-                    class="lg:pl-3 pl-0" 
+            <x-textfield 
+                lang="expenses.input-label" 
+                :helper="$expense['user_id'] !== $budgetForm->budget->user_id ? 'ผู้ใช้: '.$expense['user_label'] : ''"
+                :value="$expense['label']" 
+                :root="['class' => $expense['user_id'] != $budgetForm->budget->user_id ? 'col-span-3' : '']"
+                disabled 
+                class="lg:pl-3 pl-0" 
+            />
+            @if ($expense['user_id'] == $budgetForm->budget->user_id)
+                <x-textfield
+                    lang="expenses.input-type"
+                    :disabled="!$hasPermissionToManage"
+                    :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
+                    :startIcon="@svg('heroicon-o-tag')"
+                    wire:model="expenses.{{$index}}.type"
+                    type="number"
                 />
-            </div>
-            @if ($expense['split'])
                 <x-textfield
                     lang="expenses.input-days"
                     :disabled="!$hasPermissionToManage"
@@ -78,35 +84,31 @@
                     type="number"
                 />
             @endif
-            @if (!$expense['default'])
-                <div class="col-span-2 gap-1 grid grid-cols-2">
-                    <x-textfield
-                        lang="expenses.input-total"
-                        :disabled="!$hasPermissionToManage"
-                        :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
-                        :startIcon="@svg('heroicon-o-banknotes')"
-                        wire:model="expenses.{{$index}}.total"
-                        type="number"
-                    />
+            <x-textfield
+                lang="expenses.input-total"
+                :disabled="!$hasPermissionToManage"
+                :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
+                :startIcon="@svg('heroicon-o-banknotes')"
+                wire:model="expenses.{{$index}}.total"
+                type="number"
+            />
 
-                    <div class="flex gap-1 w-full h-full">
-                        <x-textfield
-                            lang="expenses.input-sum"
-                            disabled
-                            x-bind:value="sum"
-                            :root="['class'=>'flex-grow']"
-                            class="text-end"
-                        />
-                        @if ($expense['merge'] && $hasPermissionToManage)
-                            <div class="pt-5">
-                                <x-button wire:click="onRemoveExpense({{$expense['id']}})" type="button" icon-only variant="danger" size="sm">
-                                    <x-heroicon-o-trash class="w-7 h-full" />
-                                </x-button>
-                            </div>
-                        @endif
+            <div class="flex gap-1 w-full h-full">
+                <x-textfield
+                    lang="expenses.input-sum"
+                    disabled
+                    x-bind:value="sum"
+                    :root="['class'=>'flex-grow']"
+                    class="text-end"
+                />
+                @if ($expense['id'] > 3 || $expense['user_id'] != $budgetForm->budget->user_id)
+                    <div class="pt-5">
+                        <x-button wire:click="onRemoveExpense({{$expense['id']}}, {{$expense['user_id']}})" type="button" icon-only variant="danger" size="sm">
+                            <x-heroicon-o-trash class="w-7 h-full" />
+                        </x-button>
                     </div>
-                </div>
-            @endif
+                @endif
+            </div>
         </div>
     @endforeach
 </div>

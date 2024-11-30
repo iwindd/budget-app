@@ -39,7 +39,7 @@ class Expense extends Model
         return self::where([
             ['static', true],
             ['default', false]
-        ])->orderBy('default', 'asc')->get();
+        ])->orderBy('default', 'asc');
     }
 
     /**
