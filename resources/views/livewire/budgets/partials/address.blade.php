@@ -1,4 +1,4 @@
-<section class="max-w-full">
+<section class="max-w-full px-4 sm:px-8 ">
     <div
         x-data="{
             {{-- INPUT --}}

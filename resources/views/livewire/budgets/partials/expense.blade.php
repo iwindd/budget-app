@@ -1,4 +1,4 @@
-<div class="max-w-full">
+<div class="max-w-full px-4 sm:px-8">
     @if ($hasPermissionToManage)
         <form wire:submit="onAddExpense" class="grid grid-cols-5 gap-1 mb-2 border-b pb-2">
             <x-selectize
