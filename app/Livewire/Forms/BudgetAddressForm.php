@@ -144,7 +144,8 @@ class BudgetAddressForm extends Form
                     $backDate->copy()->addDays(count($stack) + 1)->eq(Carbon::parse($nextAddress['back_date'])) &&
                     $address['plate'] === $nextAddress['plate'] &&
                     $address['distance'] === $nextAddress['distance'] &&
-                    $address['multiple'] === $nextAddress['multiple']
+                    $address['multiple'] === $nextAddress['multiple'] &&
+                    $address['show_as']  === $nextAddress['show_as']
                 ) {
                     $skipped[] = $i; // Mark this index as processed
                     $stack[] = $nextAddress; // Add to stack
