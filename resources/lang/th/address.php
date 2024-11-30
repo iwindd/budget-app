@@ -16,6 +16,8 @@ return [
     'input-distance' => 'ระยะทาง (กม.)',
     'input-distance-placeholder' => 'รวมระยะทาง',
     'input-round' => 'จำนวนเที่ยว (ต่อวัน)',
+    'input-showAs' => 'คิดเป็นค่า',
+    'input-showAs-placeholder' => 'เช่น ค่าน้ำมันเชื้อเพลิง, ค่ารถโดยสาร...',
     'input-location-placeholder' => "เลือกสถานที่",
     'busy-table' => 'รายการที่ไม่ว่าง:',
     'multiple_dates' => 'หลายตัวเลือก (จบในวันเดียว)',

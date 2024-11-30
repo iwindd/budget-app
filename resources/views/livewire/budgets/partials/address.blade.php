@@ -542,61 +542,55 @@
                 $root = ['class' => 'col-span-2 lg:col-span-1'];
             @endphp
             @if ($hasPermissionToManage)
-                <form wire:submit="onAddAddress" class="grid grid-cols-4 lg:grid-cols-7 gap-1 pb-1 mb-2 border-b">
+                <form wire:submit="onAddAddress" class="grid grid-cols-4 gap-1 pb-1 mb-2 border-b">
+                    <x-selectize
+                        :options="$addressSelectize"
+                        lang='address.input-from'
+                        wire:model="budgetAddressForm.from_id"
+                        :selectOnClose="true"
+                    />
+                    <x-budgets.timepicker 
+                        lang="address.input-from-datetime"
+                        wire:model="budgetAddressForm.from_time" 
+                    />
+                    <x-selectize
+                        :options="$addressSelectize"
+                        lang='address.input-back'
+                        wire:model="budgetAddressForm.back_id"
+                        :selectOnClose="true"
+                    />
+                    <x-budgets.timepicker 
+                        lang="address.input-back-datetime"
+                        wire:model="budgetAddressForm.back_time" 
+                    />
+                    <x-textfield 
+                        lang="address.input-plate" 
+                        wire:model="budgetAddressForm.plate" 
+                    />
+                    <x-textfield 
+                        lang="address.input-distance"
+                        wire:model="budgetAddressForm.distance" 
+                    />
+                    <x-textfield 
+                        lang="address.input-showAs"
+                        wire:model="budgetAddressForm.showAs" 
+                        value="ค่าน้ำมันเชื้อเพลิง"
+                    />
                     <section>
-                        <x-selectize
-                            :root="$root"
-                            :options="$addressSelectize"
-                            lang='address.input-from'
-                            wire:model="budgetAddressForm.from_id"
-                            :selectOnClose="true"
-                        />
-                        <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['from_id']"></span>
-                    </section>
-                    <section>
-                        <x-budgets.timepicker :root="$root" lang="address.input-from-datetime"
-                        wire:model="budgetAddressForm.from_time" />
-                        <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['from_time']"></span>
-                    </section>
-                    <section>
-                        <x-selectize
-                            :root="$root"
-                            :options="$addressSelectize"
-                            lang='address.input-back'
-                            wire:model="budgetAddressForm.back_id"
-                            :selectOnClose="true"
-                        />
-                        <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['back_id']"></span>
-                    </section>
-                    <section>
-                        <x-budgets.timepicker :root="$root" lang="address.input-back-datetime"
-                        wire:model="budgetAddressForm.back_time" />
-                        <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['back_time']"></span>
-                    </section>
-                    <section>
-                        <x-textfield :root="$root" lang="address.input-plate" wire:model="budgetAddressForm.plate" />
-                        <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['plate']"></span>
-                    </section>
-                    <section>
-                        <x-textfield :root="$root" lang="address.input-distance"
-                        wire:model="budgetAddressForm.distance" />
-                        <span class="text-sm text-danger-600 dark:text-danger-400 space-y-1" x-text="errorList['distance']"></span>
-                    </section>
-
-                    <div class="col-span-4 lg:col-span-1">
                         <x-form.label for="submit" :value="__('address.table-action')" />
                         <x-button type="submit" name="submit"
                             class="w-full justify-center truncate">{{ __('address.add-btn') }}</x-button>
-                    </div>
-                    <div class="col-span-4 lg:col-span-1 lg:order-last grid grid-cols-2 gap-1">
+                    </section>
+                    <section class="lg:order-last grid grid-cols-2 gap-1">
                         <template x-if="editing != null">
                             <x-button x-on:click="removeEdit()" type="button" name="button" variant="danger" class="w-full justify-center truncate">{{ __('address.remove-btn') }}</x-button>
                         </template>
                         <template x-if="editing != null">
                             <x-button x-on:click="cancelEdit()" type="button" name="button" variant="secondary" class="w-full justify-center truncate">{{ __('address.cancel-btn') }}</x-button>
                         </template>
-                    </div>
-                    <div class="col-span-4 lg:col-span-6">
+                    </section>
+
+                    <div class="lg:col-span-3">
                         <template x-if="editing != null">
                             <span class="text-xs text-danger">หากต้องการแก้ไขข้อมูลการเดินทางบางวันให้ลบวันที่ต้องการแก้ไขและเพิ่มใหม่อีกครั้ง!</span>
                         </template>
@@ -697,7 +691,7 @@
                         return this.addressesSelectize.find(a => a.id == locationId)?.label || '-'
                     },
                 }"
-            >
+                >
                 <section class="relative overflow-x-auto border-none mt-2">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit border-none">
                         <thead
