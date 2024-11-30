@@ -200,28 +200,4 @@ class FormatHelperService
     public static function isBudgetOwner($budget, $budgetItem) {
         return $budget->user_id == $budgetItem->user_id;
     }
-
-    public static function getBudgetItemExpenseSum($budgetItem) {
-        return BudgetItem::getBudgetExpenseTotal($budgetItem);
-    }
-
-    public static function getBudgetItemAddressSum($budgetItem) {
-        $budgetFromBack = BudgetItem::getFromBack($budgetItem);
-
-        $fromDate = Carbon::parse($budgetFromBack['from']);
-        $backDate = Carbon::parse($budgetFromBack['back']);
-        $diffInSeconds = $fromDate->diffInSeconds($backDate);
-
-        $days = floor($diffInSeconds / (60 * 60 * 24));
-        $hours = floor(($diffInSeconds % (60 * 60 * 24)) / (60 * 60));
-
-        return [
-            'days' => $days,
-            'hours' => $hours
-        ];
-    }
-
-    public static function isBudgetItemFinished($budgetItem) {
-        return BudgetItem::isHasData($budgetItem);
-    }
 }
