@@ -237,14 +237,14 @@ class BudgetPartial extends Component
     public function onAddExpense() {
         if (!$this->hasPermissionToManage) return false;
         $validated = $this->budgetExpenseForm->submit();
-        $expense   = Expense::find($validated['expense_id']);
-
-        if (!$expense) return;
-        if ($expense->static) return;
+        $expense   = Expense::findOrFail($validated['expense_id']);
         if ($expense->default) return;
 
         $payload = collect($this->expenses);
-        $expenseIndex = $payload->search(fn($item) => $item['id'] === $validated['expense_id']);
+        $expenseIndex = $payload->search(fn($item) => 
+            $item['id'] === $validated['expense_id'] &&
+            $item['owner'] === $validated['owner']
+        );
 
         if ($expenseIndex !== false) {
             $payload = $payload->map(function ($item, $key) use ($validated, $expenseIndex) {

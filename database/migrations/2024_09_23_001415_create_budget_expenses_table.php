@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('budget_expenses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('budget_id')->constrained('budgets')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('expense_id')->constrained('expenses')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('days')->nullable();
+            $table->integer('type')->nullable();
             $table->integer('total');
         });
     }

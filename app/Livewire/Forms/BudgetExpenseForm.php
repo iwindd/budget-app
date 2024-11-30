@@ -10,7 +10,7 @@ use Livewire\Form;
 
 class BudgetExpenseForm extends Form
 {
-    public $expense, $total;
+    public $expense, $total, $owner, $type, $days;
 
     private function create()
     {
@@ -48,6 +48,9 @@ class BudgetExpenseForm extends Form
         $validated = $this->validate([
             'expense' => ['required', 'integer', 'exists:expenses,id'],
             'total' => ['required', 'integer', 'min:0'],
+            'owner' => ['nullable', 'integer', 'exists:users,id'],
+            'type'  => ['nullable', 'string'],
+            'days'  => ['nullable']
         ]);
 
         $validated['expense_id'] = $validated['expense'];

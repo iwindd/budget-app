@@ -21,7 +21,6 @@ class ExpenseController extends Controller
     public function expenses(Request $request)
     {
         return $this->select($request, Expense::class, [
-            'static' => false,
             'default' => false
         ]);
     }

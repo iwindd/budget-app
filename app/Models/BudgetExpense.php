@@ -15,10 +15,11 @@ class BudgetExpense extends Model
      * @var array<int, string>
     */
     protected $fillable = [
-        'type',
         'expense_id',
         'days',
         'total',
+        'user_id', 
+        'type',
     ];
 
     public function budget()
@@ -28,5 +29,9 @@ class BudgetExpense extends Model
 
     public function expense() {
         return $this->belongsTo(Expense::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }

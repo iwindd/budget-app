@@ -17,6 +17,25 @@
                 type="number"
                 :root="['class' => 'space-y-1 col-span-3 lg:col-span-1']"
             />
+            <x-textfield
+                lang="expenses.input-days"
+                wire:model="budgetExpenseForm.days"
+                type="int"
+                :root="['class' => 'space-y-1 col-span-3 lg:col-span-1']"
+            />
+            <x-selectize
+                lang="expenses.input-owner"
+                :fetch="route('companions.selectize')"
+                wire:model="budgetExpenseForm.owner"
+                :root="['class' => 'space-y-1 col-span-5 lg:col-span-3']"
+                display="name"
+            />
+            <x-textfield
+                lang="expenses.input-type"
+                wire:model="budgetExpenseForm.type"
+                type="text"
+                :root="['class' => 'space-y-1 col-span-3 lg:col-span-1']"
+            />
             <div class="col-span-2 lg:col-span-1 pt-6">
                 <x-button type="submit" name="submit" class="w-full justify-center truncate">{{ __('budgets.add-expense-btn') }}</x-button>
             </div>
@@ -41,7 +60,13 @@
             }"
         >
             <div class="{{!$expense['split'] ? "col-span-2" : ""}}">
-                <x-textfield lang="expenses.input-label" :value="$expense['label']" disabled class="lg:pl-3 pl-0" />
+                <x-textfield 
+                    lang="expenses.input-label" 
+                    :helper="$expense['owner']['label']"
+                    :value="$expense['label']" 
+                    disabled 
+                    class="lg:pl-3 pl-0" 
+                />
             </div>
             @if ($expense['split'])
                 <x-textfield

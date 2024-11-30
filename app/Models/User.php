@@ -100,6 +100,10 @@ class User extends Authenticatable
         return $this->hasMany(Expense::class);
     }
 
+    public function budgetExpenses() {
+        return $this->hasMany(BudgetExpense::class);
+    }
+
     /**
      * Get the offices created
      */
