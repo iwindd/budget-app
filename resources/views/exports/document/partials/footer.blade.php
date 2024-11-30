@@ -103,7 +103,7 @@
     <hr class="clearfix"></span>
 </section>
 {{-- สรุป & ลายเซ็น 3 --}}
-<section>
+<section style="padding-top: 0.5em;">
     <table>
         <tr>
             <td class="fit indent">{{ __('exports.document-text-3') }}</td>
@@ -183,6 +183,7 @@
             <td class="under"><span>{{ $format->date($order_at) }}</span></td>
         </tr>
     </table>
+    <hr>
 </section>
 {{-- หมายเหตุ --}}
 <section>
