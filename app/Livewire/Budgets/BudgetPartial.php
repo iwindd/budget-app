@@ -112,10 +112,11 @@ class BudgetPartial extends Component
             'addresses.*.plate' => ['required', 'string'],
             'addresses.*.distance' => ['required', 'integer'],
             'expenses' => ['array'],
-            'expenses.*.id' => ['required', 'exists:expenses,id'], // this is expense id, not budgetExpense.id
+            'expenses.*.id' => ['required', 'exists:expenses,id'], 
+            'expenses.*.type' => ['nullable', 'max:255'],
             'expenses.*.days' => ['nullable', 'integer', 'min:1'],
             'expenses.*.total' => ['required', 'integer', 'min:1'],
-            'expenses.*.split' => ['boolean']
+            'expenses.*.user_id' => ['required', 'integer', 'exists:users,id'],
         ];
     }
 
@@ -146,7 +147,7 @@ class BudgetPartial extends Component
         }
 
         $totalAmount = collect($validated['expenses'])->map(function ($expense) {
-            return $expense['split'] && $expense['days'] ? $expense['total'] * $expense['days'] : $expense['total'];
+            return (($expense['days'] !== null && is_numeric($expense['days'])) ? $expense['days'] : 1) * $expense['total'];
         })->sum();
 
         if ($validated['value'] < $totalAmount){
@@ -191,8 +192,10 @@ class BudgetPartial extends Component
         $budget->expenses()->delete();
         $budget->expenses()->createMany(collect($validated['expenses'])->map(fn($expense) => [
             'expense_id' => $expense['id'],
-            'days' => $expense['split'] ? $expense['days'] : null,
-            'total' => $expense['total']
+            'days' => ($expense['days'] !== null && is_numeric($expense['days']) ) ? $expense['days'] : null,
+            'total' => $expense['total'],
+            'type' => ($expense['type'] !== null) ? $expense['type'] : null,
+            'user_id' => $expense['user_id']
         ])->toArray());
 
         // etc
@@ -252,7 +255,7 @@ class BudgetPartial extends Component
             ['id', $validated['expense_id']],
             ['default', false]
         ])->firstOrFail('label');
-        $owner     = null;
+        $owner     = $this->budgetForm->budget->user;
         if ($validated['owner'] != null) $owner = User::findOrFail($validated['owner'], 'name');
 
         $payload = collect($this->expenses);
@@ -278,7 +281,7 @@ class BudgetPartial extends Component
             ]);
         }   
 
-        $this->expenses = $payload->sortBy('id');
+        $this->expenses = $payload->sortBy('id')->values();
     }
 
     public function onRemoveExpense($id, $userId) {

@@ -54,7 +54,7 @@
                         style: 'currency',
                         currency: 'THB',
                         minimumFractionDigits: 2,
-                    }).format((this.days : 1) * this.total);
+                    }).format((this.days || 1) * this.total);
                 }
             }"
         >
@@ -62,28 +62,25 @@
                 lang="expenses.input-label" 
                 :helper="$expense['user_id'] !== $budgetForm->budget->user_id ? 'ผู้ใช้: '.$expense['user_label'] : ''"
                 :value="$expense['label']" 
-                :root="['class' => $expense['user_id'] != $budgetForm->budget->user_id ? 'col-span-3' : '']"
                 disabled 
                 class="lg:pl-3 pl-0" 
             />
-            @if ($expense['user_id'] == $budgetForm->budget->user_id)
-                <x-textfield
-                    lang="expenses.input-type"
-                    :disabled="!$hasPermissionToManage"
-                    :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
-                    :startIcon="@svg('heroicon-o-tag')"
-                    wire:model="expenses.{{$index}}.type"
-                    type="number"
-                />
-                <x-textfield
-                    lang="expenses.input-days"
-                    :disabled="!$hasPermissionToManage"
-                    :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
-                    :startIcon="@svg('heroicon-o-calendar-days')"
-                    wire:model="expenses.{{$index}}.days"
-                    type="number"
-                />
-            @endif
+            <x-textfield
+                lang="expenses.input-type"
+                :disabled="!$hasPermissionToManage"
+                :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
+                :startIcon="@svg('heroicon-o-tag')"
+                wire:model="expenses.{{$index}}.type"
+                type="number"
+            />
+            <x-textfield
+                lang="expenses.input-days"
+                :disabled="!$hasPermissionToManage"
+                :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
+                :startIcon="@svg('heroicon-o-calendar-days')"
+                wire:model="expenses.{{$index}}.days"
+                type="number"
+            />
             <x-textfield
                 lang="expenses.input-total"
                 :disabled="!$hasPermissionToManage"
