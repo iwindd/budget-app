@@ -99,14 +99,14 @@
         <tr>
             <td class="fit indent">{{ __('exports.document-text-3') }}</td>
             <td class="fit">{{ __('exports.document-count') }}</td>
-            <td class="under"><span>{{ $total }}</span></td>
+            <td class="under"><span>{{ $format->number($value) }}</span></td>
             <td class="fit">{{ __('exports.document-bath') }}</td>
         </tr>
     </table>
     <table class="w-6" style="margin-bottom: 1em;">
         <tr>
             <td class="fit">(</td>
-            <td class="under"><span>{{ $format->bahtText($total) }}</span></td>
+            <td class="under"><span>{{ $format->bahtText($value) }}</span></td>
             <td class="fit">)</td>
             <td class="fit">{{ __('exports.document-text-4') }}</td>
         </tr>
