@@ -43,7 +43,7 @@ class BudgetPartial extends Component
         $this->budgetForm->setBudget($budget);
 
         if ($budget->exists) {
-            $this->addresses = $budget->addresses()->get(['from_id', 'from_date', 'back_id', 'back_date', 'multiple', 'plate', 'distance'])->toArray();
+            $this->addresses = $budget->addresses()->get(['from_id', 'from_date', 'back_id', 'back_date', 'multiple', 'plate', 'distance', 'show_as'])->toArray();
             $this->companions = $budget->companions()->pluck('user_id');
 
             $budget->expenses()->get()->map(fn($budgetExpense) => $expenses->push([
