@@ -111,6 +111,7 @@ class BudgetPartial extends Component
             'addresses.*.multiple' => ['required', 'boolean'],
             'addresses.*.plate' => ['required', 'string'],
             'addresses.*.distance' => ['required', 'numeric'],
+            'addresses.*.show_as' => ['required', 'string'],
             'expenses' => ['array'],
             'expenses.*.id' => ['required', 'exists:expenses,id'], 
             'expenses.*.type' => ['nullable', 'max:255'],
