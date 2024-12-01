@@ -1,4 +1,8 @@
-<div class="max-w-full">
+<div class="max-w-full"
+    x-data="{
+        expenses: @entangle('expenses')
+    }"
+>
     @if ($hasPermissionToManage)
         <form wire:submit="onAddExpense" class="grid grid-cols-5 gap-1 mb-2 border-b pb-2 px-4 sm:px-8">
             <x-selectize
@@ -34,17 +38,21 @@
 
     @foreach ($expenses as $index => $expense)
         @php
-            $modelPrefix  ="expenses.$index";
             $childExpense = $expense['user_id'] !== $budgetForm->budget->user_id || $expense['id'] > 3;
-            $childOfExpense = $expenses->search(fn($e) => $e['id'] === $expense['id'] && $e['user_id'] == $budgetForm->budget->user_id);
-            if ($childExpense && $childOfExpense !== false) $modelPrefix  ="expenses.$childOfExpense";
         @endphp
         <div
             class="grid grid-cols-5 gap-1 p-0 odd:bg-secondary-100/75 p-2 px-4 sm:px-8"
             wire:key="{{$expense['id'].'-'.$expense['user_id'].$index}}"
             x-data="{
-                days: @entangle("$modelPrefix.days"),
+                _days: @entangle("expenses.$index.days"),
                 total: @entangle("expenses.$index.total"),
+                get days(){
+                    try{
+                        return this.expenses.find(e => e.id == @js($expense['id']) && e.user_id == @js($budgetForm->budget->user_id)).days
+                    }catch{
+                        return this._days;
+                    }
+                },
                 get sum(){
                     return new Intl.NumberFormat('th-TH', {
                         style: 'currency',
