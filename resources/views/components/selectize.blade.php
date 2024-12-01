@@ -61,7 +61,8 @@
             }else{
                 this.value = value
             }
-        }
+        },
+        cachedQueries : {}
     }"
     x-init="() => {
         const selector = $($refs.select);
@@ -73,18 +74,37 @@
             selectOnClose: @js($selectOnClose),
             @if ($fetch)
                 ajax: {
-                    url: @js($fetch),
-                    dataType: 'json',
                     delay: @js($debounce),
-                    cache: true,
+                    transport: function (params, success, failure) {
+                        const searchTerm = params.data.term || '';
+
+                        if  (cachedQueries[searchTerm]) {
+                            success({ results: cachedQueries[searchTerm] });
+                        } else {
+                            $.ajax({
+                                url: @js($fetch),
+                                method: 'GET',
+                                dataType: 'json',
+                                data: {
+                                    q: searchTerm,
+                                },
+                                success: function (data) {
+                                    cachedQueries[searchTerm] = data;
+                                    success({ results: data });
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    failure(errorThrown);
+                                },
+                            });
+                        }
+                    },
                     processResults: function(data) {
+                        if (!data) return {result: []}
                         return {
-                            results: $.map(data, function(item) {
-                                return {
-                                    text: item[@js($display)],
-                                    id: item[@js($value)]
-                                }
-                            })
+                            results: data.results.map(item => ({
+                                text: item[@js($display)],
+                                id: item[@js($value)]
+                            }))
                         };
                     },
                 },
@@ -108,7 +128,6 @@
         });
 
         const updateOption = (raw) => {
-            console.log('update', model, raw)
             if (!multiple) {
                 const value = String(raw);
                 if (raw != null && !selector.find(`option[value='${value}']`).length && fetch){
@@ -184,4 +203,6 @@
     @elseif ($helper)
         <x-form.helper :for="$id" :value="$helper" :class="$error ? '!text-danger' : ''"/>
     @endif
+
+
 </section>
