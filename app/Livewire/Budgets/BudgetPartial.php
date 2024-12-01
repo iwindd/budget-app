@@ -291,15 +291,22 @@ class BudgetPartial extends Component
                 return $item;
             });
         } else {
-            $payload->push([
+            $data = [
                 'id' => $validated['expense_id'],
                 'label' => $expense->label,
                 'total' => $validated['total'],
                 'days'  => $validated['days'],
                 'type'  => $validated['type'],
-                'user_id'  => $validated['expense_id'],
+                'user_id'  => $validated['owner'],
                 'user_label' => $owner->name
-            ]);
+            ];
+            $isChildOrETC = $data['user_id'] != $this->budgetForm->budget->user_id || $data['id'] > 3;
+            if ($isChildOrETC){
+                $data['days'] = null;
+                $data['type'] = null;
+            }
+
+            $payload->push($data);
         }
 
         $this->expenses = $payload->sortBy('id')->values();

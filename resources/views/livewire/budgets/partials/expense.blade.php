@@ -46,14 +46,10 @@
 
     @foreach ($expenses as $index => $expense)
         @php
-            $childExpense = $hasPermissionToManage && $expense['user_id'] !== $budgetForm->budget->user_id;
-            $targetIndex = !$childExpense ? $index : $expenses
-                ->search(fn($e) =>
-                    $e['id'] == $expense['id'] &&
-                    $e['user_id'] == $budgetForm->budget->user_id
-                );
-
-            $modelPrefix  = $childExpense ? "expenses.$targetIndex" : "expenses.$targetIndex";
+            $modelPrefix  ="expenses.$index";
+            $childExpense = $expense['user_id'] !== $budgetForm->budget->user_id;
+            $childOfExpense = $expenses->search(fn($e) => $e['id'] === $expense['id'] && $e['user_id'] == $budgetForm->budget->user_id);
+            if ($childExpense && $childOfExpense !== false) $modelPrefix  ="expenses.$childOfExpense";
         @endphp
         <div
             class="grid grid-cols-5 gap-1 p-0 odd:bg-secondary-100/75 p-2 px-4 sm:px-8"
@@ -85,7 +81,7 @@
                     :disabled="$childExpense"
                     :wrapper="['class'=>!$childExpense ? 'bg-white' : '']"
                     :startIcon="@svg('heroicon-o-tag')"
-                    wire:model="{{$modelPrefix}}.type"
+                    wire:model="expenses.{{$index}}.type"
                     type="text"
                 />
                 <x-textfield
@@ -93,7 +89,7 @@
                     :disabled="!$hasPermissionToManage"
                     :wrapper="['class'=>!$childExpense ? 'bg-white' : '']"
                     :startIcon="@svg('heroicon-o-calendar-days')"
-                    wire:model="{{$modelPrefix}}.days"
+                    wire:model="expenses.{{$index}}.days"
                     type="number"
                 />
             @endif
