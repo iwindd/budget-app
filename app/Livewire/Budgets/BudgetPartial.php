@@ -213,7 +213,6 @@ class BudgetPartial extends Component
         $raw = collect($this->addresses);
         if ($this->addressEditing !== null) $raw->forget($this->addressEditing); // remove editing index;
         $payload = $this->budgetAddressForm->submit();
-/*     */
         $extract = $this->budgetAddressForm->extract($raw->all());
         $hasEvent = false;
 
