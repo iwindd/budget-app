@@ -1,5 +1,6 @@
 @props([
     'options' => [],
+    'exclude' => [],
     'display' => 'label',
     'value' => 'id',
     'parseInt' => true,
@@ -49,6 +50,7 @@
         multiple: @js($multiple),
         options: @js($options),
         create: @js($create),
+        exclude: @js($exclude),
         defaultValue: @js($parseInt ? intval($defaultValue) : $defaultValue),
         value: @entangle($model),
         setValue(value, isCreate) {
@@ -101,7 +103,9 @@
                     processResults: function(data) {
                         if (!data) return {result: []}
                         return {
-                            results: data.results.map(item => ({
+                            results: data.results
+                            .filter(i => !exclude.some(excludeId => excludeId == i[@js($value)]))
+                            .map(item => ({
                                 text: item[@js($display)],
                                 id: item[@js($value)]
                             }))

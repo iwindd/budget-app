@@ -33,6 +33,7 @@
             :disabled="!$hasPermissionToManage"
             :fetch="route('companions.selectize')"
             :options="$budgetForm->companions"
+            :exclude="[$budgetForm->budget->user_id]"
             lang='budgets.input-companion'
             wire:model="companions"
             display="name"
