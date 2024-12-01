@@ -28,4 +28,6 @@
             </div>
         </div>
     </div>
+
+    <x-any-errors class="mb-4" :errors="$errors" />
 </section>
