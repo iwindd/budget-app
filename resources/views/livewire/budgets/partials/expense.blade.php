@@ -30,6 +30,7 @@
                 :root="['class' => 'space-y-1 col-span-5 lg:col-span-3']"
                 display="name"
                 trackOnly="companions"
+                data-allow-clear="true"
             />
             <x-textfield
                 lang="expenses.input-type"

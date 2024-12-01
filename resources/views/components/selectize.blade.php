@@ -59,6 +59,7 @@
             only: @entangle($trackOnly),
         @endif
         setValue(value, isCreate) {
+            if (value == null) return this.value = null;
             if (this.parseInt) value = typeof(value) == 'object' ? value.map(v => +v) : +value;
             if (isCreate && this.parseCreate && this.create){
                 this.value = JSON.stringify({
