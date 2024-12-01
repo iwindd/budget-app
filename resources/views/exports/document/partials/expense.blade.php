@@ -18,10 +18,10 @@
         @endphp
         <table>
             <tr>
-                <td class="fit">{{ $expense->expense->label }}</td>
-                <td class="under"></td>
+                <td class="fit">{{ $expense->expense->label }}{{$expense->type != null ? 'ประเภท' : ''}}</td>
+                <td class="under"><span>{{ $expense->type }}</span></td>
 
-                @if ($expense->days != null)
+                @if ($expense->days !== null)
                     <td class="fit">{{ __('exports.document-expense-days') }}</td>
                     <td class="under w-1"><span>{{ $format->number($expense->days) }}</span></td>
                     <td class="fit">{{ __('exports.document-expense-days-suffix') }}</td>

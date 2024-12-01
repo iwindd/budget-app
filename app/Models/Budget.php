@@ -28,9 +28,28 @@ class Budget extends Model
         'office_id'
     ];
 
+    protected $casts = [
+        'value' => 'decimal:2', 
+    ];
+
     public static function getExpenses(Budget $budget) {
         return Expense::whereHas('budgetExpenses', function ($query) use ($budget) {
             $query->where('budget_id', $budget->id); // Filter by budget_id in BudgetExpense
+        });
+    }
+
+    public static function getSummaryExpenses(Budget $budget) {
+        return $budget->expenses()
+            ->whereHas('expense', function($query) {
+                $query->where('merge', false);
+                $query->where('default', false);
+            })
+            ->orderBy('days', 'desc')
+            ->get()
+            ->groupBy('expense_id')->map(function ($group) use($budget) {
+            $mainExpense = $group->firstWhere('user_id', $budget->user_id) ?? $group->first(); 
+            $mainExpense->total = $group->sum('total');
+            return $mainExpense;
         });
     }
 

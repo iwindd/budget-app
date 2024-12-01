@@ -22,6 +22,10 @@ class BudgetExpense extends Model
         'type',
     ];
 
+    protected $casts = [
+        'total' => 'decimal:2', 
+    ];
+
     public function budget()
     {
         return $this->belongsTo(Budget::class);

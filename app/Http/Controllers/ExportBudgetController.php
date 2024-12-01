@@ -16,9 +16,11 @@ class ExportBudgetController extends Controller
     {
         $user = $budget->user;
         $owner = $budget->user;
-        $companions = null;
-        $companions = $budget->companions()->where('user_id', '!=', $request->get('of'))->get();
-        $of = $budget->companions()->where('user_id', $request->get('of'))->first();
+        $related = $budget->companions;
+        $ofId    = $request->get('of');
+
+        $companions = $related->where('user_id', '!=', $ofId);
+        $of         = $related->where('user_id', $ofId)->first();
 
         if ($of){
             $fakeCompanion = new BudgetCompanion();
@@ -47,13 +49,7 @@ class ExportBudgetController extends Controller
             'addresses' => $budget->addresses,
             'locations' => BudgetAddress::list(),
             'hours' => Budget::getTotalHours($budget),
-            'expenses' => $budget->expenses()
-                ->whereHas('expense', function($query) {
-                    $query->where('merge', false);
-                    $query->where('default', false);
-                })
-                ->with('expense')
-                ->orderBy('days', 'desc')->get(),
+            'expenses' => Budget::getSummaryExpenses($budget),
             'defaultExpense' => Expense::createDefaultBudgetItemExpense($budget)
         ]);
 
