@@ -38,7 +38,7 @@ class BudgetPartial extends Component
     {
         $budget = $request->budget;
         $this->addressSelectize = BudgetAddress::list()->toArray();
-        
+
         $expenses = collect([]);
         $this->budgetForm->setBudget($budget);
 
@@ -113,7 +113,7 @@ class BudgetPartial extends Component
             'addresses.*.distance' => ['required', 'numeric'],
             'addresses.*.show_as' => ['required', 'string'],
             'expenses' => ['array'],
-            'expenses.*.id' => ['required', 'exists:expenses,id'], 
+            'expenses.*.id' => ['required', 'exists:expenses,id'],
             'expenses.*.type' => ['nullable', 'max:255'],
             'expenses.*.days' => ['nullable', 'integer', 'min:1'],
             'expenses.*.total' => ['required', 'numeric', 'min:1'],
@@ -210,15 +210,31 @@ class BudgetPartial extends Component
 
     /* ADDRESS */
     public function onAddAddress() {
-        //TODO:: validate addresses date
         $raw = collect($this->addresses);
         if ($this->addressEditing !== null) $raw->forget($this->addressEditing); // remove editing index;
         $payload = $this->budgetAddressForm->submit();
-        $extract = $this->budgetAddressForm->extract($raw->all()); // move down
+/*     */
+        $extract = $this->budgetAddressForm->extract($raw->all());
+        $hasEvent = false;
+
         $from_time = $payload['from_time'];
         $back_time = $payload['back_time'];
 
-        function addEvent($fromDate, $backDate, &$extract, $payload) {
+        function addEvent($fromDate, $backDate, &$extract, &$hasEvent, $payload) {
+            $test = $extract->first(function($item) use ($fromDate, $backDate){
+                $iStart = Carbon::parse($item['from_date']);
+                $iBack  = Carbon::parse($item['back_date']);
+
+                return  (
+                    $iStart->isBetween($fromDate, $backDate) ||
+                    $iBack->isBetween($fromDate, $backDate) ||
+                    $fromDate->isBetween($iStart, $iBack) ||
+                    $backDate->isBetween($iStart, $iBack)
+                );
+            });
+
+            if ($test != null || $hasEvent) return $hasEvent = true;
+
             $extract->push([
                 'from_date' => $fromDate->format('Y-m-d H:i'),
                 'back_date' => $backDate->format('Y-m-d H:i'),
@@ -229,11 +245,11 @@ class BudgetPartial extends Component
         if ($payload['multiple']) {
             // Handle multiple dates
             $this->budgetAddressForm->splitDates($payload['dates'])
-                ->each(function ($dates) use ($from_time, $back_time, &$extract, $payload) {
-                    $dates->each(function ($date) use ($from_time, $back_time, &$extract, $payload) {
+                ->each(function ($dates) use ($from_time, $back_time, &$extract, &$hasEvent, $payload) {
+                    $dates->each(function ($date) use ($from_time, $back_time, &$extract, &$hasEvent, $payload) {
                         $fromDate = Carbon::parse("{$date} {$from_time}");
                         $backDate = Carbon::parse("{$date} {$back_time}");
-                        addEvent($fromDate, $backDate, $extract, $payload);
+                        addEvent($fromDate, $backDate, $extract, $hasEvent, $payload);
                     });
                 });
         } else {
@@ -241,8 +257,11 @@ class BudgetPartial extends Component
             $dates = collect($payload['dates']);
             $fromDate = Carbon::parse("{$dates->first()} {$from_time}");
             $backDate = Carbon::parse("{$dates->last()} {$back_time}");
-            addEvent($fromDate, $backDate, $extract, $payload);
+
+            addEvent($fromDate, $backDate, $extract, $hasEvent, $payload);
         }
+
+        if ($hasEvent) return $this->addError('budgetAddressForm.dates', "วันที่ไม่ถูกต้อง มีการเดินทางที่ทับซ้อนกัน!");
 
         $minimize = $this->budgetAddressForm->minimize($extract);
         $this->addresses = $minimize;
@@ -260,7 +279,7 @@ class BudgetPartial extends Component
         if ($validated['owner'] != null) $owner = User::findOrFail($validated['owner'], 'name');
 
         $payload = collect($this->expenses);
-        $expenseIndex = $payload->search(fn($item) => 
+        $expenseIndex = $payload->search(fn($item) =>
             $item['id'] === $validated['expense_id'] &&
             $item['user_id'] == $validated['owner']
         );
@@ -280,7 +299,7 @@ class BudgetPartial extends Component
                 'user_id'  => $validated['expense_id'],
                 'user_label' => $owner->name
             ]);
-        }   
+        }
 
         $this->expenses = $payload->sortBy('id')->values();
     }
@@ -290,6 +309,6 @@ class BudgetPartial extends Component
 
         $this->expenses = collect($this->expenses)
             ->filter(fn($e) => $e['id'] != $id && $e['user_id'] != $userId)
-            ->toArray(); 
+            ->toArray();
     }
 }
