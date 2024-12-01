@@ -12,7 +12,7 @@
             <tr>
                 <td >{{-- EMPTY --}}</td>
                 <td class="text-left" style="text-align: left; padding: 0.3em;">
-                    {{$subject}} ออกเดินทางไป {{$header}} 
+                    {{$subject}} ออกเดินทางไป {{$header}}
                 </td>
                 <td>{{-- EMPTY --}}</td>
                 <td>{{-- EMPTY --}}</td>
@@ -24,34 +24,36 @@
                 <tr>
                     <td style="padding: 0.2em; vertical-align: top;">
                         <p>{{
-                            $format->dateAddress($address->from_date, $address->back_date, $address->multiple, [
-                                'M' => true,
-                                'y' => true,
-                                'j' => true,
-                                'Dt' => true, 
-                            ])
-                        }}</p>
-                        {{$address->multiple ? 'ทุกวันจนถึง': 'จนถึง'}}
-                        <p>{{
-                            $format->dateAddress($address->from_date, $address->back_date, $address->multiple, [
+                            $format->dateAddress($address['from_date'], $address['back_date'], $address['multiple'], [
                                 'M' => true,
                                 'y' => true,
                                 'j' => true,
                                 'Dt' => true,
-                                'fMain' => false
                             ])
                         }}</p>
+                        @if (!$address['multiple'])
+                            จนถึง
+                            <p>{{
+                                $format->dateAddress($address['from_date'], $address['back_date'], $address['multiple'], [
+                                    'M' => true,
+                                    'y' => true,
+                                    'j' => true,
+                                    'Dt' => true,
+                                    'fMain' => false
+                                ])
+                            }}</p>
+                        @endif
                     </td>
                     @php
-                        $round = $address->multiple ? ($format->dayDiff($address->back_date, $address->from_date)+1)*2:2;
-                        $total = ($address->distance * $round) * 4;
+                        $round = $address['multiple'] ? ($format->dayDiff($address['back_date'], $address['from_date'])+1)*1:1;
+                        $total = ($address['distance'] * $round) * 4;
                         $sum  += $total;
                     @endphp
                     <td style="text-align: left; padding: 0.2em; vertical-align: top;">
                         <p>
-                            - ค่าน้ำมันเชื้อเพลิง {{$name}} โดยรถทะเบียน {{$address->plate}} เดินทางจาก {{$address->from_label}} เวลา {{$format->date($address->from_date, 'H:i')}}น. ไป {{$header}} และกลับถึง {{$address->back_label}}  เวลา {{$format->date($address->back_date, 'H:i')}}น.
+                            - {{$address['show_as']}} {{$name}} โดยรถทะเบียน {{$address['plate']}} เดินทางจาก {{$locations->where('id', $address['from_id'])->first()['label'] ?? 'ERROR'}} เวลา {{$format->date($address['from_date'], 'H:i')}}น. ไป {{$header}} และกลับถึง {{$locations->where('id', $address['back_id'])->first()['label'] ?? 'ERROR'}}  เวลา {{$format->date($address['back_date'], 'H:i')}}น.
                         </p>
-                        <span>({{$format->number($address->distance)}}กม. x 4บาท x {{$round}}เที่ยว รวมเป็นเงิน {{
+                        <span>({{$format->number($address['distance'], 2)}}กม. x 4บาท x {{$round}}เที่ยว รวมเป็นเงิน {{
                             $format->number($total, 2)
                         }}บาท)</span>
                     </td>
@@ -64,7 +66,7 @@
             <tr>
                 <th></th>
                 <th>{{$format->bahtText($sum)}}</th>
-                <th>{{$format->number($sum)}}</th>
+                <th>{{$format->number($sum, 2)}}</th>
                 <th></th>
             </tr>
         </tfoot>

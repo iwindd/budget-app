@@ -96,7 +96,8 @@ class ExportBudgetController extends Controller
             'name' => $budget->user->name,
             'position' => $budget->user->position->label,
             'header' => $budget->header,
-            'addresses' => $budget->addresses,
+            'addresses' => Budget::getExtractAddresses($budget->addresses->toArray()),
+            'locations' => BudgetAddress::list(),
             'subject' => $budget->subject
         ]);
 
