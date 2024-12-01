@@ -70,9 +70,9 @@
                         });
                         $expenses_total += $expense_sum;
                     @endphp
-                    <td>
+                    <th>
                         {{$format->number($expense_sum)}}
-                    </td>
+                    </th>
                 @endforeach
                 <th>{{$format->number($expenses_total)}}</th>
                 <td colspan="3">
