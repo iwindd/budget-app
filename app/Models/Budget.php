@@ -44,7 +44,7 @@ class Budget extends Model
                 $query->where('merge', false);
                 $query->where('default', false);
             })
-            ->orderBy('days', 'desc')
+            ->orderBy('id', 'asc')
             ->get()
             ->groupBy('expense_id')->map(function ($group) use($budget) {
             $mainExpense = $group->firstWhere('user_id', $budget->user_id) ?? $group->first();
