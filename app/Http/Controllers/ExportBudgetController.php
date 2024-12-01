@@ -30,6 +30,11 @@ class ExportBudgetController extends Controller
             $user = $of->user;
         }
 
+        $addresses    = $budget->addresses()->get(['multiple', 'from_id', 'back_id', 'from_date', 'back_date']);
+        $addressesRaw = Budget::getExtractAddresses($addresses->toArray());
+        $addressesMinimizedDocument = Budget::getMinimizedAddresses($addressesRaw, ['plate', 'distance', 'show_as']);
+        // ไม่จำเป็นต้องเช็ค plate, distance, show_as ในหน้านี้
+
         $pdf = Pdf::loadView('exports.document.index', [
             'serial' => $budget->serial,
             'date' => $budget->date,
@@ -46,7 +51,7 @@ class ExportBudgetController extends Controller
             'companions' => $companions,
             'header' => $budget->header,
             'subject' => $budget->subject,
-            'addresses' => $budget->addresses,
+            'addresses' =>  $addressesMinimizedDocument,
             'locations' => BudgetAddress::list(),
             'hours' => Budget::getTotalHours($budget),
             'expenses' => Budget::getSummaryExpenses($budget),
