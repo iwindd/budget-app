@@ -10,6 +10,7 @@
             plate: @entangle('budgetAddressForm.plate'),
             distance: @entangle('budgetAddressForm.distance'),
             checkbox: @entangle('budgetAddressForm.multiple'),
+            show_as: @entangle('budgetAddressForm.show_as'),
             addressesSelectize: @entangle('addressSelectize'),
             get addressesRaw(){
                 const extract = [];
@@ -211,6 +212,7 @@
                 this.plate = address.plate;
                 this.distance = address.distance;
                 this.editing = address.ri;
+                this.show_as = address.show_as;
 
                 const isMultiple = address.multiple || from.isSame(back, 'day') ? true: false;
 
@@ -549,9 +551,9 @@
                         wire:model="budgetAddressForm.from_id"
                         :selectOnClose="true"
                     />
-                    <x-budgets.timepicker 
+                    <x-budgets.timepicker
                         lang="address.input-from-datetime"
-                        wire:model="budgetAddressForm.from_time" 
+                        wire:model="budgetAddressForm.from_time"
                     />
                     <x-selectize
                         :options="$addressSelectize"
@@ -559,21 +561,21 @@
                         wire:model="budgetAddressForm.back_id"
                         :selectOnClose="true"
                     />
-                    <x-budgets.timepicker 
+                    <x-budgets.timepicker
                         lang="address.input-back-datetime"
-                        wire:model="budgetAddressForm.back_time" 
+                        wire:model="budgetAddressForm.back_time"
                     />
-                    <x-textfield 
-                        lang="address.input-plate" 
-                        wire:model="budgetAddressForm.plate" 
+                    <x-textfield
+                        lang="address.input-plate"
+                        wire:model="budgetAddressForm.plate"
                     />
-                    <x-textfield 
+                    <x-textfield
                         lang="address.input-distance"
-                        wire:model="budgetAddressForm.distance" 
+                        wire:model="budgetAddressForm.distance"
                     />
-                    <x-textfield 
+                    <x-textfield
                         lang="address.input-showAs"
-                        wire:model="budgetAddressForm.show_as" 
+                        wire:model="budgetAddressForm.show_as"
                     />
                     <section>
                         <x-form.label for="submit" :value="__('address.table-action')" />
