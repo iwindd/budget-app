@@ -44,13 +44,11 @@ class BudgetExpenseForm extends Form
 
             if ($created) $this->expense = $created->id;
         }
-        
+
         $validated = $this->validate([
             'expense' => ['required', 'integer', 'exists:expenses,id'],
             'total' => ['required', 'numeric', 'min:1'],
             'owner' => ['nullable', 'integer', 'exists:users,id'],
-            'type'  => ['nullable', 'string'],
-            'days'  => ['nullable']
         ]);
 
         $validated['expense_id'] = $validated['expense'];

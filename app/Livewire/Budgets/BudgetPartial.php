@@ -295,8 +295,8 @@ class BudgetPartial extends Component
                 'id' => $validated['expense_id'],
                 'label' => $expense->label,
                 'total' => $validated['total'],
-                'days'  => $validated['days'],
-                'type'  => $validated['type'],
+                'days'  => null,
+                'type'  => null,
                 'user_id'  => $validated['owner'],
                 'user_label' => $owner->name
             ];

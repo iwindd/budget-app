@@ -5,7 +5,7 @@
                 lang="expenses.selectize"
                 :fetch="route('expenses.selectize')"
                 wire:model="budgetExpenseForm.expense"
-                :root="['class' => 'space-y-1 col-span-5 lg:col-span-3']"
+                :root="['class' => 'space-y-1 col-span-2 lg:col-span-2']"
                 create
                 :parseInt="false"
                 :parseCreate="true"
@@ -15,28 +15,16 @@
                 lang="expenses.input-total"
                 wire:model="budgetExpenseForm.total"
                 type="number"
-                :root="['class' => 'space-y-1 col-span-3 lg:col-span-1']"
-            />
-            <x-textfield
-                lang="expenses.input-days"
-                wire:model="budgetExpenseForm.days"
-                type="int"
-                :root="['class' => 'space-y-1 col-span-3 lg:col-span-1']"
+                :root="['class' => 'space-y-1 ']"
             />
             <x-selectize
                 lang="expenses.input-owner"
                 :fetch="route('companions.selectize')"
                 wire:model="budgetExpenseForm.owner"
-                :root="['class' => 'space-y-1 col-span-5 lg:col-span-3']"
+                :root="['class' => 'space-y-1 ']"
                 display="name"
                 trackOnly="companions"
                 data-allow-clear="true"
-            />
-            <x-textfield
-                lang="expenses.input-type"
-                wire:model="budgetExpenseForm.type"
-                type="text"
-                :root="['class' => 'space-y-1 col-span-3 lg:col-span-1']"
             />
             <div class="col-span-2 lg:col-span-1 pt-6">
                 <x-button type="submit" name="submit" class="w-full justify-center truncate">{{ __('budgets.add-expense-btn') }}</x-button>
@@ -47,7 +35,7 @@
     @foreach ($expenses as $index => $expense)
         @php
             $modelPrefix  ="expenses.$index";
-            $childExpense = $expense['user_id'] !== $budgetForm->budget->user_id;
+            $childExpense = $expense['user_id'] !== $budgetForm->budget->user_id || $expense['id'] > 3;
             $childOfExpense = $expenses->search(fn($e) => $e['id'] === $expense['id'] && $e['user_id'] == $budgetForm->budget->user_id);
             if ($childExpense && $childOfExpense !== false) $modelPrefix  ="expenses.$childOfExpense";
         @endphp
