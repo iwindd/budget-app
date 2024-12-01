@@ -46,7 +46,7 @@
         @php
             $childExpense = $hasPermissionToManage && $expense['user_id'] !== $budgetForm->budget->user_id;
             $targetIndex = !$childExpense ? $index : $expenses
-                ->search(fn($e) => 
+                ->search(fn($e) =>
                     $e['id'] == $expense['id'] &&
                     $e['user_id'] == $budgetForm->budget->user_id
                 );
@@ -68,30 +68,33 @@
                 }
             }"
         >
-            <x-textfield 
-                lang="expenses.input-label" 
+            <x-textfield
+                lang="expenses.input-label"
                 :helper="$expense['user_id'] !== $budgetForm->budget->user_id ? 'ผู้ใช้: '.$expense['user_label'] : ''"
-                :value="$expense['label']" 
-                disabled 
-                class="lg:pl-3 pl-0" 
+                :value="$expense['label']"
+                :root="['class' => $childExpense ? 'col-span-3' : '']"
+                disabled
+                class="lg:pl-3 pl-0"
             />
 
-            <x-textfield
-                lang="expenses.input-type"
-                :disabled="$childExpense"
-                :wrapper="['class'=>!$childExpense ? 'bg-white' : '']"
-                :startIcon="@svg('heroicon-o-tag')"
-                wire:model="{{$modelPrefix}}.type"
-                type="text"
-            />
-            <x-textfield
-                lang="expenses.input-days"
-                :disabled="$childExpense"
-                :wrapper="['class'=>!$childExpense ? 'bg-white' : '']"
-                :startIcon="@svg('heroicon-o-calendar-days')"
-                wire:model="{{$modelPrefix}}.days"
-                type="number"
-            />
+            @if (!$childExpense)
+                <x-textfield
+                    lang="expenses.input-type"
+                    :disabled="$childExpense"
+                    :wrapper="['class'=>!$childExpense ? 'bg-white' : '']"
+                    :startIcon="@svg('heroicon-o-tag')"
+                    wire:model="{{$modelPrefix}}.type"
+                    type="text"
+                />
+                <x-textfield
+                    lang="expenses.input-days"
+                    :disabled="!$hasPermissionToManage"
+                    :wrapper="['class'=>!$childExpense ? 'bg-white' : '']"
+                    :startIcon="@svg('heroicon-o-calendar-days')"
+                    wire:model="{{$modelPrefix}}.days"
+                    type="number"
+                />
+            @endif
             <x-textfield
                 lang="expenses.input-total"
                 :disabled="!$hasPermissionToManage"
@@ -100,7 +103,6 @@
                 wire:model="expenses.{{$index}}.total"
                 type="number"
             />
-
             <div class="flex gap-1 w-full h-full">
                 <x-textfield
                     lang="expenses.input-sum"
