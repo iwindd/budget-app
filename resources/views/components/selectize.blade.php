@@ -20,7 +20,8 @@
     'multiple' => false,
     'root' => [],
     'selectOnClose' => false,
-    'defaultByOptions' => false
+    'defaultByOptions' => false,
+    'trackOnly' => null
 ])
 @php
     $model = $attributes->get('wire:model');
@@ -53,6 +54,10 @@
         exclude: @js($exclude),
         defaultValue: @js($parseInt ? intval($defaultValue) : $defaultValue),
         value: @entangle($model),
+        only: null,
+        @if ($trackOnly !== null)
+            only: @entangle($trackOnly),
+        @endif
         setValue(value, isCreate) {
             if (this.parseInt) value = typeof(value) == 'object' ? value.map(v => +v) : +value;
             if (isCreate && this.parseCreate && this.create){
@@ -105,6 +110,7 @@
                         return {
                             results: data.results
                             .filter(i => !exclude.some(excludeId => excludeId == i[@js($value)]))
+                            .filter(i => only == null || only.some(onlyId => onlyId == i[@js($value)]))
                             .map(item => ({
                                 text: item[@js($display)],
                                 id: item[@js($value)]

@@ -29,6 +29,7 @@
                 wire:model="budgetExpenseForm.owner"
                 :root="['class' => 'space-y-1 col-span-5 lg:col-span-3']"
                 display="name"
+                trackOnly="companions"
             />
             <x-textfield
                 lang="expenses.input-type"
