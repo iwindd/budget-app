@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Budget;
 use Carbon\Carbon;
 use Livewire\Form;
 
@@ -34,18 +35,6 @@ class BudgetAddressForm extends Form
 
     public function clear() {
         $this->reset(['dates']);
-    }
-
-    public function sort($a, $b) {
-        $dateA = Carbon::parse($a['from_date']);
-        $dateB = Carbon::parse($b['from_date']);
-
-        if ($dateA->isBefore($dateB)) {
-            return -1;
-        } elseif ($dateA->isAfter($dateB)) {
-            return 1;
-        }
-        return 0;
     }
 
     public function splitDates(array $dates)
@@ -81,91 +70,10 @@ class BudgetAddressForm extends Form
     }
 
     public function extract(array $addresses) {
-        $result    = collect([]);
-        $addresses = collect($addresses)
-            ->sort(fn($a, $b) => $this->sort($a, $b))
-            ->values();
-
-        if ($addresses->count() <= 0) return $result;
-
-        $addresses->map(function ($address) use ($result){
-            $from = Carbon::parse($address['from_date']);
-            $back = Carbon::parse($address['back_date']);
-
-            if ($address['multiple']){
-                $tempDate = Carbon::parse($from);
-
-                while ($tempDate->lte($back)) {
-                    $result->push([
-                        'from_date' => $tempDate
-                            ->clone()
-                            ->setTimeFromTimeString($from->format('H:i'))
-                            ->format('Y-m-d H:i'),
-                        'back_date' => $tempDate
-                            ->clone()
-                            ->setTimeFromTimeString($back->format('H:i'))
-                            ->format('Y-m-d H:i'),
-                        'multiple' => true
-                    ] + $address);
-                    $tempDate->addDay();
-                }
-            }else{
-                $result->push([
-                    'multiple' => $from->isSameDay($back) ? true : $address['multiple']
-                ] + $address);
-            }
-        });
-
-        return $result;
+        return Budget::getExtractAddresses($addresses);
     }
 
     public function minimize($raw) {
-        $payload = [];
-        $data    = collect($raw)
-                    ->sort(fn($a, $b) => $this->sort($a, $b))
-                    ->values();
-        $skipped = [];
-        foreach ($data as $index => $address) {
-            if (in_array($index, $skipped)) {
-                continue;
-            }
-
-            $fromDate = Carbon::parse($address['from_date']);
-            $backDate = Carbon::parse($address['back_date']);
-            $stack = [];
-
-            // Iterate through remaining data after current index
-            for ($i = $index + 1; $i < $data->count(); $i++) {
-                $nextAddress = $data[$i];
-
-                // Check continuity conditions
-                if (
-                    $fromDate->copy()->addDays(count($stack) + 1)->eq(Carbon::parse($nextAddress['from_date'])) &&
-                    $backDate->copy()->addDays(count($stack) + 1)->eq(Carbon::parse($nextAddress['back_date'])) &&
-                    $address['plate'] === $nextAddress['plate'] &&
-                    $address['distance'] === $nextAddress['distance'] &&
-                    $address['multiple'] === $nextAddress['multiple'] &&
-                    $address['show_as']  === $nextAddress['show_as']
-                ) {
-                    $skipped[] = $i; // Mark this index as processed
-                    $stack[] = $nextAddress; // Add to stack
-                } else {
-                    break; // Stop if conditions are not met
-                }
-            }
-
-            $payload[] = array_merge(
-                $address,
-                [
-                    'back_date' => count($stack) > 0 ? $stack[count($stack) - 1]['back_date'] : $address['back_date'], // Use last back_date if stacked
-                    'multiple' => count($stack) > 0,
-                ]
-            );
-        }
-
-        // Final sort before returning
-        usort($payload, fn ($a, $b) => $this->sort($a, $b));
-
-        return $payload;
+        return Budget::getMinimizedAddresses($raw);
     }
 }
