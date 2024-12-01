@@ -105,14 +105,14 @@ class ExportBudgetController extends Controller
     }
 
     public function travel(Budget $budget) {
-        $addresses = $budget->addresses;
+        $addresses = Budget::getExtractAddresses($budget->addresses->toArray());
         $pdf = PDF::loadView('exports.travel.index', [
             'invitation' => $budget->invitation->label,
             'province' => Factory::province()->find($budget->office->province)['name_th'],
             'name' => $budget->user->name,
             'position' => $budget->user->position->label,
-            'start' =>  $addresses->first()->from_date,
-            'end' => $addresses->last()->back_date,
+            'start' =>  $addresses[0]['from_date'],
+            'end' => $addresses[count($addresses)-1]['back_date'],
             'header' => $budget->header,
             'addresses' => $addresses
         ]);

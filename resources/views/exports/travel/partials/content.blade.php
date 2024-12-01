@@ -1,5 +1,4 @@
-<section style="margin: 1.5em 0;">
-    <table class="table">
+    <table class="table" style="margin: 1.0em 0;">
         <thead>
             <tr>
                 <th rowspan="2">{{ __('exports.travel-table-order') }}</th>
@@ -23,21 +22,21 @@
         <tbody>
             @foreach ($addresses as $i => $address)
                 @php
-                    $round = $address->multiple ? ($format->dayDiff($address->back_date, $address->from_date)+1)*2:2;
+                    $round = $address['multiple'] ? ($format->dayDiff($address['back_date'], $address['from_date'])+1)*1:1;
                 @endphp
                 <tr>
                     <td>{{$i+1}}</td>
-                    <td>{{$address->plate}}</td>
-                    <td>{{$format->date($address->from_date, "j M y")}}</td>
-                    <td>{{$format->date($address->from_date, "H:i")}}</td>
+                    <td>{{$address['plate']}}</td>
+                    <td>{{$format->date($address['from_date'], "j M y")}}</td>
+                    <td>{{$format->date($address['from_date'], "H:i")}}</td>
                     <td>{{$name}}</td>
                     <td>{{$header}}</td>
-                    <td>{{$format->date($address->back_date, "j M y")}}</td>
-                    <td>{{$format->date($address->back_date, "H:i")}}</td>
-                    <td>{{$format->number($address->distance)}}กม.</td>
+                    <td>{{$format->date($address['back_date'], "j M y")}}</td>
+                    <td>{{$format->date($address['back_date'], "H:i")}}</td>
+                    <td>{{$format->number($address['distance'], 2)}}กม.</td>
                     <td>{{$format->number($round)}} เที่ยว</td>
-                    <td>{{$format->number($address->distance * $round)}}กม.</td>
-                    <td>{{$format->number($address->distance * $round * 4)}}กม.</td>
+                    <td>{{$format->number($address['distance'] * $round, 2)}}กม.</td>
+                    <td>{{$format->number($address['distance'] * $round * 4, 2)}}กม.</td>
                 </tr>
             @endforeach
         </tbody>

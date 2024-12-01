@@ -22,4 +22,3 @@
             <th class="under" style="padding: 0 0.5em;"><span>{{$header}}</span></th>
         </tr>
     </table>
-</section>
