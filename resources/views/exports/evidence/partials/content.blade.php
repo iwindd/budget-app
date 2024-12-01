@@ -18,26 +18,27 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $index => $item)
+            @foreach ($users as $index => $user)
                 @php
                     $expense_total = 0;
                 @endphp
                 <tr>
                     <td>{{$index+1}}</td>
-                    <td>{{$item->user->name}}</td>
-                    <td>{{$item->user->position->label}}</td>
+                    <td>{{$user->user->name}}</td>
+                    <td>{{$user->user->position->label}}</td>
                     @foreach ($expenses as $expense)
                         @php
                             $expense_items = !$expense->default ? (
-                                $budgetExpenses->where('expense_id', $expense->id)
+                                $budgetExpenses->where('expense_id', $expense->id)->where('user_id', $user->user_id)
                             ): (
-                                $budgetExpenses->filter(function($item) {
-                                    return $item->expense->merge || $item->expense->default;
+                                $budgetExpenses->where('user_id', $user->user_id)->filter(function($budgetExpense) {
+                                    return $budgetExpense->expense->merge || $budgetExpense->expense->default;
                                 })
                             );
+
                             $expense_sum = $expense_items->sum(function ($expense_item) {
                                 return $expense_item->total * ($expense_item->days ?? 1);
-                            }) / $users->count();
+                            }) ;
                             $expense_total += $expense_sum;
                         @endphp
                         <td>
@@ -46,7 +47,7 @@
                     @endforeach
                     <td>{{$format->number($expense_total)}}</td>
                     <td>{{-- MANUAL --}}</td>
-                    <td>{{$format->date($item->date)}}</td>
+                    <td>{{$format->date($user->date)}}</td>
                     <td>{{-- MANUAL --}}</td>
                 </tr>
             @endforeach
