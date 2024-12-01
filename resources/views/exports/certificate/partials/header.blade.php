@@ -7,4 +7,3 @@
             <td class="under"><span>{{ $office }}</span></td>
         </tr>
     </table>
-</section>

@@ -1,5 +1,4 @@
-<section style="margin: 1.5em 0;">
-    <table class="table">
+    <table class="table" style="margin: 1.5em 0;">
         <thead>
             <tr>
                 <th class="w-1" style="height: 2em;">{{ __('exports.certificate-table-date') }}</th>
