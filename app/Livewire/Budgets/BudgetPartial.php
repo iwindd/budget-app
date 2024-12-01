@@ -101,6 +101,8 @@ class BudgetPartial extends Component
     }
 
     public function rules() {
+        $related = array_merge($this->companions->toArray(), [$this->budgetForm->budget->user_id]);
+
         return [
             'companions' => ['array'],
             'companions.*' => ['integer'],
@@ -118,7 +120,7 @@ class BudgetPartial extends Component
             'expenses.*.type' => ['nullable', 'max:255'],
             'expenses.*.days' => ['nullable', 'integer', 'min:1'],
             'expenses.*.total' => ['required', 'numeric', 'min:1'],
-            'expenses.*.user_id' => ['required', 'integer', new ValidUserId($this->companions->toArray() + [$this->budgetForm->budget->user_id]), 'exists:users,id'],
+            'expenses.*.user_id' => ['required', 'integer', new ValidUserId($related), 'exists:users,id'],
         ];
     }
 
