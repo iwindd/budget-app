@@ -74,6 +74,7 @@ th.under > span,
 td.under > span {
     position: relative;
     bottom: 0.15em;
+    white-space: nowrap !important;
 }
 
 th.under::after,
