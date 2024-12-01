@@ -270,6 +270,8 @@ class BudgetPartial extends Component
     public function onAddExpense() {
         if (!$this->hasPermissionToManage) return false;
         $validated = $this->budgetExpenseForm->submit();
+        if($validated['owner'] === null) $validated['owner'] = $this->budgetForm->budget->user->id;
+
         $expense   = Expense::where([
             ['id', $validated['expense_id']],
             ['default', false]
@@ -279,7 +281,7 @@ class BudgetPartial extends Component
 
         $payload = collect($this->expenses);
         $expenseIndex = $payload->search(fn($item) =>
-            $item['id'] === $validated['expense_id'] &&
+            $item['id'] == $validated['expense_id'] &&
             $item['user_id'] == $validated['owner']
         );
 
