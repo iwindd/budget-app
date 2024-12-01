@@ -304,10 +304,9 @@ class BudgetPartial extends Component
     }
 
     public function onRemoveExpense($id, $userId) {
-       if (!$this->hasPermissionToManage) return false;
+        if (!$this->hasPermissionToManage) return false;
 
         $this->expenses = collect($this->expenses)
-            ->filter(fn($e) => $e['id'] != $id && $e['user_id'] != $userId)
-            ->toArray();
+            ->filter(fn($e) => !($e['id'] == $id && $e['user_id'] == $userId));
     }
 }
