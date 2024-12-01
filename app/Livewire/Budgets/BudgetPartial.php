@@ -11,6 +11,7 @@ use App\Models\Expense;
 use App\Models\Invitation;
 use App\Models\Office;
 use App\Models\User;
+use App\Rules\ValidUserId;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class BudgetPartial extends Component
     public $addressSelectize = [];
     public $addressEditing = null;
 
-    public $companions = [];
+    public $companions;
     public $addresses  = [];
     public $expenses   = [];
 
@@ -117,7 +118,7 @@ class BudgetPartial extends Component
             'expenses.*.type' => ['nullable', 'max:255'],
             'expenses.*.days' => ['nullable', 'integer', 'min:1'],
             'expenses.*.total' => ['required', 'numeric', 'min:1'],
-            'expenses.*.user_id' => ['required', 'integer', 'exists:users,id'],
+            'expenses.*.user_id' => ['required', 'integer', new ValidUserId($this->companions->toArray() + [$this->budgetForm->budget->user_id]), 'exists:users,id'],
         ];
     }
 
@@ -270,6 +271,10 @@ class BudgetPartial extends Component
     public function onAddExpense() {
         if (!$this->hasPermissionToManage) return false;
         $validated = $this->budgetExpenseForm->submit();
+        if($validated['owner'] !== null && (
+            $validated['owner'] == $this->budgetForm->budget->user->id ||
+            !in_array($validated['owner'], $this->companions->toArray()))
+        ) return $this->addError('budgetExpenseForm.owner', "ผู้ใช้ที่เลือกไม่เกี่ยวข้องกับใบเบิกฉบับนี้!");
         if($validated['owner'] === null) $validated['owner'] = $this->budgetForm->budget->user->id;
 
         $expense   = Expense::where([

@@ -67,6 +67,7 @@
                 :helper="$expense['user_id'] !== $budgetForm->budget->user_id ? 'ผู้ใช้: '.$expense['user_label'] : ''"
                 :value="$expense['label']"
                 :root="['class' => $childExpense ? 'col-span-3' : '']"
+                :error="$errors->get('expenses.' . $index . '.user_id')"
                 disabled
                 class="lg:pl-3 pl-0"
             />
