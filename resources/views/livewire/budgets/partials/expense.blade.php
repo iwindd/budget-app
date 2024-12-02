@@ -66,7 +66,7 @@
                 lang="expenses.input-label"
                 :helper="$expense['user_id'] !== $budgetForm->budget->user_id ? 'ผู้ใช้: '.$expense['user_label'] : ''"
                 :value="$expense['label']"
-                :root="['class' => $childExpense ? 'col-span-3' : '']"
+                :root="['class' => ($childExpense ? ' col-span-2 md:col-span-2 lg:col-span-3' : 'col-span-3 md:col-span-2 lg:col-span-1')]"
                 :error="$errors->get('expenses.' . $index . '.user_id')"
                 disabled
                 class="lg:pl-3 pl-0"
@@ -77,6 +77,7 @@
                     lang="expenses.input-type"
                     :disabled="$childExpense"
                     :wrapper="['class'=>!$childExpense ? 'bg-white' : '']"
+                    :root="['class'=>'col-span-2 md:col-span-1 lg:col-span-1']"
                     :startIcon="@svg('heroicon-o-tag')"
                     wire:model="expenses.{{$index}}.type"
                     type="text"
@@ -86,6 +87,7 @@
                     :disabled="!$hasPermissionToManage"
                     :wrapper="['class'=>!$childExpense ? 'bg-white' : '']"
                     :startIcon="@svg('heroicon-o-calendar-days')"
+                    :root="['class'=>'col-span-2 md:col-span-1 lg:col-span-1']"
                     wire:model="expenses.{{$index}}.days"
                     type="number"
                 />
@@ -95,10 +97,11 @@
                 :disabled="!$hasPermissionToManage"
                 :wrapper="['class'=>$hasPermissionToManage ? 'bg-white' : '']"
                 :startIcon="@svg('heroicon-o-banknotes')"
+                :root="['class'=>'col-span-3 md:col-span-1 lg:col-span-1']"
                 wire:model="expenses.{{$index}}.total"
                 type="number"
             />
-            <div class="flex gap-1 w-full h-full">
+            <div class="{{$childExpense ? 'col-span-5 md:col-span-2 lg:col-span-1' : 'col-span-5 lg:col-span-1'}} flex gap-1 w-full h-full">
                 <x-textfield
                     lang="expenses.input-sum"
                     disabled
