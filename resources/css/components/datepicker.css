@@ -25,6 +25,10 @@
     @apply rounded-md !border-gray-400 dark:border-gray-600 py-1
 }
 
+.invalid-addresses-dates .flatpickr-calendar{
+    @apply !border-danger-500
+}
+
 .datepicker-address .flatpickr-calendar{
     box-shadow: none !important;
 }
