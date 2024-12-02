@@ -9,7 +9,7 @@
                 lang="expenses.selectize"
                 :fetch="route('expenses.selectize')"
                 wire:model="budgetExpenseForm.expense"
-                :root="['class' => 'space-y-1 col-span-2 lg:col-span-2']"
+                :root="['class' => 'space-y-1 col-span-5 md:col-span-3 lg:col-span-2']"
                 create
                 :parseInt="false"
                 :parseCreate="true"
@@ -19,18 +19,18 @@
                 lang="expenses.input-total"
                 wire:model="budgetExpenseForm.total"
                 type="number"
-                :root="['class' => 'space-y-1 ']"
+                :root="['class' => 'space-y-1 col-span-2 md:col-span-2 lg:col-span-1']"
             />
             <x-selectize
                 lang="expenses.input-owner"
                 :fetch="route('companions.selectize')"
                 wire:model="budgetExpenseForm.owner"
-                :root="['class' => 'space-y-1 ']"
+                :root="['class' => 'space-y-1 col-span-3 md:col-span-3 lg:col-span-1']"
                 display="name"
                 trackOnly="companions"
                 data-allow-clear="true"
             />
-            <div class="col-span-2 lg:col-span-1 pt-6">
+            <div class="col-span-5 md:col-span-2 lg:col-span-1 md:pt-6 lg:pt-6">
                 <x-button type="submit" name="submit" class="w-full justify-center truncate">{{ __('budgets.add-expense-btn') }}</x-button>
             </div>
         </form>
