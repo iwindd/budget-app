@@ -508,7 +508,7 @@
                     class="block font-medium text-sm {{ count($addressError) > 0 ? 'text-danger' : 'text-gray-700 dark:text-gray-300 ' }}">
                     {{ __('address.input-range') }}
                 </label>
-                <main class="flex flex-row lg:flex-col datepicker-address gap-1 pb-2">
+                <main class="flex flex-col md:flex-row datepicker-address gap-1 pb-2">
                     <section class="w-[310]" wire:ignore>
                         <textfield id="budgetAddressForm.dates" type="hidden" x-ref="datepicker" class="hidden">
                     </section>
@@ -544,7 +544,7 @@
                 $root = ['class' => 'col-span-2 lg:col-span-1'];
             @endphp
             @if ($hasPermissionToManage)
-                <form wire:submit="onAddAddress" class="grid grid-cols-4 gap-1 pb-1 mb-2 border-b">
+                <form wire:submit="onAddAddress" class="grid grid-cols-2 lg:grid-cols-4 gap-1 pb-1 mb-2 border-b">
                     <x-selectize
                         :options="$addressSelectize"
                         lang='address.input-from'
