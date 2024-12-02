@@ -694,17 +694,17 @@
                 }"
                 >
                 <section class="relative overflow-x-auto border-none mt-2">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit border-none">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-inherit border-collapse border-none">
                         <thead
                             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900/10 dark:text-inherit ">
                             <tr>
-                                <th class="px-6 py-3 text-start">{{ __('address.table-plate') }}</th>
-                                <th class="px-6 py-3 w-[10%] text-end">{{ __('address.table-from-label') }}</th>
-                                <th class="px-6 py-3 flex-grow flex justify-between">{!! __('address.table-date') !!}</th>
-                                <th class="px-6 py-3 w-[10%] text-center">{{ __('address.table-back-label') }}</th>
-                                <th class="px-6 py-3 w-[10%] text-end">{{ __('address.table-time') }}</th>
-                                <th class="px-6 py-3 w-[10%] text-end">{{ __('address.table-distance') }}</th>
-                                <th class="px-6 py-3 w-[10%] text-end">{{ __('address.table-total') }}</th>
+                                <th class="px-1 py-3 text-start align-top border-r">{{ __('address.table-plate') }}</th>
+                                <th class="px-1 py-3 w-[10%] text-center align-top border-r">{{ __('address.table-from-label') }}</th>
+                                <th class="px-1 py-3 flex-grow flex justify-between border-r">{!! __('address.table-date') !!}</th>
+                                <th class="px-1 py-3 w-[10%] text-center align-top border-r">{{ __('address.table-back-label') }}</th>
+                                <th class="px-1 py-3 w-[10%] text-center align-top border-r">{{ __('address.table-time') }}</th>
+                                <th class="px-1 py-3 w-[10%] text-center align-top border-r">{{ __('address.table-distance') }}</th>
+                                <th class="px-1 py-3 w-[10%] text-end align-top ">{{ __('address.table-total') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -717,16 +717,16 @@
                                     @endif
                                 >
 
-                                    <td class="px-6 py-2" x-text="address.plate"></td>
-                                    <td class="px-6 py-2 text-end" x-text="getLocationLabel(address.from_id)"></td>
+                                    <td class="px-1 py-2" x-text="address.plate"></td>
+                                    <td class="px-1 py-2 text-center" x-text="getLocationLabel(address.from_id)"></td>
 
-                                    <td class="px-6 py-2 flex justify-center items-center">
+                                    <td class="px-1 py-2 flex justify-center items-center">
                                         <div class="flex justify-between h-full w-full" x-html="formatAddressDate(address.from_date, address.back_date, address.multiple)"></div>
                                     </td>
 
-                                    <td class="px-6 py-2 text-center" x-text="getLocationLabel(address.back_id)"></td>
-                                    <td class="text-end" x-text="formatAddressTimeDiff(address.from_date, address.back_date, address.multiple)"></td>
-                                    <td class="text-end" x-text="formatAddressDistance(address)">
+                                    <td class="px-1 py-2 text-center" x-text="getLocationLabel(address.back_id)"></td>
+                                    <td class="text-center" x-text="formatAddressTimeDiff(address.from_date, address.back_date, address.multiple)"></td>
+                                    <td class="text-center" x-text="formatAddressDistance(address)">
                                     <td class="text-end" x-text="formatAddressTotal(address)">
                                 </tr>
                             </template>
