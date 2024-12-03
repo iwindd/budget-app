@@ -7,6 +7,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\User;
 use App\Services\FormatHelperService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 
 class Datatable extends DataTableComponent
@@ -42,6 +43,11 @@ class Datatable extends DataTableComponent
         ]);
     }
 
+    public function loginAs(User $user) {
+        Auth::loginUsingId($user->id);
+        return redirect()->route('dashboard');
+    }
+
     public function columns(): array
     {
         return [
@@ -68,7 +74,17 @@ class Datatable extends DataTableComponent
                             'icon' => 'heroicon-o-pencil',
                             'label' => trans('users.action-edit'),
                             'dispatch' => ['open-users-dialog', $row->toArray()]
-                        ]
+                        ],
+                        ...($row->role != 'banned' ? [
+                            [
+                                'icon' => 'heroicon-o-arrow-left-end-on-rectangle',
+                                'label' => trans('users.action-login-as-user'),
+                                'attributes' => [
+                                    'wire:confirmation' => "คุณต้องการเข้าสู่ระบบในฐานะผู้ใช้งาน {$row->name} หรือไม่?",
+                                    'wire:click' => "loginAs({$row['users.id']})"
+                                ]
+                            ]
+                        ] : [])
                     ]
                 ])
         ];

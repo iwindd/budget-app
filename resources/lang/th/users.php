@@ -18,6 +18,7 @@ return [
     'table-action' => 'เครื่องมือ',
     'table-action-text' => 'เครื่องมือ',
     'action-edit' => 'แก้ไข',
+    'action-login-as-user' => "เข้าสู่ระบบในฐานะผู้ใช้งาน",
     'dialog-title' => 'ผู้ใช้งาน',
     'dialog-cancel-btn' => 'ยกเลิก',
     'dialog-save-btn' => 'บันทึก',

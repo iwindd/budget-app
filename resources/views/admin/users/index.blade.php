@@ -21,4 +21,5 @@
 
     <livewire:users.dialog />
     <livewire:users.datatable />
+    <x-confirmation />
 </x-app-layout>
