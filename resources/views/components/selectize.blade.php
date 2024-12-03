@@ -146,6 +146,7 @@
 
                     try {
                         const isNew = JSON.parse(findValue);
+                        if (!isNew.value) throw new Exception('Invalid value')
                         findValue = isNew.value;
 
                         return
