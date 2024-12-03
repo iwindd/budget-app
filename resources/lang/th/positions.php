@@ -4,6 +4,8 @@ return [
     'nav' => "ตำแหน่ง",
     'label' => "ตำแหน่ง",
     'heading' => "ตำแหน่ง",
+    'selectize' => "ตำแหน่ง",
+    'selectize-placeholder' => "เลือกตำแหน่ง...",
     'add-btn' => "เพิ่มตำแหน่งใหม่",
     'action-edit' => "แก้ไข",
     'action-delete' => "ลบ",

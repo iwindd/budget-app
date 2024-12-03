@@ -4,6 +4,8 @@ return [
     'nav' => "สังกัด",
     'label' => "สังกัด",
     'heading' => "สังกัด",
+    'selectize' => "สังกัด",
+    'selectize-placeholder' => "เลือกสังกัด...",
     'add-btn' => "เพิ่มสังกัดใหม่",
     'action-edit' => "แก้ไข",
     'action-delete' => "ลบ",
