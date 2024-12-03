@@ -202,7 +202,7 @@
         >
             @if (is_array($options))
                 @foreach ($options as $option)
-                    <option value="{{$option[$value]}}" {{($option['selected'] ?? false) ? 'selected' : null }}>{{$option[$display]}}</option>
+                    <option value="{{$option[$value]}}" {{($option['selected'] ?? false) ? 'selected' : null }}>{!!$option[$display]!!}</option>
                 @endforeach
             @endif
         </select>
