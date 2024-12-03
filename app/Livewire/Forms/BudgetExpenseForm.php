@@ -27,10 +27,6 @@ class BudgetExpenseForm extends Form
         return Expense::create([
             'user_id' => Auth::user()->id,
             'label' => $validated['expense'],
-            'merge' => true,
-            'static' => false,
-            'default' => false,
-            'split' => false
         ]);
     }
 
