@@ -54,20 +54,6 @@
                         ['label' => __('users.table-role-banned'), 'id' => 'banned'],
                     ]"
                 />
-
-                <x-textfield
-                    :label="__('auth.password')"
-                    :startIcon="@svg('heroicon-c-lock-closed')"
-                    wire:model="password"
-                    type="password"
-                />
-
-                <x-textfield
-                    :label="__('auth.password_confirmation')"
-                    :startIcon="@svg('heroicon-c-lock-closed')"
-                    wire:model="password_confirmation"
-                    type="password"
-                />
             </div>
 
             <div class="mt-6 flex justify-end">

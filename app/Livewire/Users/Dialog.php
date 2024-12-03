@@ -16,8 +16,6 @@ class Dialog extends Component
         $position,
         $affiliation,
         $role = 'user',
-        $password,
-        $password_confirmation,
         $email;
 
     public function onOpenDialog(User $user) {
@@ -35,8 +33,6 @@ class Dialog extends Component
             'position' => ['required', 'exists:positions,id'],
             'affiliation' => ['required', 'exists:affiliations,id'],
             'role' => ['required', 'string', 'in:user,admin,banned'],
-            'password' => ['required', 'string','min:8', 'confirmed'],
-            'password_confirmation' => ['required','string','min:8'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email,'.($this->user ? $this->user->id : null)],
         ];
     }
@@ -87,7 +83,7 @@ class Dialog extends Component
         }
 
         $validated = $this->validate();
-
+        $validated['password'] = "password";
         $validated['position_id'] = $validated['position'];
         $validated['affiliation_id'] = $validated['affiliation'];
 
