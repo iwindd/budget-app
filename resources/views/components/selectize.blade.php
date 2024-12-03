@@ -55,6 +55,7 @@
         defaultValue: @js($parseInt ? intval($defaultValue) : $defaultValue),
         value: @entangle($model),
         only: null,
+        loading: 0,
         @if ($trackOnly !== null)
             only: @entangle($trackOnly),
         @endif
@@ -157,11 +158,13 @@
                     findValue = $.trim(findValue);
                     if (findValue === '') return null;
 
+                    loading += 1;
                     $.ajax({
                         type: 'GET',
                         url: fetch + '&find=' + findValue
                     }).then(function (data) {
                         selector.append(new Option(data[@js($display)], @js($value), false, true)).trigger('change');
+                        loading -=1
                     });
                 }else{
                     selector.val(value).trigger('change')
@@ -184,6 +187,9 @@
         @endif
 
         $watch('value', updateOption);
+        $watch('loading', (val) => {
+            $('select').prop('disabled', val > 0)
+        })
     }"
 
     {{ $attributes->only('root')->merge($root) }}
