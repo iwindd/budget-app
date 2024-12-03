@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Position;
-use App\Http\Requests\StorePositionRequest;
-use App\Http\Requests\UpdatePositionRequest;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 
 class PositionController extends Controller
 {
@@ -15,5 +13,10 @@ class PositionController extends Controller
     public function index()
     {
         return view('admin.positions.index');
+    }
+
+    public function positions(Request $request)
+    {
+        return $this->select($request, Position::class);
     }
 }

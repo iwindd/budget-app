@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Affiliation;
-use App\Http\Requests\StoreAffiliationRequest;
-use App\Http\Requests\UpdateAffiliationRequest;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 
 class AffiliationController extends Controller
 {
@@ -15,5 +13,10 @@ class AffiliationController extends Controller
     public function index()
     {
         return view('admin.affiliations.index');
+    }
+
+    public function affiliations(Request $request)
+    {
+        return $this->select($request, Affiliation::class);
     }
 }

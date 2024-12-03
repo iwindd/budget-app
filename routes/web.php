@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/selectize/companions', [UserController::class, 'companion'])->name('companions.selectize');
     Route::get('/selectize/locations', [LocationController::class, 'locations'])->name('locations.selectize');
     Route::get('/selectize/expenses', [ExpenseController::class, 'expenses'])->name('expenses.selectize');
+    Route::get('/selectize/positions', [PositionController::class, 'positions'])->name('positions.selectize');
+    Route::get('/selectize/affiliations', [AffiliationController::class, 'affiliations'])->name('affiliations.selectize');
 
     Route::get('/budgets/{budget}/document', [ExportBudgetController::class, 'document'])->name('budgets.export.document');
     Route::get('/budgets/{budget}/evidence', [ExportBudgetController::class, 'evidence'])->name('budgets.export.evidence');
