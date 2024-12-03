@@ -17,6 +17,7 @@ class Position extends Model
      */
     protected $fillable = [
         'label',
+        'user_id'
     ];
 
     /**
