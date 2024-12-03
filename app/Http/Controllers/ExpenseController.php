@@ -21,7 +21,7 @@ class ExpenseController extends Controller
     public function expenses(Request $request)
     {
         return $this->select($request, Expense::class, [
-            'default' => false
+            ['id', '!=', 4]
         ]);
     }
 }

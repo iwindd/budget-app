@@ -41,8 +41,7 @@ class Budget extends Model
     public static function getSummaryExpenses(Budget $budget) {
         return $budget->expenses()
             ->whereHas('expense', function($query) {
-                $query->where('merge', false);
-                $query->where('default', false);
+                $query->where('id', '<=', 3);
             })
             ->orderBy('id', 'asc')
             ->get()

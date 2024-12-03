@@ -281,7 +281,6 @@ class BudgetPartial extends Component
 
         $expense   = Expense::where([
             ['id', $validated['expense_id']],
-            ['default', false]
         ])->firstOrFail('label');
         $owner     = $this->budgetForm->budget->user;
         if ($validated['owner'] != null) $owner = User::findOrFail($validated['owner'], 'name');

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Expense extends Model
 {
@@ -17,51 +18,22 @@ class Expense extends Model
      */
     protected $fillable = [
         'user_id',
-        'label',
-        'merge',
-        'default',
-        'static',
-        'split'
+        'label'
     ];
 
-    protected $casts = [
-        'default' => 'boolean',
-        'merge' => 'boolean',
-        'static' => 'boolean',
-        'split' => 'boolean',
-    ];
-
-    public static function deactivated() {
-        return self::where('default', true)->update(['default' => false]);
+    public static function getDefault($fields = '*') {
+        return Expense::where('id', 4)->first($fields);
     }
 
     public static function getStaticExpenses() {
-        return self::where([
-            ['static', true],
-            ['default', false]
-        ])->orderBy('default', 'asc');
-    }
-
-    /**
-     * setDefault
-     *
-     * @return void
-    */
-    public static function setDefault(Expense $expense) {
-        self::deactivated();
-        return $expense->update(['default' => true]);
-    }
-
-    public static function getDefault($fields = '*') {
-        return Expense::where('default', true)->firstOrFail($fields);
+        return self::where('id', '<=', 3)->orderBy('id', 'asc');
     }
 
     public static function createDefaultBudgetItemExpense(Budget $budget) : BudgetExpense {
-        $default = self::getDefault();
         $budgetItemExpense = new BudgetExpense();
         $budgetItemExpense->fill([
             'budget_id' => $budget->id,
-            'expense_id' => $default->id,
+            'expense_id' => 4,
             'days' => null,
             'total' => $budget->expenses
                 ->filter(function ($budgetItemExpense) {
@@ -89,5 +61,15 @@ class Expense extends Model
     public function budgetExpenses()
     {
         return $this->hasMany(BudgetExpense::class);
+    }
+
+    public function getDefaultAttribute()
+    {
+        return $this->id == 4;
+    }
+
+    public function getMergeAttribute()
+    {
+        return $this->id > 4;
     }
 }

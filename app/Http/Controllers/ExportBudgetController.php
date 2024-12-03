@@ -63,10 +63,9 @@ class ExportBudgetController extends Controller
 
     public function evidence(Budget $budget) {
         $expenses = Budget::getExpenses($budget)
-            ->where('merge', false)
-            ->where('default', false)
-            ->get(['id', 'label', 'merge']);
-        $expenses->push(Expense::getDefault(['id', 'label', 'merge', 'default']));
+            ->where('id', '<=', 3)
+            ->get(['id', 'label']);
+        $expenses->push(Expense::getDefault());
 
         $users = $budget->companions;
         $owner = new BudgetCompanion();

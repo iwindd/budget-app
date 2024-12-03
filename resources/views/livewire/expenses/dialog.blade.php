@@ -1,14 +1,10 @@
 <section
     x-data="{
-        label: @entangle('expense.label'),
-        checked: @entangle('expense.default'),
-        merge: @entangle('expense.merge')
+        label: @entangle('expense.label')
     }"
     x-on:open-expense-dialog.window = "() => {
         const data = $event.detail
         label = data?.label || label;
-        checked = data?.default || checked;
-        merge = data?.merge || merge;
 
         if (data.id) $wire.onOpenDialog(data.id);
 
@@ -21,17 +17,6 @@
 
             <div class="mt-6 space-y-2">
                 <x-textfield :startIcon="@svg('heroicon-o-banknotes')" lang="expenses.dialog-input-expense" wire:model="expense.label" autofocus/>
-                <div class="grid grid-cols-2">
-                    <x-checkbox
-                        :label="__('expenses.dialog-input-merge')"
-                        wire:model="expense.merge"
-                    />
-                    <x-checkbox
-                        :disabled="$expense->expense->default ?? false"
-                        :label="__('expenses.dialog-input-default')"
-                        wire:model="expense.default"
-                    />
-                </div>
             </div>
 
             <div class="mt-6 flex justify-end">
