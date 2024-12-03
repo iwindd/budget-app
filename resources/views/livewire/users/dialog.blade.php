@@ -1,5 +1,21 @@
 <section
+    x-data="{
+        'role': @entangle('role'),
+        'name': @entangle('name'),
+        'position': @entangle('position'),
+        'affiliation': @entangle('affiliation'),
+        'email': @entangle('email'),
+    }"
     x-on:open-users-dialog.window = "() => {
+        const data = $event.detail
+
+        role = data?.role || role;
+        name = data?.name || name;
+        position = data['position.id'] || position;
+        affiliation = data['affiliation.id'] || affiliation;
+        email = data?.email || email;
+
+        if (data['users.id']) $wire.onOpenDialog(data['users.id']);
         $dispatch('open-modal', 'users-form');
     }"
 >
@@ -55,6 +71,8 @@
                     ]"
                 />
             </div>
+
+            <p class="text-xs text-danger">* ผู้ใช้ที่ถูกสร้างขึ้นใหม่รหัสผ่านจะถูกใช้ว่า <strong>password</strong> จนกว่าผู้ใช้จะเปลี่ยนแปลง</p>
 
             <div class="mt-6 flex justify-end">
                 <x-button type="button" variant="secondary" x-on:click="$dispatch('close')">

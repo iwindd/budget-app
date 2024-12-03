@@ -22,6 +22,8 @@ class Datatable extends DataTableComponent
     {
         $this->setPrimaryKey('id');
         $this->addAdditionalSelects(['users.id as users.id']);
+        $this->addAdditionalSelects(['users.position_id as position.id']);
+        $this->addAdditionalSelects(['users.affiliation_id as affiliation.id']);
         $this->addAdditionalSelects(['affiliations.label as affiliation.label']);
     }
 
@@ -56,7 +58,19 @@ class Datatable extends DataTableComponent
                 ->sortable(),
             Column::make(trans('users.table-budgetitems/expenses-total'))
                 ->sortable()
-                ->label(fn ($row) => $this->formatBudgetExpenseCount($row))
+                ->label(fn ($row) => $this->formatBudgetExpenseCount($row)),
+            ButtonGroupColumn::make(trans('users.table-action'))
+                ->setView("components.action")
+                ->attributes(fn($row) => [
+                    'label' => trans('users.table-action-text'),
+                    'options' => [
+                        [
+                            'icon' => 'heroicon-o-pencil',
+                            'label' => trans('users.action-edit'),
+                            'dispatch' => ['open-users-dialog', $row->toArray()]
+                        ]
+                    ]
+                ])
         ];
     }
 }

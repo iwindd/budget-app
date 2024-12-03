@@ -15,5 +15,10 @@ return [
     'table-budgetitems/expenses-total' => 'ใบเบิก/ค่าใช้จ่าย',
     'table-budgetitems/expenses-format' => ':budget/:expense รายการ',
     'table-budget' => 'ใบเบิกทั้งหมด',
-    'table-action' => 'เครื่องมือ'
+    'table-action' => 'เครื่องมือ',
+    'table-action-text' => 'เครื่องมือ',
+    'action-edit' => 'แก้ไข',
+    'dialog-title' => 'ผู้ใช้งาน',
+    'dialog-cancel-btn' => 'ยกเลิก',
+    'dialog-save-btn' => 'บันทึก',
 ];

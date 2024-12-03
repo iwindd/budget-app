@@ -6,6 +6,7 @@ use App\Models\Affiliation;
 use App\Models\Position;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -19,12 +20,17 @@ class Dialog extends Component
         $email;
 
     public function onOpenDialog(User $user) {
-        dd('open');
+        $this->user = $user;
+        $this->name = $user->name;
+        $this->position = $user->position->id;
+        $this->affiliation = $user->affiliation->id;
+        $this->role = $user->role;
+        $this->email = $user->email;
     }
 
     #[On('onCloseModal')]
     public function onCloseModal() {
-
+        $this->reset();
     }
 
     public function rules(){
@@ -83,11 +89,15 @@ class Dialog extends Component
         }
 
         $validated = $this->validate();
-        $validated['password'] = "password";
+
         $validated['position_id'] = $validated['position'];
         $validated['affiliation_id'] = $validated['affiliation'];
 
-        $user = User::create($validated);
+        ///hash password
+        if (!$this->user) $validated['password'] = Hash::make('password');
+
+        $user = User::updateOrCreate(['id' => $this->user->id ?? null], $validated);
+
         $this->reset();
         $this->dispatch("alert", trans('users.alert-add', ['label' => $user->label]));
         $this->dispatch('close-modal', 'users-form');
