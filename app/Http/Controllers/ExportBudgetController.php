@@ -37,7 +37,7 @@ class ExportBudgetController extends Controller
 
         $pdf = Pdf::loadView('exports.document.index', [
             'serial' => $budget->serial,
-            'date' => $budget->date,
+            'date' => $budget->finish_at,
             'owner' => $owner->name,
             'name' => $user->name,
             'value' => $budget->value,
