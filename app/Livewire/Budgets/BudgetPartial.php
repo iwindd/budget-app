@@ -106,7 +106,7 @@ class BudgetPartial extends Component
         return [
             'companions' => ['array'],
             'companions.*' => ['integer'],
-            'addresses' => ['array'],
+            'addresses' => ['array', 'min:1'],
             'addresses.*.from_id' => ['required', 'integer'],
             'addresses.*.back_id' => ['required', 'integer'],
             'addresses.*.from_date' => ['required', 'date', 'date_format:Y-m-d H:i'],
@@ -115,7 +115,7 @@ class BudgetPartial extends Component
             'addresses.*.plate' => ['required', 'string'],
             'addresses.*.distance' => ['required', 'numeric'],
             'addresses.*.show_as' => ['required', 'string'],
-            'expenses' => ['array'],
+            'expenses' => ['array', 'min:1'],
             'expenses.*.id' => ['required', 'exists:expenses,id'],
             'expenses.*.type' => ['nullable', 'max:255'],
             'expenses.*.days' => ['nullable', 'integer', 'min:1'],
