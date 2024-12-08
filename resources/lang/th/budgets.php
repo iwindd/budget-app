@@ -3,6 +3,7 @@
 return [
     'nav' => "ใบเบิกเงิน",
     'heading' => "ใบเบิกเงิน",
+    'budgets-section-1' => "รายละเอียดส่วนที่ 1",
     'create-heading' => "ใบเบิกเงิน #:serial",
     'add-btn' => "เพิ่มใบเบิกเงิน",
     'budgets-header' => "ใบเบิกเงิน",
