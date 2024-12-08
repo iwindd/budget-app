@@ -45,22 +45,43 @@
 
 <section {{ $attributes->only('root')->merge($root) }}
     x-data="{
-        value: @entangle($model)
+        value: @entangle($model),
+        get minDate() {
+            try {
+                return dp_min_date;
+            }catch{
+                return null
+            }
+        },
+        get maxDate() {
+            try {
+                return dp_max_date;
+            }catch{
+                return null
+            }
+        }
     }"
     x-init="
         const calender = flatpickr($refs.input, {
             altFormat: 'j F Y',
-            altInput: true
+            altInput: true,
+            minDate: minDate,
+            maxDate: maxDate
         });
 
-        const validate = (newValue) => {
-            if (!moment(calender.selectedDates).isSame(moment(newValue))){
-                calender.setDate(newValue);
+        const validate = (type, v) => {
+            if (type == 'value') {
+                if (!moment(calender.selectedDates).isSame(moment(v))){
+                    calender.setDate(v);
+                }
+            }else{
+                calender.set(type, v);
             }
         }
 
-        $watch('value', validate);
-        validate(value);
+        $watch('value',   (v) => validate('value', v));
+        $watch('minDate', (v) => validate('minDate', v));
+        $watch('maxDate', (v) => validate('maxDate', v));
     "
     >
     @if ($label)
