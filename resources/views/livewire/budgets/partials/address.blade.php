@@ -544,7 +544,7 @@
                 $root = ['class' => 'col-span-2 lg:col-span-1'];
             @endphp
             @if ($hasPermissionToManage)
-                <form wire:submit="onAddAddress" class="grid grid-cols-2 lg:grid-cols-4 gap-1 pb-1 mb-2 border-b">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-1 pb-1 mb-2 border-b">
                     <x-selectize
                         :options="$addressSelectize"
                         lang='address.input-from'
@@ -579,7 +579,7 @@
                     />
                     <section>
                         <x-form.label for="submit" :value="__('address.table-action')" />
-                        <x-button type="submit" name="submit"
+                        <x-button type="button" wire:click="onAddAddress()"
                             class="w-full justify-center truncate">{{ __('address.add-btn') }}</x-button>
                     </section>
                     <section class="lg:order-last grid grid-cols-2 gap-1">
@@ -596,7 +596,7 @@
                             <span class="text-xs text-danger">หากต้องการแก้ไขข้อมูลการเดินทางบางวันให้ลบวันที่ต้องการแก้ไขและเพิ่มใหม่อีกครั้ง!</span>
                         </template>
                     </div>
-                </form>
+                </div>
             @endif
 
             <section

@@ -1,10 +1,10 @@
-<div class="max-w-full"
+<div class="max-w-full px-4 sm:px-8"
     x-data="{
         expenses: @entangle('expenses')
     }"
 >
     @if ($hasPermissionToManage)
-        <form wire:submit="onAddExpense" class="grid grid-cols-5 gap-1 mb-2 border-b pb-2 px-4 sm:px-8">
+        <div class="grid grid-cols-5 gap-1 mb-2 border-b pb-2">
             <x-selectize
                 lang="expenses.selectize"
                 :fetch="route('expenses.selectize')"
@@ -31,9 +31,9 @@
                 data-allow-clear="true"
             />
             <div class="col-span-5 md:col-span-2 lg:col-span-1 md:pt-6 lg:pt-6">
-                <x-button type="submit" name="submit" class="w-full justify-center truncate">{{ __('budgets.add-expense-btn') }}</x-button>
+                <x-button type="button" wire:click="onAddExpense()" class="w-full justify-center truncate">{{ __('budgets.add-expense-btn') }}</x-button>
             </div>
-        </form>
+        </div>
     @endif
 
     @foreach ($expenses as $index => $expense)
@@ -41,7 +41,7 @@
             $childExpense = $expense['user_id'] !== $budgetForm->budget->user_id || $expense['id'] > 3;
         @endphp
         <div
-            class="grid grid-cols-5 gap-1 p-0 odd:bg-secondary-100/75 p-2 px-4 sm:px-8"
+            class="grid grid-cols-5 gap-1 p-0 odd:bg-secondary-100/75"
             wire:key="{{$expense['id'].'-'.$expense['user_id'].$index}}"
             x-data="{
                 _days: @entangle("expenses.$index.days"),

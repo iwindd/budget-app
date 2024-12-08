@@ -1,4 +1,4 @@
-<section class="grid grid-cols-2 gap-1">
+<section class="grid grid-cols-2 gap-1 px-4 sm:px-8">
     <x-textfield :label="__('budgets.input-office')" wire:model="budgetForm.office" disabled />
     <x-textfield :label="__('budgets.input-invitation')" wire:model="budgetForm.invitation" disabled />
     <x-textfield :label="__('budgets.input-serial')" wire:model="budgetForm.serial" disabled />

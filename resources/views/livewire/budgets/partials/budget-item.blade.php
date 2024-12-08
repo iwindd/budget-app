@@ -1,5 +1,5 @@
 <section
-    class="grid grid-cols-2 gap-1"
+    class="grid grid-cols-2 gap-1 px-4 sm:px-8"
     x-data="{
         budget_date: @entangle('budgetForm.date')
     }"
