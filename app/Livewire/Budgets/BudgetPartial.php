@@ -137,7 +137,7 @@ class BudgetPartial extends Component
 
         // validation etc
         Carbon::setLocale('th');
-        $lastEvent        = Carbon::parse(collect($validated['addresses'])->last()['back_date']);
+        $lastEvent        = Carbon::parse(collect($validated['addresses'])->last()['back_date'])->addDay();
         $lastEventRange   = $lastEvent->clone()->addMonth();
         $finish_at        = Carbon::parse($validated['finish_at']);
         $hasCustomError   = false;

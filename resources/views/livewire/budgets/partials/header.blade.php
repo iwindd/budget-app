@@ -14,7 +14,7 @@
             },
             get dp_max_date(){
                 try{
-                    return moment(this.addresses[this.addresses.length-1].back_date)
+                    return moment(this.dp_min_date)
                         .add(1, 'month')
                         .format('Y-MM-DD');
                 }catch{
