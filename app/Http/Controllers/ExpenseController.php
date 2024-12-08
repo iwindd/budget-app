@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expense;
-use App\Http\Requests\StoreExpenseRequest;
-use App\Http\Requests\UpdateExpenseRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 
 class ExpenseController extends Controller
 {
