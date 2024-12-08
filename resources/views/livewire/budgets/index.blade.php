@@ -5,10 +5,10 @@
         <div class="max-w-full">
             <form wire:submit="save" class="space-y-4 py-4 sm:py-4" id="budget-form">
                 <h3 class="font-bold px-4 sm:px-8">{{ __('budgets.budgets-section-1') }}</h3>
-                @include('livewire.budgets.partials.budget')
+                @include('livewire.budgets.partials.information')
 
                 <h3 class="font-bold px-4 sm:px-8">{{ __('budgets.budgetitem-header') }}</h3>
-                @include('livewire.budgets.partials.budget-item')
+                @include('livewire.budgets.partials.details')
 
                 <h3 class="font-bold px-4 sm:px-8">{{ __('budgets.expense-header') }}</h3>
                 @include('livewire.budgets.partials.expense')
@@ -17,22 +17,7 @@
                 @include('livewire.budgets.partials.address')
 
                 <h3 class="font-bold px-4 sm:px-8">{{ __('budgets.budgets-header') }}</h3>
-                <section class="grid grid-cols-2 gap-1 px-4 sm:px-8">
-                    <x-datepicker
-                        :disabled="!$hasPermissionToManage"
-                        :startIcon="@svg('heroicon-o-calendar')"
-                        :root="['class' => 'lg:col-span-1 col-span-2']"
-                        lang="budgets.input-date"
-                        wire:model="budgetForm.finish_at" type="date"
-                    />
-                    <x-textfield
-                        :disabled="!$hasPermissionToManage"
-                        :startIcon="@svg('heroicon-o-banknotes')"
-                        :root="['class' => 'lg:col-span-1 col-span-2']"
-                        lang="budgets.input-value"
-                        wire:model="budgetForm.value" type="number"
-                    />
-                </section>
+                @include('livewire.budgets.partials.header')
 
                 <div class="max-w-full space-y-2 px-4 sm:px-8">
                     @if ($hasPermissionToManage)
