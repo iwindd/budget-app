@@ -38,8 +38,8 @@ class BudgetForm extends Form
         $this->header = $budget->header;
         $this->subject = $budget->subject;
         $this->addresses = $budget->exists ? json_decode($budget->addresses) : [];
-        $this->invitation = $budget->exists ? $budget->invitation->label : Invitation::getInvitation('label')->label;
-        $this->office     = $budget->exists ? $budget->office->label : Office::getOffice('label')->label;
+        $this->invitation = ($budget->exists ? ($budget->invitation->label  ?? 'N/A') : (Invitation::getInvitation('label')->label) ?? 'N/A');
+        $this->office     = ($budget->exists ? ($budget->office->label      ?? 'N/A') : (Office::getOffice('label')->label)         ?? 'N/A');
         $user       = $budget->exists ? $budget->user : Auth::user();
 
         $this->name        = $user->name;
