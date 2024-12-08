@@ -36,18 +36,11 @@
 
                 <!-- Remember Me -->
                 <div class="flex items-center justify-between">
-                    <label for="remember_me" class="inline-flex items-center">
-                        <input
-                            id="remember_me"
-                            type="checkbox"
-                            class="text-primary border-gray-300 rounded focus:border-primary-300 focus:ring focus:ring-primary dark:border-gray-600 dark:bg-dark-eval-1 dark:focus:ring-offset-dark-eval-1"
-                            name="remember"
-                        >
-
-                        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                            {{ __('auth.rememberme') }}
-                        </span>
-                    </label>
+                    <x-checkbox
+                        :label="__('auth.rememberme')"
+                        name="remember"
+                        id="remember_me"
+                    />
 
                     @if (Route::has('password.request'))
                         <a class="text-sm text-primary hover:underline" href="{{ route('password.request') }}">
