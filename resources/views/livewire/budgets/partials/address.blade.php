@@ -508,7 +508,7 @@
                     class="block font-medium text-sm {{ count($addressError) > 0 ? 'text-danger' : 'text-gray-700 dark:text-gray-300 ' }}">
                     {{ __('address.input-range') }}
                 </label>
-                <main class="flex flex-col md:flex-row lg:flex-col datepicker-address gap-1 pb-2 {{$errors->has('budgetAddressForm.dates') ? 'invalid-addresses-dates' : ''}}">
+                <main class="flex flex-col md:flex-row lg:flex-col datepicker-address gap-1 pb-2 {{count($addressError) > 0  ? 'invalid-addresses-dates' : ''}}">
                     <section class="w-[310]" wire:ignore>
                         <textfield id="budgetAddressForm.dates" type="hidden" x-ref="datepicker" class="hidden">
                     </section>
