@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Position;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Form;
 
 class PositionForm extends Form
@@ -23,8 +24,10 @@ class PositionForm extends Form
 
     public function store()
     {
+       /** @var User $user */
+        $user = Auth::user();
         $validated = $this->validate();
-        $position = Position::create($validated);
+        $position =  $user->positions()->create($validated);
         $this->clear();
 
         return $position;

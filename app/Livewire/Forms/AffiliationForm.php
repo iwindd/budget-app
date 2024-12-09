@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Affiliation;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Form;
 
 class AffiliationForm extends Form
@@ -23,8 +24,10 @@ class AffiliationForm extends Form
 
     public function store()
     {
+        /** @var User $user */
+        $user = Auth::user();
         $validated = $this->validate();
-        $affiliation = Affiliation::create($validated);
+        $affiliation = $user->affiliations()->create($validated);
         $this->clear();
 
         return $affiliation;

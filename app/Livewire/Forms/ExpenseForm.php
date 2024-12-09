@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Expense;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Form;
 
 class ExpenseForm extends Form
@@ -21,8 +22,10 @@ class ExpenseForm extends Form
 
     public function store()
     {
+        /** @var User $user */
+        $user = Auth::user();
         $validated = $this->validate();
-        $expense = Expense::create($validated);
+        $expense = $user->expenses()->create($validated);
         $this->clear();
 
         return $expense;
