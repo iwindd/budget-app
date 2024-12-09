@@ -37,7 +37,6 @@
 <body class="font-sarabun antialiased">
     <div
         x-data="mainState"
-        :class="{ dark: isDarkMode }"
         x-on:resize.window="handleWindowResize"
         x-cloak
     >
