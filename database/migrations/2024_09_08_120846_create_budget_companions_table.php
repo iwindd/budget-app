@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('budget_companions', function (Blueprint $table) {
-            $table->foreignId('budget_id')->constrained('budgets')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('budget_id')->constrained('budgets')->onDelete('cascade')->onUpdate('restrict');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('restrict');
             $table->unique(['budget_id', 'user_id']);
         });
     }

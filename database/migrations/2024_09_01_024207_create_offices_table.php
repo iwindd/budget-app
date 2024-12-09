@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('label');
             $table->integer('province');
             $table->boolean('default');
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('restrict');
             $table->softDeletes();
             $table->timestamps();
         });

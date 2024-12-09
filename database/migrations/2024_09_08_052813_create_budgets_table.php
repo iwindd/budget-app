@@ -20,9 +20,9 @@ return new class extends Migration
             $table->date('date')->default(now());
             $table->string('header')->default(''); // ที่ไหน
             $table->string('subject')->default(''); // เรื่องอะไร
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('invitation_id')->constrained('invitations')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('office_id')->constrained('offices')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('restrict');
+            $table->foreignId('invitation_id')->constrained('invitations')->onDelete('cascade')->onUpdate('restrict');
+            $table->foreignId('office_id')->constrained('offices')->onDelete('cascade')->onUpdate('restrict');
             $table->timestamps();
         });
     }
