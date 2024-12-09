@@ -160,10 +160,7 @@ class BudgetPartial extends Component
             $hasCustomError = true;
         }
 
-        if ($hasCustomError) {
-            $this->dispatch("alert", trans('budgets.alert-budget-error'));
-            return false;
-        }
+        if ($hasCustomError) return false;
 
         // etc
         $budget = $this->budgetForm->budget;
