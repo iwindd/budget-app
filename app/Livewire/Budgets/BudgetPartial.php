@@ -204,6 +204,7 @@ class BudgetPartial extends Component
 
         // etc
         $this->dispatch("alert", trans('budgets.alert-budget-saved'));
+        $this->dispatch('companionsUpdated');
     }
 
     public function render()
