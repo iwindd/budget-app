@@ -31,13 +31,13 @@
                     {{ __('exports.export-document-btn', ['name' => $companion->user->name]) }}
                 </x-dropdown-link>
             @endforeach
-            <x-dropdown-link class="border-t" :href="route('budgets.export.evidence', ['budget' => request()->budget])">
+            <x-dropdown-link class="border-t" :href="route('budgets.export.evidence', ['budget' => $budget])">
                 {{ __('exports.export-evidence-btn') }}
             </x-dropdown-link>
-            <x-dropdown-link :href="route('budgets.export.certificate', ['budget' => request()->budget])">
+            <x-dropdown-link :href="route('budgets.export.certificate', ['budget' => $budget])">
                 {{ __('exports.export-certificate-btn') }}
             </x-dropdown-link>
-            <x-dropdown-link :href="route('budgets.export.travel', ['budget' => request()->budget])">
+            <x-dropdown-link :href="route('budgets.export.travel', ['budget' => $budget])">
                 {{ __('exports.export-travel-btn') }}
             </x-dropdown-link>
         </x-slot>
