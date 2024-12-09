@@ -64,14 +64,9 @@ Route::middleware('role:admin')->prefix('admin')->group(function () {
 
     Route::get("/users", [UserController::class, 'index'])->name('users');
 
-    Route::prefix('document')->group(function () {
-        Route::get("/positions", [PositionController::class, 'index'])->name('positions');
-        Route::get("/affiliations", [AffiliationController::class, 'index'])->name('affiliations');
-        Route::get("/locations", [LocationController::class, 'index'])->name('locations');
-        Route::get("/expenses", [ExpenseController::class, 'index'])->name('expenses');
-        Route::get("/invitations", [InvitationController::class, 'index'])->name('invitations');
-        Route::get("/offices", [OfficeController::class, 'index'])->name('offices');
-    });
+    Route::get("/positions", [PositionController::class, 'index'])->name('positions');
+    Route::get("/affiliations", [AffiliationController::class, 'index'])->name('affiliations');
+    Route::get("/expenses", [ExpenseController::class, 'index'])->name('expenses');
 });
 
 /* AUTH ROUTES */
