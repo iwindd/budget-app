@@ -124,24 +124,25 @@ class BudgetPartial extends Component
         ];
     }
 
-    public function save()
-    {
-        if (!$this->hasPermissionToManage) return false;
+    public function saveValidate() {
         $this->addresses = collect($this->addresses)->map(fn ($address) =>[
             'from_date' => Carbon::parse($address['from_date'])->format('Y-m-d H:i'),
             'back_date' => Carbon::parse($address['back_date'])->format('Y-m-d H:i')
-        ] + $address)->sortBy('from_date')->toArray();
+        ] + $address)
+            ->sortBy('from_date')
+            ->toArray();
+
         $this->budgetAddressForm->clear();
         $this->budgetExpenseForm->clear();
-        $validated = $this->validate();
 
-        // validation etc
+        $validated = $this->validate();
         Carbon::setLocale('th');
         $lastEvent        = Carbon::parse(collect($validated['addresses'])->last()['back_date'])->addDay()->startOfDay();
         $lastEventRange   = $lastEvent->clone()->addMonth()->endOfDay();
         $finish_at        = Carbon::parse($validated['finish_at']);
         $hasCustomError   = false;
 
+        // validate finish_at
         if (!$finish_at->between($lastEvent, $lastEventRange)){
             $lastEventFormatted = $lastEvent->translatedFormat('j M y H:i');
             $lastEventRangeFormatted = $lastEventRange->translatedFormat('j M y H:i');
@@ -150,10 +151,12 @@ class BudgetPartial extends Component
             $hasCustomError = true;
         }
 
+        // sum expenses
         $totalAmount = collect($validated['expenses'])->map(function ($expense) {
             return (($expense['days'] !== null && is_numeric($expense['days'])) ? $expense['days'] : 1) * $expense['total'];
         })->sum();
 
+        // validate expenses and value total
         if ($validated['value'] < $totalAmount){
             $formatTotal = number_format($totalAmount);
             $this->addError('budgetForm.value', "จำนวนเงินที่ต้องการเบิกน้อยกว่ารายการค่าใช้จ่ายทั้งหมดซึ่งมีมูลค่า {$formatTotal}บาท");
@@ -161,7 +164,14 @@ class BudgetPartial extends Component
         }
 
         if ($hasCustomError) return false;
+        return $validated;
+    }
 
+    public function save()
+    {
+        if (!$this->hasPermissionToManage) return false;
+        $validated = $this->saveValidate();
+        if (!$validated) return false;
         // etc
         $budget = $this->budgetForm->budget;
         $exists = $budget->exists;
