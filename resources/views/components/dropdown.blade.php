@@ -2,7 +2,6 @@
     'align' => 'right',
     'width' => '48',
     'contentClasses' => 'py-1 bg-white dark:bg-dark-eval-2',
-    'teleport' => false,
 ])
 
 @php
@@ -35,22 +34,12 @@
     x-on:click.away="open = false"
     x-on:close.stop="open = false"
     x-on:close-dropdown.window="open = false"
-    x-init="
-        $watch('open', value => {
-            if (value) {
-                const triggerEl = $el.querySelector('[x-on\\:click]');
-                triggerPosition = triggerEl.getBoundingClientRect();
-            }
-        });
-    "
 >
-    <div x-on:click="open = ! open">
+    <div x-ref="button" x-on:click="open = ! open">
         {{ $trigger }}
     </div>
 
-    @if ($teleport)
-        @teleport('#teleport-wrapper')
-    @endif
+    @teleport('#teleport-wrapper')
         <div
             x-show="open"
             x-transition:enter="transition ease-out duration-200"
@@ -58,17 +47,12 @@
             x-transition:enter-end="transform opacity-100 scale-100"
             class="absolute z-50 mt-2 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }}"
             style="display: none;"
-            @if ($teleport)
-                x-bind:style="`top: ${triggerPosition.bottom + window.scrollY}px; left: ${triggerPosition.left + window.scrollX}px; `"
-            @endif
+            x-anchor="$refs.button"
             x-on:click="open = false"
         >
             <div class="rounded-md ring-1 ring-black ring-opacity-5 {{ $contentClasses }}">
                 {{ $content }}
             </div>
         </div>
-    @if ($teleport)
-        @endteleport('#teleport-wrapper')
-    @endif
-
+    @endteleport('#teleport-wrapper')
 </div>
