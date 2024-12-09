@@ -5,7 +5,7 @@
                 {{ __('budgets.create-heading', ['serial' => $serial]) }}
             </h2>
             <div>
-                <x-dropdown align="right" width="96">
+                <x-dropdown position="bottom-end" width="96">
                     <x-slot name="trigger">
                         <button
                             class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-md transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none focus:ring focus:ring-primary focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark-eval-1 dark:text-gray-400 dark:hover:text-gray-200">
@@ -24,7 +24,7 @@
 
                     <x-slot name="content">
                         @foreach ($documents as $document)
-                            <x-dropdown-link 
+                            <x-dropdown-link
                                 :href="route('budgets.export.document', ['budget' => request()->budget, 'of' => $document['id']])"
                             >
                                 {{ __('exports.export-document-btn', ['name' => $document['name']]) }}

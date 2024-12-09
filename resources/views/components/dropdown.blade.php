@@ -1,23 +1,16 @@
 @props([
-    'align' => 'right',
+    'position' => 'bottom',
+    /*
+        Bottom: .bottom, .bottom-start, .bottom-end
+        Top:    .top,    .top-start,    .top-end
+        Left:   .left,   .left-start,   .left-end
+        Right:  .right,  .right-start,  .right-end
+    */
     'width' => '48',
     'contentClasses' => 'py-1 bg-white dark:bg-dark-eval-2',
 ])
 
 @php
-    switch ($align) {
-        case 'left':
-            $alignmentClasses = 'origin-top-left left-0';
-            break;
-        case 'top':
-            $alignmentClasses = 'origin-top';
-            break;
-        case 'right':
-        default:
-            $alignmentClasses = 'origin-top-right right-0';
-            break;
-    }
-
     switch ($width) {
         case '48':
             $width = 'w-48';
@@ -45,10 +38,11 @@
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="transform opacity-0 scale-95"
             x-transition:enter-end="transform opacity-100 scale-100"
-            class="absolute z-50 mt-2 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }}"
+            class="absolute z-50 mt-2 {{ $width }} rounded-md shadow-lg"
             style="display: none;"
-            x-anchor="$refs.button"
             x-on:click="open = false"
+
+            x-anchor.{{$position}}="$refs.button"
         >
             <div class="rounded-md ring-1 ring-black ring-opacity-5 {{ $contentClasses }}">
                 {{ $content }}

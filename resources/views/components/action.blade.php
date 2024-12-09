@@ -1,5 +1,5 @@
 <section>
-    <x-dropdown align="left" width="48">
+    <x-dropdown position="bottom-end" width="48">
         <x-slot name="trigger">
             <button
                 class="flex items-center p-2 text-sm font-medium rounded-md transition duration-150 text-inherit ease-in-out hover:text-gray-700 dark:focus:ring-offset-dark-eval-1 dark:hover:text-gray-200">
