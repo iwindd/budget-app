@@ -16,22 +16,21 @@
         </x-slot>
 
         <x-slot name="content">
-            <x-dropdown-link
-                :href="route('budgets.export.document', ['budget' => $budget])"
-            >
+            <x-dropdown-link target="_blank" :href="route('budgets.export.document', ['budget' => $budget])">
                 {{ __('exports.export-document-btn:owner') }}
             </x-dropdown-link>
-            <x-dropdown-link :href="route('budgets.export.evidence', ['budget' => $budget])">
+            <x-dropdown-link target="_blank" :href="route('budgets.export.evidence', ['budget' => $budget])">
                 {{ __('exports.export-evidence-btn') }}
             </x-dropdown-link>
-            <x-dropdown-link :href="route('budgets.export.certificate', ['budget' => $budget])">
+            <x-dropdown-link target="_blank" :href="route('budgets.export.certificate', ['budget' => $budget])">
                 {{ __('exports.export-certificate-btn') }}
             </x-dropdown-link>
-            <x-dropdown-link class="border-b" :href="route('budgets.export.travel', ['budget' => $budget])">
+            <x-dropdown-link target="_blank" :href="route('budgets.export.travel', ['budget' => $budget])" class="border-b">
                 {{ __('exports.export-travel-btn') }}
             </x-dropdown-link>
             @foreach ($budget->companions as $companion)
                 <x-dropdown-link
+                    target="_blank"
                     :href="route('budgets.export.document', [
                         'budget' => $budget,
                         'of' => $companion->user_id
