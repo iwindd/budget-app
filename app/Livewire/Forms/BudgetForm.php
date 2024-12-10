@@ -47,17 +47,13 @@ class BudgetForm extends Form
         $this->position    = $user->position->label;
         $this->affiliation = $user->affiliation->label;
 
-        $this->companions = $budget->companions()
-            ->with('user')
-            ->get()
-            ->map(function ($companion) {
-                return [
-                    'name' => $companion->user->name,
-                    'id' => $companion->user->id,
-                    'selected'=> true
-                ];
-            })
-            ->toArray();
+        $this->companions = collect($budget->companions)
+            ->transform(fn ($companion) => [
+                'name' => $companion->user->name,
+                'id' => $companion->user->id,
+                'selected'=> true
+            ])->toArray();
+
         return $budget;
     }
 
