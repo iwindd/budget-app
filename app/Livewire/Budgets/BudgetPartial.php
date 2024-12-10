@@ -51,16 +51,6 @@ class BudgetPartial extends Component
         $this->client_name = $session->name;
         $this->client_position = $session->position->label;
         $this->client_affiliation = $session->affiliation->label;
-
-        $companionPayload = collect($this->budgetForm->companions)->filter(fn($c) => $c['id'] != $session->id);
-        $companionPayload->prepend([
-            'id' => $session->id,
-            'name' => $session->name,
-            'selected' => true,
-            'owner' => true
-        ]);
-
-        $this->budgetForm->companions = $companionPayload->toArray();
     }
 
     public function rules() {
