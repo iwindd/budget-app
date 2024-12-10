@@ -12,6 +12,7 @@
     'wrapper' => [],
     'root' => [],
     'lang' => null,
+    'format' => "Y-m-d"
 ])
 
 @php
@@ -63,6 +64,7 @@
     }"
     x-init="
         const calender = flatpickr($refs.input, {
+            dateFormat: @js($format),
             altFormat: 'j F Y',
             altInput: true,
             minDate: minDate,
@@ -82,6 +84,7 @@
         $watch('value',   (v) => validate('value', v));
         $watch('minDate', (v) => validate('minDate', v));
         $watch('maxDate', (v) => validate('maxDate', v));
+        validate('value', value);
     "
     >
     @if ($label)
