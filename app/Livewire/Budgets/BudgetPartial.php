@@ -5,7 +5,6 @@ namespace App\Livewire\Budgets;
 use App\Livewire\Forms\BudgetAddressForm;
 use App\Livewire\Forms\BudgetExpenseForm;
 use App\Livewire\Forms\BudgetForm;
-use App\Models\Budget;
 use App\Models\BudgetAddress;
 use App\Models\Expense;
 use App\Models\Invitation;
@@ -37,67 +36,31 @@ class BudgetPartial extends Component
 
     public function mount(Request $request)
     {
+        /** @var User $session */
         $budget = $request->budget;
+        $session = Auth::user();
         $this->addressSelectize = BudgetAddress::list()->toArray();
 
-        $expenses = collect([]);
         $this->budgetForm->setBudget($budget);
+        $this->addresses = $budget->addresses->toArray();
+        $this->companions = $budget->companions->pluck('user_id');
+        $this->expenses  = $this->budgetForm->getExpenses();
+        $this->hasPermissionToManage = $budget->user_id == $session->id || $session->role == 'admin';
+        if ($this->hasPermissionToManage) $session = $budget->user;
 
-        if ($budget->exists) {
-            $this->addresses = $budget->addresses()->get(['from_id', 'from_date', 'back_id', 'back_date', 'multiple', 'plate', 'distance', 'show_as'])->toArray();
-            $this->companions = $budget->companions()->pluck('user_id');
+        $this->client_name = $session->name;
+        $this->client_position = $session->position->label;
+        $this->client_affiliation = $session->affiliation->label;
 
-            $budget->expenses()->get()->map(fn($budgetExpense) => $expenses->push([
-                'id' => $budgetExpense->expense_id,
-                'label' => $budgetExpense->expense->label,
-                'total' => $budgetExpense->total,
-                'days'  => $budgetExpense->days,
-                'type'  => $budgetExpense->type,
-                'user_id'  => $budgetExpense->user_id,
-                'user_label' => $budgetExpense->user->name
-            ]));
+        $companionPayload = collect($this->budgetForm->companions)->filter(fn($c) => $c['id'] != $session->id);
+        $companionPayload->prepend([
+            'id' => $session->id,
+            'name' => $session->name,
+            'selected' => true,
+            'owner' => true
+        ]);
 
-            $exclude = $expenses->where('user_id', $budget->user->id)->pluck('id');
-
-            Expense::getStaticExpenses()
-                ->whereNotIn('id', $exclude)
-                ->get(['id', 'label'])
-                ->map(fn($expense) => $expenses->push([
-                    'id' => $expense->id,
-                    'label' => $expense->label,
-                    'total' => null,
-                    'days' => null,
-                    'type' => null,
-                    'user_id'  => $budget->user->id,
-                    'user_label' => $budget->user->name
-                ]));
-        }
-
-        $this->hasPermissionToManage = !$budget->exists || $budget->user_id == Auth::user()->id || Auth::user()->role == 'admin';
-
-        if ($this->hasPermissionToManage){
-            $this->client_name = $budget->user->name;
-            $this->client_position = $budget->user->position->label;
-            $this->client_affiliation = $budget->user->affiliation->label;
-        }else{
-            /** @var User $user */
-            $user = Auth::user();
-
-            $this->client_name = $user->name;
-            $this->client_position = $user->position->label;
-            $this->client_affiliation = $user->affiliation->label;
-            $companionPayload = collect($this->budgetForm->companions)->filter(fn($c) => $c['id'] != $user->id);
-            $companionPayload->prepend([
-                'id' => $user->id,
-                'name' => $user->name,
-                'selected' => true,
-                'owner' => true
-            ]);
-
-            $this->budgetForm->companions = $companionPayload->toArray();
-        }
-
-        $this->expenses = $expenses;
+        $this->budgetForm->companions = $companionPayload->toArray();
     }
 
     public function rules() {

@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Budget;
+use App\Models\Expense;
 use App\Models\Invitation;
 use App\Models\Office;
 use Illuminate\Support\Facades\Auth;
@@ -60,24 +61,6 @@ class BudgetForm extends Form
         return $budget;
     }
 
-    public function save(): Budget
-    {
-        $validated = $this->validate();
-
-        dd($validated);
-        /* $budget = $this->budget;
-        if (!$budget->exists){
-            $budget = $this->parseBudget($this->serial);
-        }
-        $budget->fill($validated);
-        $budget->save(); */
-        return $budget;
-    }
-
-    public function exists() {
-        return $this->budget && $this->budget->exists;
-    }
-
     public function rules()
     {
         return [
@@ -89,5 +72,34 @@ class BudgetForm extends Form
             'header' => ['required', 'string'],
             'subject' => ['required', 'string'],
         ];
+    }
+
+    public function getExpenses() {
+        $budget = $this->budget;
+        $expenses = collect($budget->expenses)->transform(fn($budgetExpense) => [
+            'id' => $budgetExpense->expense_id,
+            'label' => $budgetExpense->expense->label,
+            'total' => $budgetExpense->total,
+            'days'  => $budgetExpense->days,
+            'type'  => $budgetExpense->type,
+            'user_id'  => $budgetExpense->user_id,
+            'user_label' => $budgetExpense->user->name
+        ]);
+        $exclude = $expenses->where('user_id', $budget->user->id)->pluck('id');
+
+        Expense::getStaticExpenses()
+            ->whereNotIn('id', $exclude)
+            ->get(['id', 'label'])
+            ->map(fn($expense) => $expenses->push([
+                'id' => $expense->id,
+                'label' => $expense->label,
+                'total' => null,
+                'days' => null,
+                'type' => null,
+                'user_id'  => $budget->user->id,
+                'user_label' => $budget->user->name
+            ]));
+
+        return $expenses;
     }
 }
